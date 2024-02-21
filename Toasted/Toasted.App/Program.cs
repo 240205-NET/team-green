@@ -1,2 +1,13 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Team green rocks");
+﻿namespace Toasted.App
+{
+	public class Program
+	{
+
+		public static void Main(string[] args)
+		{
+			Toasted toasted = new Toasted();
+			toasted.Run();
+		}
+	}
+
+}
