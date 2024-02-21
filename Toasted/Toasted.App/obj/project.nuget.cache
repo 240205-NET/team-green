@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "UYp/xUhUpvgM96x8JLJ+/2EmqA4t2YEwtnm7ltRrZDY8h0mYaJ6t+TMC6Zv1Kaqabbhsw7SQhMjwOSBnyWTC8A==",
+  "success": true,
+  "projectFilePath": "D:\\240205-NET\\Toasted\\Toasted.App\\Toasted.App.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Vayro\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.15\\microsoft.windowsdesktop.app.ref.7.0.15.nupkg.sha512",
+    "C:\\Users\\Vayro\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.15\\microsoft.netcore.app.ref.7.0.15.nupkg.sha512",
+    "C:\\Users\\Vayro\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.15\\microsoft.aspnetcore.app.ref.7.0.15.nupkg.sha512",
+    "C:\\Users\\Vayro\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.15\\microsoft.netcore.app.host.win-x64.7.0.15.nupkg.sha512"
+  ],
+  "logs": []
+}
