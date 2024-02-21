@@ -25,6 +25,14 @@ _UpgradeReport_Files/
 ###############
 bin/
 obj/
+Toasted/Toasted.Api/obj/
+Toasted/Toasted.Data/obj/
+Toasted/Toasted.App/obj/
+Toasted/Toasted.Logic/obj/
+Toasted/Toasted.Api/bin/
+Toasted/Toasted.Data/bin/
+Toasted/Toasted.App/bin/
+Toasted/Toasted.Logic/bin/
 TestResults/
 ###################
 # Web publish log #
