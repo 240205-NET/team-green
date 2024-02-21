@@ -33,6 +33,7 @@ Toasted/Toasted.Api/bin/
 Toasted/Toasted.Data/bin/
 Toasted/Toasted.App/bin/
 Toasted/Toasted.Logic/bin/
+Toasted/.vs/
 TestResults/
 ###################
 # Web publish log #
