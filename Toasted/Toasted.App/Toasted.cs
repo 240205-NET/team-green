@@ -42,7 +42,6 @@ namespace Toasted.App
 				// 2) prompt for password (min length?)
 				// 3) prompt for email (check if valid email (ez stuff), check if duplicate)
 				// 4) prompt for location (5 digit validation for now )
-				// 
 				Console.Write("Please enter your username: ");
 				string username = Console.ReadLine();
 				Console.Write("Please enter your password: ");
