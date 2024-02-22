@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toasted.Logic", "Toasted.Lo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toasted.Data", "Toasted.Data\Toasted.Data.csproj", "{FD091E76-76A7-45D3-9348-B21EDF355B81}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toasted.Test", "Toasted.Test\Toasted.Test.csproj", "{499E84C4-9C37-403F-AB73-143E12710235}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{FD091E76-76A7-45D3-9348-B21EDF355B81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD091E76-76A7-45D3-9348-B21EDF355B81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD091E76-76A7-45D3-9348-B21EDF355B81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{499E84C4-9C37-403F-AB73-143E12710235}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{499E84C4-9C37-403F-AB73-143E12710235}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{499E84C4-9C37-403F-AB73-143E12710235}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{499E84C4-9C37-403F-AB73-143E12710235}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

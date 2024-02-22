@@ -50,7 +50,7 @@ namespace Toasted.App
 				Console.Write("Please enter your email: ");
 				string email = Console.ReadLine();
 				Console.Write("Please enter your 5 digit zip-code: ");
-				int zip = Console.ReadLine();
+				int zip = Int32.Parse(Console.ReadLine());
 			}
 		}
 		public string inputFormatter(string s)
