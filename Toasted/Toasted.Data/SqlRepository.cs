@@ -47,13 +47,51 @@ namespace Toasted.Data
                 char tempUnit = reader.["tempUnit"].ToString()[0];
                 string countryCode = reader.["countryCode"].ToString ?? "";
 
-                users.Add(new User(userId, username, email, location, firstName, lastName, password, tempUnit));
+                users.Add(new User(userId, username, email, location, firstName, lastName, password, tempUnit, countryCode));
             }
 
             await connection.CloseAsync();
 
             _logger.LogInformation("Executed GetAllUsersAsync, returned {0} results.", users.Count);
             return users;
+        }
+
+        public async Task<User> GetUserByUsernameAsync(int username)
+        {
+            using SqlConnection connection = new SqlConnection(this._connectionString);
+            connection.OpenAsync();
+
+            string cmdText = "SELECT * FROM [dbo].[User] WHERE username = @username;";
+
+            using SqlCommand cmd = new SqlCommand(cmdText, connection);
+
+            cmd.Parameters.AddWithValue("@username", username);
+
+            using SqlDataReader reader = await cmd.ExecuteReaderAsync();
+            User tmpUser = new User();
+
+            while (await reader.ReadAsync())
+            {
+                int userId = (int)reader["userID"];
+                string username = reader["username"].ToString() ?? "";
+                string email = reader["Email"].ToString() ?? "";
+                int location = (int)reader["location"];
+                string firstName = reader.["firstName"].ToString ?? "";
+                string lastName = reader.["lastName"].ToString ?? "";
+                string password = reader.["password"].ToString ?? "";
+                char tempUnit = reader.["tempUnit"].ToString()[0];
+                string countryCode = reader.["countryCode"].ToString ?? "";
+
+                tmpUser = new User(userId, username, email, location, firstName, lastName, password, tempUnit, countryCode);
+            }
+            connection.CloseAsync();
+            return tmpUser;
+        }
+
+
+        public async Task AddUserAsync(User user);
+        {
+
         }
     }
 }
