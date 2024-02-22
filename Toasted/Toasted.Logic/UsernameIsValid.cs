@@ -5,7 +5,7 @@ namespace Toasted.Logic
 
 	public class UsernameIsValid
 	{
-		public bool IsUsernameValid(string username)
+		public static bool IsUsernameValid(string username)
 		{
 			//RegEx expression
 			string pattern = @"^\w+$";
