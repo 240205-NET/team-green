@@ -29,7 +29,7 @@ namespace Toasted.App
 
 		public static void DisplayWelcomeMessage()
 		{
-			Console.WriteLine("Welcome to Toasted - Your Daily Slice of Weather!");
+			Console.WriteLine("Welcome to Toasted - Your Daily Slice of Weather!\n");
 		}
 	}
 }

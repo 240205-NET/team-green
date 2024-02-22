@@ -2,20 +2,20 @@ namespace Toasted.App
 {
 	public class Toasted
 	{
-		public void Run()
+		public async Task Run()
 		{
-			Console.WriteLine("sup mawn");
+			Menu.DisplayWelcomeMessage();
 			// main program loop
 			while (true)
 			{
-				Console.Write("Please choose an option: ");
+				Menu.DisplayMenuView();
 				string userInput = Console.ReadKey().KeyChar.ToString();
 				Console.WriteLine();
 				switch (userInput)
 				{
 					case "1":
 						Console.Clear();
-						Console.WriteLine("Register");
+						this.ContentWrapper(Register);
 						break;
 					case "2":
 						Console.Clear();
@@ -31,7 +31,11 @@ namespace Toasted.App
 			}
 			// functions that execute the options
 		}
-
+		public void ContentWrapper(Action content)
+		{
+			Menu.GetCurrentView();
+			content();
+		}
 		public void Register()
 		{
 			bool registering = true;
