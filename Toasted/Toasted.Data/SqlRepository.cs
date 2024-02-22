@@ -45,6 +45,7 @@ namespace Toasted.Data
                 string lastName = reader.["lastName"].ToString ?? "";
                 string password = reader.["password"].ToString ?? "";
                 char tempUnit = reader.["tempUnit"].ToString()[0];
+                string countryCode = reader.["countryCode"].ToString ?? "";
 
                 users.Add(new User(userId, username, email, location, firstName, lastName, password, tempUnit));
             }
