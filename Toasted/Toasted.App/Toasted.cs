@@ -5,21 +5,20 @@ namespace Toasted.App
 {
 	public class Toasted
 	{
-		public void Run()
+		public async Task Run()
 		{
-			Console.WriteLine("sup mawn");
+			Menu.DisplayWelcomeMessage();
 			// main program loop
 			while (true)
 			{
-				Console.Write("Please choose an option: ");
+				Menu.DisplayMenuView();
 				string userInput = Console.ReadKey().KeyChar.ToString();
 				Console.WriteLine();
 				switch (userInput)
 				{
 					case "1":
 						Console.Clear();
-						Console.WriteLine("Register");
-						Register();
+						this.ContentWrapper(Register);
 						break;
 					case "2":
 						Console.Clear();
@@ -35,7 +34,11 @@ namespace Toasted.App
 			}
 			// functions that execute the options
 		}
-
+		public void ContentWrapper(Action content)
+		{
+			Menu.GetCurrentView();
+			content();
+		}
 		public void Register()
 		{
 			// username, firstName, lastName, password, email, location, 
@@ -53,15 +56,18 @@ namespace Toasted.App
 			bool registering = true;
 			while (registering)
 			{
-				try {
+				try
+				{
 					username = inputFormatter("Please enter your username: ");
 					UserValidityChecks.IsUsernameValid(username);
 					registering = false;
-				} catch(Exception e) {
+				}
+				catch (Exception e)
+				{
 					Console.WriteLine(e.Message);
-				}		
+				}
 			}
-			
+
 			registering = true;
 			while (registering)
 			{
@@ -122,7 +128,7 @@ namespace Toasted.App
 				}
 			}
 
-			registering=true;
+			registering = true;
 			while (registering)
 			{
 				try
@@ -138,8 +144,8 @@ namespace Toasted.App
 			}
 
 			string encryptedPassword = PasswordEncryptor.Encrypt(password);
-			User u = new User(username,password,firstName,lastName,1,email,new Location());
-			
+			User u = new User(username, password, firstName, lastName, 1, email, new Location());
+
 		}
 		private string inputFormatter(string s)
 		{
