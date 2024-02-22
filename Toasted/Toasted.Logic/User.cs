@@ -8,7 +8,7 @@
         public string lastName { get; set; }
         public int userID { get; set; }
         public string email { get; set; }
-        public Location location { get; set; }
+        public Location defaultLocation { get; set; }
 
         public User()
         {
