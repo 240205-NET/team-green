@@ -11,8 +11,9 @@ using System.Xml.Serialization;
         public string email { get; set; }
         public Location defaultLocation { get; set; }
         private static XmlSerializer Serializer = new XmlSerializer(typeof(User));
+        public char temperaturePreference { get; set; }
 
-        public User(string username, string password, string firstName, string lastName, int userID, string email, Location defaultLocation)
+    public User(string username, string password, string firstName, string lastName, int userID, string email, Location defaultLocation)
         {
             this.username = username;
             this.password = password;    
@@ -23,11 +24,11 @@ using System.Xml.Serialization;
             this.defaultLocation = defaultLocation;
         }
 
-        public checkAvailability()
+        public static bool checkAvailability(string username)
         {
-            //check availability of username, send serialized object to API
-            //should call ASYNC function from an ASYNC class that returns TRUE or FALSE depending on availability by asking the API
-
+        //check availability of username, send serialized object to API
+        //should call ASYNC function from an ASYNC class that returns TRUE or FALSE depending on availability by asking the API
+        return false;
         }
 
         public string ToString()
