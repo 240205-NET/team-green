@@ -13,10 +13,12 @@ namespace Toasted.Logic
 	/// </summary>
 	public class Location
 	{
-		public int zip { get; set; }
-		public string name { get; set; }
-		public long lat { get; set; }
-		public long lon { get; set; }
-		public string country { get; set; }
+		public int? zip { get; set; }
+		public string? name { get; set; }
+		public long? lat { get; set; }
+		public long? lon { get; set; }
+		public string? country { get; set; }
+
+		public Location(){}
 	}
 }

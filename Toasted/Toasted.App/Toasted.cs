@@ -1,3 +1,6 @@
+using System.ComponentModel;
+using Toasted.Logic;
+
 namespace Toasted.App
 {
 	public class Toasted
@@ -16,6 +19,7 @@ namespace Toasted.App
 					case "1":
 						Console.Clear();
 						Console.WriteLine("Register");
+						Register();
 						break;
 					case "2":
 						Console.Clear();
@@ -34,25 +38,108 @@ namespace Toasted.App
 
 		public void Register()
 		{
+			// username, firstName, lastName, password, email, location, 
+			// 1) prompt for username (check if username already exists)
+			// 2) prompt for password (min length?)
+			// 3) prompt for email (check if valid email (ez stuff), check if duplicate)
+			// 4) prompt for location (5 digit validation for now )
+			string username = "";
+			string password = "";
+			string firstName = "";
+			string lastName = "";
+			string email = "";
+			string zipcode = "";
+
 			bool registering = true;
 			while (registering)
 			{
-				// username, firstName, lastName, password, email, location, 
-				// 1) prompt for username (check if username already exists)
-				// 2) prompt for password (min length?)
-				// 3) prompt for email (check if valid email (ez stuff), check if duplicate)
-				// 4) prompt for location (5 digit validation for now )
-				Console.Write("Please enter your username: ");
-				string username = Console.ReadLine();
-				Console.Write("Please enter your password: ");
-				string password = Console.ReadLine();
-				Console.Write("Please enter your email: ");
-				string email = Console.ReadLine();
-				Console.Write("Please enter your 5 digit zip-code: ");
-				int zip = Int32.Parse(Console.ReadLine());
-
-				string encryptedPassword = PasswordEncryptor.Encrypt(password);
+				try {
+					username = inputFormatter("Please enter your username: ");
+					UserValidityChecks.IsUsernameValid(username);
+					registering = false;
+				} catch(Exception e) {
+					Console.WriteLine(e.Message);
+				}		
 			}
+			
+			registering = true;
+			while (registering)
+			{
+				try
+				{
+					password = inputFormatter("Please enter your password: ");
+					UserValidityChecks.isPassWordValid(password);
+					registering = false;
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine(e.Message);
+				}
+			}
+
+			registering = true;
+			while (registering)
+			{
+				try
+				{
+					firstName = inputFormatter("Please enter your first name: ");
+					UserValidityChecks.isNameValid(firstName);
+					registering = false;
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine(e.Message);
+				}
+			}
+
+			registering = true;
+			while (registering)
+			{
+				try
+				{
+					lastName = inputFormatter("Please enter your last name: ");
+					UserValidityChecks.isNameValid(lastName);
+					registering = false;
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine(e.Message);
+				}
+			}
+
+			registering = true;
+			while (registering)
+			{
+				try
+				{
+					email = inputFormatter("Please enter your email: ");
+					UserValidityChecks.isEmailValid(email);
+					registering = false;
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine(e.Message);
+				}
+			}
+
+			registering=true;
+			while (registering)
+			{
+				try
+				{
+					zipcode = inputFormatter("Please enter your zipcode: ");
+					UserValidityChecks.isZipcodeValid(zipcode);
+					registering = false;
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine(e.Message);
+				}
+			}
+
+			string encryptedPassword = PasswordEncryptor.Encrypt(password);
+			User u = new User(username,password,firstName,lastName,1,email,new Location());
+			
 		}
 		private string inputFormatter(string s)
 		{

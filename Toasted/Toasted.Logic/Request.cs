@@ -2,7 +2,7 @@ namespace Toasted.App
 {
 	public static class Request
 	{
-
+		/*
 		public static LogIn()
 		{
 
@@ -12,12 +12,13 @@ namespace Toasted.App
 		{
 
 		};
-
+		*/
 		/* TODO
 		- Add API Key
 		*/
 
 		// https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
+		/*
 		private static async GetCurrentWeatherAsync(double lat,
 													double lon,
 													string[] exclude = new string { "minutely", "hourly", "daily", "alerts" },
@@ -45,7 +46,7 @@ namespace Toasted.App
 			Location location = JsonSerializer.Deserialize<Location>(response);
 			return location;
 		}
-
+		*/
 	}
 
 }
