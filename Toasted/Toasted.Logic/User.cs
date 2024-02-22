@@ -10,9 +10,16 @@
         public string email { get; set; }
         public Location defaultLocation { get; set; }
 
-        public User()
+        public User(string username, string password, string firstName, string lastName, int userID, string email, Location defaultLocation)
         {
-
+            this.username = username;
+            this.password = password;    
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.userID = userID;
+            this.email = email;
+            this.defaultLocation = defaultLocation;
         }
+
     }
 }
