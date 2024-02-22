@@ -1,4 +1,4 @@
-namespace Toasted.App
+namespace Toasted.Logic
 {
 	/// <summary>
 	/// This class adheres to the API response on https://openweathermap.org/api/geocoding-api
