@@ -1,4 +1,8 @@
-﻿namespace Toasted.App
+﻿using System;
+using System.Net.Http;
+using System.Text.Json;
+
+namespace Toasted.App
 {
 	public class Program
 	{
@@ -11,3 +15,4 @@
 	}
 
 }
+
