@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Configuration;
 using System.ComponentModel;
 using Toasted.Logic;
 
@@ -5,6 +6,20 @@ namespace Toasted.App
 {
 	public class Toasted
 	{
+		private IConfiguration _configuration;
+		private string? OpenWeatherApiKey;
+
+		public Toasted()
+		{
+			// Build configuration
+			var builder = new ConfigurationBuilder()
+				  .SetBasePath(Directory.GetCurrentDirectory())
+				  .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+				  .AddEnvironmentVariables();
+			_configuration = builder.Build();
+			// Assign the OpenWeather API key
+			this.OpenWeatherApiKey = _configuration["OpenWeatherMapSettings:ApiKey"];
+		}
 		public async Task Run()
 		{
 			Menu.DisplayWelcomeMessage();
@@ -41,11 +56,6 @@ namespace Toasted.App
 		}
 		public async void Register()
 		{
-			// username, firstName, lastName, password, email, location, 
-			// 1) prompt for username (check if username already exists)
-			// 2) prompt for password (min length?)
-			// 3) prompt for email (check if valid email (ez stuff), check if duplicate)
-			// 4) prompt for location (5 digit validation for now )
 			string username = "";
 			string password = "";
 			string firstName = "";
@@ -168,10 +178,24 @@ namespace Toasted.App
 
 			string encryptedPassword = PasswordEncryptor.Encrypt(password);
 
-			// for now we'll assume the user 
-			Location location = await Request.GetLocation("<API KEY HERE>", Int32.Parse(zipcode), countryCode);
-			User u = new User(username, password, firstName, lastName, 1, email, new Location());
+			// Create a new Location and then create a new User and set their defaultLocation to the new Location.
+			Location defaultLocation = await Request.GetLocation(this.OpenWeatherApiKey, zipcode, countryCode);
+			User u = new User(username, encryptedPassword, firstName, lastName, 1, email, defaultLocation);
 
+			// This is purely for testing purposes (just to check that the objects are successfully created)
+			Console.WriteLine("\nHere is your new User and Location objects:\n");
+			Console.WriteLine($"Username: {u.username}");
+			Console.WriteLine($"Password: {u.password}");
+			Console.WriteLine($"First Name: {u.firstName}");
+			Console.WriteLine($"Last Name: {u.lastName}");
+			Console.WriteLine($"User ID: {u.userID}");
+			Console.WriteLine($"Email: {u.email}\n");
+
+			Console.WriteLine($"Location Name: {defaultLocation.zip}");
+			Console.WriteLine($"Location Name: {defaultLocation.name}");
+			Console.WriteLine($"Location Latitude: {defaultLocation.lat}");
+			Console.WriteLine($"Location Longitude: {defaultLocation.lon}");
+			Console.WriteLine($"Location Longitude: {defaultLocation.country}");
 		}
 		private string inputFormatter(string s)
 		{
