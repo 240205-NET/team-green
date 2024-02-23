@@ -1,52 +1,64 @@
-namespace Toasted.App
+using System.Text.Json;
+
+
+namespace Toasted.Logic
 {
 	public static class Request
 	{
-		/*
-		public static LogIn()
+		private static readonly HttpClient client = new HttpClient();
+
+		public static void LogIn()
 		{
-
-		};
-
-		public static Register()
-		{
-
-		};
-		*/
-		/* TODO
-		- Add API Key
-		*/
-
-		// https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
-		/*
-		private static async GetCurrentWeatherAsync(double lat,
-													double lon,
-													string[] exclude = new string { "minutely", "hourly", "daily", "alerts" },
-													string[] units = new string { "standard" },
-													string appId,
-													string lang = "en")
-		{
-			HttpClient client = new HttpClient;
-			// Turn the 'exclude' array into a comma-delimited string, i.e "minutely,hourly,daily,alerts". If there's only one value in the array, then just return that value (exclude[0]) since there's no reason to delimit one word.
-			string excludeValues = exclude.Length == 1 ? exclude[0] : exclude.Join(",", excludes);
-			// The API specifies that the default value is "standard"; There's likely no reason to change it. 
-			string unitsValues = units.Length == 1 ? units[0] : units.Join(",", units);
-			string uri = $"https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={excludeValues}&units={unitValues}&appid={appId}&lang={lang}"
-			string response = await client.GetStringAsync(uri);
-			// Still need to implement "Weather" class...
-			Weather currentWeather = JsonSerializer.Deserialize<Weather>(response);
-			return currentWeather;
+			// Implementation
 		}
 
-		private static async GetLocation(int zip, string countryCode, string appId)
+		public static void Register()
 		{
-			HttpClient client = new HttpClient;
-			string uri = $"http://api.openweathermap.org/geo/1.0/zip?zip={zip},{countryCode}&appid={appId}"
-			string response = await client.GetStringAsync(uri);
-			Location location = JsonSerializer.Deserialize<Location>(response);
-			return location;
+			// Implementation
 		}
-		*/
+
+		// Add other methods...
+
+		private static async Task<Weather> GetCurrentWeatherAsync(string appId, double lat, double lon, string[] exclude = null, string[] units = null, string lang = "en")
+		{
+			exclude ??= new string[] { "minutely", "hourly", "daily", "alerts" };
+			units ??= new string[] { "standard" };
+
+			string excludeValues = string.Join(",", exclude);
+			string unitsValues = string.Join(",", units);
+
+			string uri = $"https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={excludeValues}&units={unitsValues}&appid={appId}&lang={lang}";
+
+			try
+			{
+				string response = await client.GetStringAsync(uri);
+				Weather currentWeather = JsonSerializer.Deserialize<Weather>(response);
+				return currentWeather;
+			}
+			catch (HttpRequestException e)
+			{
+				Console.WriteLine(e.Message);
+			}
+			return null;
+		}
+
+		public static async Task<Location> GetLocation(string appId, int zip, string countryCode)
+		{
+			string uri = $"http://api.openweathermap.org/geo/1.0/zip?zip={zip},{countryCode}&appid={appId}";
+
+			try
+			{
+				string response = await client.GetStringAsync(uri);
+				Location location = JsonSerializer.Deserialize<Location>(response);
+				return location;
+			}
+			catch (HttpRequestException e)
+			{
+				Console.WriteLine(e.Message);
+			}
+
+			return null;
+		}
+
 	}
-
 }

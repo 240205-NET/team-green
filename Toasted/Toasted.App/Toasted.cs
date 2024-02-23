@@ -5,21 +5,20 @@ namespace Toasted.App
 {
 	public class Toasted
 	{
-		public void Run()
+		public async Task Run()
 		{
-			Console.WriteLine("sup mawn");
+			Menu.DisplayWelcomeMessage();
 			// main program loop
 			while (true)
 			{
-				Console.Write("Please choose an option: ");
+				Menu.DisplayMenuView();
 				string userInput = Console.ReadKey().KeyChar.ToString();
 				Console.WriteLine();
 				switch (userInput)
 				{
 					case "1":
 						Console.Clear();
-						Console.WriteLine("Register");
-						Register();
+						this.ContentWrapper(Register);
 						break;
 					case "2":
 						Console.Clear();
@@ -35,8 +34,12 @@ namespace Toasted.App
 			}
 			// functions that execute the options
 		}
-
-		public void Register()
+		public void ContentWrapper(Action content)
+		{
+			Menu.GetCurrentView();
+			content();
+		}
+		public async void Register()
 		{
 			// username, firstName, lastName, password, email, location, 
 			// 1) prompt for username (check if username already exists)
@@ -49,19 +52,23 @@ namespace Toasted.App
 			string lastName = "";
 			string email = "";
 			string zipcode = "";
+			string countryCode = "";
 
 			bool registering = true;
 			while (registering)
 			{
-				try {
+				try
+				{
 					username = inputFormatter("Please enter your username: ");
 					UserValidityChecks.IsUsernameValid(username);
 					registering = false;
-				} catch(Exception e) {
+				}
+				catch (Exception e)
+				{
 					Console.WriteLine(e.Message);
-				}		
+				}
 			}
-			
+
 			registering = true;
 			while (registering)
 			{
@@ -122,7 +129,7 @@ namespace Toasted.App
 				}
 			}
 
-			registering=true;
+			registering = true;
 			while (registering)
 			{
 				try
@@ -136,10 +143,33 @@ namespace Toasted.App
 					Console.WriteLine(e.Message);
 				}
 			}
+			registering = true;
+			while (registering)
+			{
+				try
+				{
+					countryCode = inputFormatter("Please enter your 2-character country code: ");
+					bool isCountryCodeValid = UserValidityChecks.isCountryCodeValid(countryCode);
+					if (isCountryCodeValid)
+					{
+						Console.WriteLine("true");
+					}
+					else { Console.WriteLine("false"); }
+
+					registering = false;
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine(e.Message);
+				}
+			}
 
 			string encryptedPassword = PasswordEncryptor.Encrypt(password);
-			User u = new User(username,password,firstName,lastName,1,email,new Location());
-			
+
+			// for now we'll assume the user 
+			// Location location = await Request.GetLocation("<API KEY HERE>", Int32.Parse(zipcode), countryCode);
+			User u = new User(username, password, firstName, lastName, 1, email, new Location());
+
 		}
 		private string inputFormatter(string s)
 		{
