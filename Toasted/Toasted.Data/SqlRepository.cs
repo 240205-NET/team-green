@@ -31,9 +31,9 @@ namespace Toasted.Data
             using SqlCommand cmd = new SqlCommand(cmdText, connection);
             using SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
-            Console.WriteLine("Reader Executed...")
+            Console.WriteLine("Reader Executed...");
 
-            List<User> users = new List<User>;
+            List<User> users = new List<User>();
 
             while (await reader.ReadAsync())
             {
@@ -41,11 +41,11 @@ namespace Toasted.Data
                 string username = reader["username"].ToString() ?? "";
                 string email = reader["Email"].ToString() ?? "";
                 int location = (int)reader["location"];
-                string firstName = reader.["firstName"].ToString ?? "";
-                string lastName = reader.["lastName"].ToString ?? "";
-                string password = reader.["password"].ToString ?? "";
-                char tempUnit = reader.["tempUnit"].ToString()[0];
-                string countryCode = reader.["countryCode"].ToString ?? "";
+                string firstName = reader["firstName"].ToString() ?? "";
+                string lastName = reader["lastName"].ToString() ?? "";
+                string password = reader["password"].ToString() ?? "";
+                char tempUnit = reader["tempUnit"].ToString()[0];
+                string countryCode = reader["countryCode"].ToString() ?? "";
 
                 users.Add(new User(userId, username, email, location, firstName, lastName, password, tempUnit, countryCode));
             }
@@ -56,7 +56,7 @@ namespace Toasted.Data
             return users;
         }
 
-        public async Task<User> GetUserByUsernameAsync(int username)
+        public async Task<User> GetUserByUsernameAsync(string username)
         {
             using SqlConnection connection = new SqlConnection(this._connectionString);
             connection.OpenAsync();
@@ -73,16 +73,16 @@ namespace Toasted.Data
             while (await reader.ReadAsync())
             {
                 int userId = (int)reader["userID"];
-                string username = reader["username"].ToString() ?? "";
+                string dbUsername = reader["username"].ToString() ?? "";
                 string email = reader["Email"].ToString() ?? "";
                 int location = (int)reader["location"];
-                string firstName = reader.["firstName"].ToString ?? "";
-                string lastName = reader.["lastName"].ToString ?? "";
-                string password = reader.["password"].ToString ?? "";
-                char tempUnit = reader.["tempUnit"].ToString()[0];
-                string countryCode = reader.["countryCode"].ToString ?? "";
+                string firstName = reader["firstName"].ToString() ?? "";
+                string lastName = reader["lastName"].ToString() ?? "";
+                string password = reader["password"].ToString() ?? "";
+                char tempUnit = reader["tempUnit"].ToString()[0];
+                string countryCode = reader["countryCode"].ToString() ?? "";
 
-                tmpUser = new User(userId, username, email, location, firstName, lastName, password, tempUnit, countryCode);
+                tmpUser = new User(userId, dbUsername, email, location, firstName, lastName, password, tempUnit, countryCode);
             }
             connection.CloseAsync();
             return tmpUser;

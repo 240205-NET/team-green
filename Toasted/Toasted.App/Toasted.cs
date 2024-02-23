@@ -38,6 +38,7 @@ namespace Toasted.App
 					case "2":
 						Console.Clear();
 						Console.WriteLine("Login");
+						this.ContentWrapper(Login);
 						break;
 					case "3":
 						Console.Clear();
@@ -159,16 +160,8 @@ namespace Toasted.App
 				try
 				{
 					countryCode = inputFormatter("Please enter your 2-character country code: ");
-					if (UserValidityChecks.isCountryCodeValid(countryCode))
-					{
-						// Country code is valid, exit the loop
-						registering = false;
-					}
-					else
-					{
-						// Country code is not valid, prompt for re-entry
-						Console.WriteLine("Invalid country code. Please try again.");
-					}
+					UserValidityChecks.isCountryCodeValid(countryCode);
+					registering = false;
 				}
 				catch (Exception e)
 				{
@@ -196,6 +189,27 @@ namespace Toasted.App
 			Console.WriteLine($"Location Latitude: {defaultLocation.lat}");
 			Console.WriteLine($"Location Longitude: {defaultLocation.lon}");
 			Console.WriteLine($"Location Longitude: {defaultLocation.country}");
+		}
+
+		public async void Login()
+		{
+
+			string username = "";
+			string password = "";
+
+			bool loggingIn = true;
+			while (loggingIn)
+			{
+
+				try
+				{
+
+				}
+				catch
+				{
+
+				}
+			}
 		}
 		private string inputFormatter(string s)
 		{

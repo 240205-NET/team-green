@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Toasted.Api;
+using Toasted.Data;
 
 namespace Toasted.Api.Controllers
 {
@@ -9,10 +10,12 @@ namespace Toasted.Api.Controllers
     {
 
         private readonly ILogger<UserController> _logger;
+        private readonly IRepository _repo;
 
-        public UserController(ILogger<UserController> logger)
+        public UserController(IRepository repo, ILogger<UserController> logger)
         {
-            _logger = logger;
+            this._logger = logger;
+            this._repo = repo;
         }
 
         [HttpGet(Name = "GetUsers")]
@@ -26,10 +29,26 @@ namespace Toasted.Api.Controllers
         {
             //check database if exists return true
 
+            User user =  _repo.GetUserByUsernameAsync(username);
 
-            //else return false
-            return false;
+            if (user.userId == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
+
+        
+
+
+
+
+
+
+
 
     }
 }

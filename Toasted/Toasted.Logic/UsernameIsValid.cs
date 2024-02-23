@@ -8,8 +8,8 @@ namespace Toasted.Logic
 	{
 		public static bool IsUsernameValid(string username)
 		{
-			if (username.Equals("")) throw new Exception("username cannot be empty");
-			else if (username.Contains(" ")) throw new Exception("username cannot have space");
+			if (username.Equals("")) throw new Exception("Username cannot be empty.");
+			else if (username.Contains(" ")) throw new Exception("Username cannot have space.");
 			return true;
 		}
 
@@ -17,13 +17,13 @@ namespace Toasted.Logic
 		{
 			string pattern = @"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$";
 			Regex r = new Regex(pattern);
-			if (!r.IsMatch(password)) throw new Exception("Invalid Password Format");
+			if (!r.IsMatch(password)) throw new Exception("Invalid Password Format.");
 			return true;
 		}
 
 		public static bool isNameValid(string name)
 		{
-			if (name.Contains(" ")) throw new Exception("Name cannot contain space");
+			if (name.Contains(" ")) throw new Exception("Name cannot contain space.");
 			return true;
 		}
 
@@ -35,7 +35,7 @@ namespace Toasted.Logic
 			}
 			catch
 			{
-				throw new Exception("Not Valid Email Address");
+				throw new Exception("Not Valid Email Address.");
 			}
 			return true;
 		}
@@ -44,13 +44,14 @@ namespace Toasted.Logic
 		{
 			string pattern = @"^(?=.*\d).{5}$";
 			Regex r = new Regex(pattern);
-			if (!r.IsMatch(zip)) throw new Exception("Invalid ZIP Format");
+			if (!r.IsMatch(zip)) throw new Exception("Invalid ZIP Format.");
 			return true;
 		}
 
 		public static bool isCountryCodeValid(string countryCode)
 		{
-			return Enum.IsDefined(typeof(Countries), countryCode);
+			if(Enum.IsDefined(typeof(Countries), countryCode)) throw new Exception("Country Code is not valid.");
+			return true;
 		}
 
 	}
