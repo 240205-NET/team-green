@@ -15,7 +15,9 @@ namespace Toasted.Logic
         private static XmlSerializer Serializer = new XmlSerializer(typeof(User));
         public char temperaturePreference { get; set; }
 
-        public User(string username, string password, string firstName, string lastName, int userID, string email, Location defaultLocation)
+        public string countryCode { get; set; }
+
+        public User(string username, string password, string firstName, string lastName, int userID, string email, Location defaultLocation, string CountryCode)
         {
             this.username = username;
             this.password = password;
@@ -24,6 +26,7 @@ namespace Toasted.Logic
             this.userID = userID;
             this.email = email;
             this.defaultLocation = defaultLocation;
+            this.countryCode = CountryCode;
         }
 
 
