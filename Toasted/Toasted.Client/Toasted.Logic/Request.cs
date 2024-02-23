@@ -49,8 +49,8 @@ namespace Toasted.Logic
 				{
 					zip = Int32.Parse(root.GetProperty("zip").GetString()),
 					name = root.GetProperty("name").GetString(),
-					lat = (long)root.GetProperty("lat").GetDouble(),
-					lon = (long)root.GetProperty("lon").GetDouble(),
+					lat = root.GetProperty("lat").GetDouble(),
+					lon = root.GetProperty("lon").GetDouble(),
 					country = root.GetProperty("country").GetString()
 				};
 				return location;

@@ -15,8 +15,8 @@ namespace Toasted.Logic
 	{
 		public int? zip { get; set; }
 		public string? name { get; set; }
-		public long? lat { get; set; }
-		public long? lon { get; set; }
+		public double? lat { get; set; }
+		public double? lon { get; set; }
 		public string? country { get; set; }
 
 		public Location() { }
