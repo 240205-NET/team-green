@@ -19,6 +19,14 @@ namespace Toasted.Test{
             Exception exception = Assert.Throws<Exception>(() => UserValidityChecks.IsUsernameValid(" "));
             Assert.Equal("Username cannnot be blank", exception.Message);
         }
-
+        /* Should make a real test to test User.checkAvailabilityReturn() at some point
+        [Fact]
+        public void checkAvailabilityReturn()
+        {
+           // User = new User();
+            bool r = User.checkAvailability("test","http://localhost:5083/");
+            Assert.Fail(r.ToString());
+        }
+        */ 
     }
 }

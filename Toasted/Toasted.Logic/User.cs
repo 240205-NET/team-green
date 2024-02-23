@@ -28,17 +28,12 @@ namespace Toasted.Logic
 
 
 
-
-
-
-
-
-        public  static bool checkAvailability(string username)
+        public  static bool checkAvailability(string username, string url)
         {
             //check availability of username, send serialized object to API
             //should call ASYNC function from an ASYNC class that returns TRUE or FALSE depending on availability by asking the API
                     // Post the JSON data to the specified URL
-        String url="";
+       
         try
         {
             var task = ToastedApiAsync.TryPostCheckUsername(username,url);
@@ -53,23 +48,6 @@ namespace Toasted.Logic
             return false;
         }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

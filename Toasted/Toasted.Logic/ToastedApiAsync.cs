@@ -4,60 +4,42 @@ using System.Text;
 using System.Text.Json;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Net.Http.Formatting;
 
 namespace Toasted.Logic
 {
 	public class ToastedApiAsync
 	{
 		//this class should contain all static async methods for Toasted.Api
+  public static async Task<bool> TryPostCheckUsername(string userName, string BaseUrl) //should just past the base URL here, will add /UserCheck in code
+    {
+		
+        // Create HttpClient instance
+        using var client = new HttpClient();
+        client.BaseAddress = new Uri(BaseUrl);
 
-		public static async Task<bool> TryPostCheckUsername(string jsonData, string url)
-		{
-			Console.WriteLine("Posting to: " + url);
-			// Create StringContent from the JSON data
-			var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+        // Serialize the username to JSON
+        var content = new StringContent($"\"{userName}\"");
 
-			// Create HttpClient instance
-			using (HttpClient client = new HttpClient())
-			{
-				// Post data to the URL
-				HttpResponseMessage response = await client.PostAsync(url, content);
+        // Set content type
+        content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
-				// Check response status
-				if (response.IsSuccessStatusCode)
-				{
-					Console.WriteLine("Data posted successfully. Status code: " + response.StatusCode);
+        // Make the POST request
+        var response = await client.PostAsync("UserCheck", content);
 
-					// Read the response content as string
-					string responseContent = await response.Content.ReadAsStringAsync();
-
-
-					// Check if the dictionary contains a "boolResponse" key
-					if (responseContent!=null)
-					{
-						// Check the value associated with "boolResponse"
-						if (responseContent== "true")
-						{
-							return true;
-						}
-						else
-						{
-							return false;
-						}
-					}
-					else
-					{
-						// Handle the case where "boolResponse" key is missing
-						Console.WriteLine("Missing 'boolResponse' key in the response.");
-						return false; // Or throw an exception based on your requirement
-					}
-				}
-				else
-				{
-					Console.WriteLine("Server Error, please try again " + response.StatusCode);
-					return false;
-				}
-			}
-		}
+        // Check if request was successful
+        if (response.IsSuccessStatusCode)
+        {
+            // Read response content as boolean
+            var result = await response.Content.ReadAsAsync<bool>();
+            return result;
+        }
+        else
+        {
+            // Throw exception for unsuccessful response
+            throw new HttpRequestException($"Failed to check username. Status code: {response.StatusCode}");
+        }
+    }
+		
 	}
 }
