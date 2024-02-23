@@ -31,14 +31,12 @@ namespace Toasted.Logic
 					// Read the response content as string
 					string responseContent = await response.Content.ReadAsStringAsync();
 
-					// Deserialize JSON response content into a dictionary
-					Dictionary<string, string> dic = JsonSerializer.Deserialize<Dictionary<string, string>>(responseContent);
 
 					// Check if the dictionary contains a "boolResponse" key
-					if (dic.ContainsKey("boolResponse"))
+					if (responseContent!=null)
 					{
 						// Check the value associated with "boolResponse"
-						if (dic["boolResponse"] != "true")
+						if (responseContent== "true")
 						{
 							return true;
 						}
