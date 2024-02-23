@@ -69,6 +69,11 @@ ehthumbs.db
 Icon?
 Thumbs.db
 
+###################################
+# Connection Strings and API Keys #
+###################################
+# Richard... have mercy. We're trying to right our wrongs!
+**/appsettings.json
 
 # User-specific files
 *.user
