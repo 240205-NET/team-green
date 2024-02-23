@@ -13,5 +13,7 @@ namespace Toasted.Data
 		public int defaultLocation { get; set; }
 		private static XmlSerializer Serializer = new XmlSerializer(typeof(User));
 		public char temperaturePreference { get; set; }
+		
+		public string countryCode { get; set; }
 	}
 }

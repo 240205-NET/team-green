@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
-using Toasted.Logic; 
+using Toasted.Logic;
 using System.Text;
 using Microsoft.Extensions.Logging;
 
@@ -88,10 +88,29 @@ namespace Toasted.Data
             return tmpUser;
         }
 
-
-        public async Task AddUserAsync(User user);
+        public async Task AddUserAsync(User user)
         {
+            using SqlConnection connection = new SqlConnection(this._connectionString);
+            await connection.OpenAsync();
 
+            string cmdText = "INSERT INTO [dbo].[User] (username, email, location, firstName, lastName, password, tempUnit, countryCode) " +
+                             "VALUES (@username, @email, @location, @firstName, @lastName, @password, @tempUnit, @countryCode);";
+
+            using SqlCommand cmd = new SqlCommand(cmdText, connection);
+
+            cmd.Parameters.AddWithValue("@username", user.username);
+            cmd.Parameters.AddWithValue("@email", user.email);
+            cmd.Parameters.AddWithValue("@location", user.location);
+            cmd.Parameters.AddWithValue("@firstName", user.firstName);
+            cmd.Parameters.AddWithValue("@lastName", user.lastName);
+            cmd.Parameters.AddWithValue("@password", user.password);
+            cmd.Parameters.AddWithValue("@tempUnit", user.tempUnit);
+            cmd.Parameters.AddWithValue("@countryCode", user.countryCode);
+
+            await cmd.ExecuteNonQueryAsync();
+
+            await connection.CloseAsync();
         }
+
     }
 }
