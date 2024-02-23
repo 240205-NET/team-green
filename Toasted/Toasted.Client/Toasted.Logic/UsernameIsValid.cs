@@ -50,8 +50,7 @@ namespace Toasted.Logic
 
 		public static bool isCountryCodeValid(string countryCode)
 		{
-			if(Enum.IsDefined(typeof(Countries), countryCode)) throw new Exception("Country Code is not valid.");
-			return true;
+			return Enum.IsDefined(typeof(Countries), countryCode);
 		}
 
 	}
