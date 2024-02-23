@@ -25,15 +25,16 @@ _UpgradeReport_Files/
 ###############
 bin/
 obj/
-Toasted/Toasted.Api/obj/
-Toasted/Toasted.Data/obj/
-Toasted/Toasted.App/obj/
-Toasted/Toasted.Logic/obj/
-Toasted/Toasted.Api/bin/
-Toasted/Toasted.Data/bin/
-Toasted/Toasted.App/bin/
-Toasted/Toasted.Logic/bin/
-Toasted/.vs/
+Toasted/Toasted.Server/Toasted.Api/obj/
+Toasted/Toasted.Server/Toasted.Data/obj/
+Toasted/Toasted.Client/Toasted.App/obj/
+Toasted/Toasted.Client/Toasted.Logic/obj/
+Toasted/Toasted.Server/Toasted.Api/bin/
+Toasted/Toasted.Server/Toasted.Data/bin/
+Toasted/Toasted.Client/Toasted.App/bin/
+Toasted/Toasted.Client/Toasted.Logic/bin/
+Toasted/Toasted.Server/.vs/
+Toasted/Toasted.Client/.vs/
 TestResults/
 ###################
 # Web publish log #
