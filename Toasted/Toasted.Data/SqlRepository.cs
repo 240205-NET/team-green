@@ -56,7 +56,7 @@ namespace Toasted.Data
             return users;
         }
 
-        public async Task<User> GetUserByUsernameAsync(int username)
+        public async Task<User> GetUserByUsernameAsync(string username)
         {
             using SqlConnection connection = new SqlConnection(this._connectionString);
             connection.OpenAsync();
@@ -73,7 +73,7 @@ namespace Toasted.Data
             while (await reader.ReadAsync())
             {
                 int userId = (int)reader["userID"];
-                string username = reader["username"].ToString() ?? "";
+                string dbUsername = reader["username"].ToString() ?? "";
                 string email = reader["Email"].ToString() ?? "";
                 int location = (int)reader["location"];
                 string firstName = reader.["firstName"].ToString ?? "";
@@ -82,7 +82,7 @@ namespace Toasted.Data
                 char tempUnit = reader.["tempUnit"].ToString()[0];
                 string countryCode = reader.["countryCode"].ToString ?? "";
 
-                tmpUser = new User(userId, username, email, location, firstName, lastName, password, tempUnit, countryCode);
+                tmpUser = new User(userId, dbUsername, email, location, firstName, lastName, password, tempUnit, countryCode);
             }
             connection.CloseAsync();
             return tmpUser;
