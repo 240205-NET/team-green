@@ -33,7 +33,7 @@ namespace Toasted.Data
 
             Console.WriteLine("Reader Executed...");
 
-            List<User> users = new List<User>;
+            List<User> users = new List<User>();
 
             while (await reader.ReadAsync())
             {
@@ -41,11 +41,11 @@ namespace Toasted.Data
                 string username = reader["username"].ToString() ?? "";
                 string email = reader["Email"].ToString() ?? "";
                 int location = (int)reader["location"];
-                string firstName = reader.["firstName"].ToString ?? "";
-                string lastName = reader.["lastName"].ToString ?? "";
-                string password = reader.["password"].ToString ?? "";
-                char tempUnit = reader.["tempUnit"].ToString()[0];
-                string countryCode = reader.["countryCode"].ToString ?? "";
+                string firstName = reader["firstName"].ToString() ?? "";
+                string lastName = reader["lastName"].ToString() ?? "";
+                string password = reader["password"].ToString() ?? "";
+                char tempUnit = reader["tempUnit"].ToString()[0];
+                string countryCode = reader["countryCode"].ToString() ?? "";
 
                 users.Add(new User(userId, username, email, location, firstName, lastName, password, tempUnit, countryCode));
             }
@@ -76,11 +76,11 @@ namespace Toasted.Data
                 string dbUsername = reader["username"].ToString() ?? "";
                 string email = reader["Email"].ToString() ?? "";
                 int location = (int)reader["location"];
-                string firstName = reader.["firstName"].ToString ?? "";
-                string lastName = reader.["lastName"].ToString ?? "";
-                string password = reader.["password"].ToString ?? "";
-                char tempUnit = reader.["tempUnit"].ToString()[0];
-                string countryCode = reader.["countryCode"].ToString ?? "";
+                string firstName = reader["firstName"].ToString() ?? "";
+                string lastName = reader["lastName"].ToString() ?? "";
+                string password = reader["password"].ToString() ?? "";
+                char tempUnit = reader["tempUnit"].ToString()[0];
+                string countryCode = reader["countryCode"].ToString() ?? "";
 
                 tmpUser = new User(userId, dbUsername, email, location, firstName, lastName, password, tempUnit, countryCode);
             }
