@@ -19,6 +19,14 @@ namespace Toasted.Logic
 		public long? lon { get; set; }
 		public string? country { get; set; }
 
-		public Location(){}
+		public Location() { }
+		public Location(int zip, string name, long lat, long lon, string country)
+		{
+			this.zip = zip;
+			this.name = name;
+			this.lat = lat;
+			this.lon = lon;
+			this.country = country;
+		}
 	}
 }

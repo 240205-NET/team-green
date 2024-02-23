@@ -1,11 +1,12 @@
-﻿namespace Toasted.Logic
+﻿
 using System.Xml.Serialization;
+namespace Toasted.Logic
 {
     public class User
     {
         public string username { get; set; }
         public string password { get; set; }
-        public string firstName { get; set; }  
+        public string firstName { get; set; }
         public string lastName { get; set; }
         public int userID { get; set; }
         public string email { get; set; }
@@ -13,10 +14,10 @@ using System.Xml.Serialization;
         private static XmlSerializer Serializer = new XmlSerializer(typeof(User));
         public char temperaturePreference { get; set; }
 
-    public User(string username, string password, string firstName, string lastName, int userID, string email, Location defaultLocation)
+        public User(string username, string password, string firstName, string lastName, int userID, string email, Location defaultLocation)
         {
             this.username = username;
-            this.password = password;    
+            this.password = password;
             this.firstName = firstName;
             this.lastName = lastName;
             this.userID = userID;
@@ -26,9 +27,9 @@ using System.Xml.Serialization;
 
         public static bool checkAvailability(string username)
         {
-        //check availability of username, send serialized object to API
-        //should call ASYNC function from an ASYNC class that returns TRUE or FALSE depending on availability by asking the API
-        return false;
+            //check availability of username, send serialized object to API
+            //should call ASYNC function from an ASYNC class that returns TRUE or FALSE depending on availability by asking the API
+            return false;
         }
 
         public string ToString()
@@ -48,5 +49,6 @@ using System.Xml.Serialization;
 
 
 
+    }
 }
-}
+

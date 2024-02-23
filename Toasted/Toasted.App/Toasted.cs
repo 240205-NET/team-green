@@ -39,7 +39,7 @@ namespace Toasted.App
 			Menu.GetCurrentView();
 			content();
 		}
-		public void Register()
+		public async void Register()
 		{
 			// username, firstName, lastName, password, email, location, 
 			// 1) prompt for username (check if username already exists)
@@ -52,6 +52,7 @@ namespace Toasted.App
 			string lastName = "";
 			string email = "";
 			string zipcode = "";
+			string countryCode = "";
 
 			bool registering = true;
 			while (registering)
@@ -142,8 +143,31 @@ namespace Toasted.App
 					Console.WriteLine(e.Message);
 				}
 			}
+			registering = true;
+			while (registering)
+			{
+				try
+				{
+					countryCode = inputFormatter("Please enter your 2-character country code: ");
+					bool isCountryCodeValid = UserValidityChecks.isCountryCodeValid(countryCode);
+					if (isCountryCodeValid)
+					{
+						Console.WriteLine("true");
+					}
+					else { Console.WriteLine("false"); }
+
+					registering = false;
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine(e.Message);
+				}
+			}
 
 			string encryptedPassword = PasswordEncryptor.Encrypt(password);
+
+			// for now we'll assume the user 
+			// Location location = await Request.GetLocation("<API KEY HERE>", Int32.Parse(zipcode), countryCode);
 			User u = new User(username, password, firstName, lastName, 1, email, new Location());
 
 		}
