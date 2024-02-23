@@ -28,7 +28,7 @@ namespace Toasted.Logic
 
 
 
-        public  static bool checkAvailability(string username, string url)
+        public  static bool CheckExists(string username, string url)
         {
             //check availability of username, send serialized object to API
             //should call ASYNC function from an ASYNC class that returns TRUE or FALSE depending on availability by asking the API
@@ -40,10 +40,10 @@ namespace Toasted.Logic
                 Console.WriteLine("Attempting post...");
 
                 // Block and wait for the task to complete synchronously
-                bool availability = task.Result;
+                bool exists = task.Result;
 
                 // Return the availability status
-                return availability;
+                return exists;
             }
             catch (AggregateException ex)
             {

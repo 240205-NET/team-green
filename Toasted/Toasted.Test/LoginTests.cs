@@ -21,10 +21,10 @@ namespace Toasted.Test{
         }
         /* Should make a real test to test User.checkAvailabilityReturn() at some point
         [Fact]
-        public void checkAvailabilityReturn()
+        public void checkExistsReturn()
         {
            // User = new User();
-            bool r = User.checkAvailability("test","http://localhost:5083/");
+            bool r = User.CheckExists("test","http://localhost:5083/");
             Assert.Fail(r.ToString());
         }
         */ 
