@@ -1,6 +1,6 @@
 using System.Xml.Serialization;
 
-namespace Toasted.Api
+namespace Toasted.Data
 {
 	public class User
 	{

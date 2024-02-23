@@ -31,7 +31,7 @@ namespace Toasted.Data
             using SqlCommand cmd = new SqlCommand(cmdText, connection);
             using SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
-            Console.WriteLine("Reader Executed...")
+            Console.WriteLine("Reader Executed...");
 
             List<User> users = new List<User>;
 
