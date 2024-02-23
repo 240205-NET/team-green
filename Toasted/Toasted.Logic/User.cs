@@ -32,24 +32,31 @@ namespace Toasted.Logic
         {
             //check availability of username, send serialized object to API
             //should call ASYNC function from an ASYNC class that returns TRUE or FALSE depending on availability by asking the API
-                    // Post the JSON data to the specified URL
-       
-        try
-        {
-            var task = ToastedApiAsync.TryPostCheckUsername(username,url);
-            Console.WriteLine("Attempting post...");
-            task.Wait();
-            return task.Result;
+            try
+            {
+                // Call the asynchronous method to check username availability
+                var task = ToastedApiAsync.TryPostCheckUsername(username, url);
 
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            return false;
-        }
-        }
+                Console.WriteLine("Attempting post...");
 
+                // Block and wait for the task to complete synchronously
+                bool availability = task.Result;
 
+                // Return the availability status
+                return availability;
+            }
+            catch (AggregateException ex)
+            {
+                // If the exception is an AggregateException, we want to throw it along with its inner exceptions
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that may occur during the process
+                Console.WriteLine(ex.Message);
+                throw; // Re-throw the exception
+            }
+        }
 
 
 
