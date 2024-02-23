@@ -29,7 +29,7 @@ namespace Toasted.Api.Controllers
         {
             //check database if exists return true
 
-            User user =  _repo.GetUserByUsernameAsync(username);
+            User user =  _repo.GetUserByUsernameAsync(username).Result;
 
             if (user.userId == 0)
             {

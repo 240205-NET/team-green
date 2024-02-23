@@ -173,7 +173,7 @@ namespace Toasted.App
 
 			// Create a new Location and then create a new User and set their defaultLocation to the new Location.
 			Location defaultLocation = await Request.GetLocation(this.OpenWeatherApiKey, zipcode, countryCode);
-			User u = new User(username, encryptedPassword, firstName, lastName, 1, email, defaultLocation);
+			User u = new User(username, encryptedPassword, firstName, lastName, 1, email, defaultLocation, ""); //<----- needs country code variable!
 
 			// This is purely for testing purposes (just to check that the objects are successfully created)
 			Console.WriteLine("\nHere is your new User and Location objects:\n");

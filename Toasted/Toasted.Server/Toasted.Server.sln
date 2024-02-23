@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34525.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toasted.Api", "Toasted.Api\Toasted.Api.csproj", "{14E55299-4E65-405C-AE06-014727301D75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toasted.Data", "Toasted.Data\Toasted.Data.csproj", "{7E017C90-4128-4E96-9D5B-01D3E2E7D665}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{14E55299-4E65-405C-AE06-014727301D75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14E55299-4E65-405C-AE06-014727301D75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14E55299-4E65-405C-AE06-014727301D75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14E55299-4E65-405C-AE06-014727301D75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E017C90-4128-4E96-9D5B-01D3E2E7D665}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E017C90-4128-4E96-9D5B-01D3E2E7D665}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E017C90-4128-4E96-9D5B-01D3E2E7D665}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E017C90-4128-4E96-9D5B-01D3E2E7D665}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B583C719-6CFA-4AE1-8D8D-F3D2ACE094DE}
+	EndGlobalSection
+EndGlobal

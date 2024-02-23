@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data.SqlClient;
-using Toasted.Logic;
 using System.Text;
 using Microsoft.Extensions.Logging;
 
