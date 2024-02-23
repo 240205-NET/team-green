@@ -23,6 +23,7 @@ namespace Toasted.App
 					case "2":
 						Console.Clear();
 						Console.WriteLine("Login");
+						this.ContentWrapper(Login);
 						break;
 					case "3":
 						Console.Clear();
@@ -149,16 +150,8 @@ namespace Toasted.App
 				try
 				{
 					countryCode = inputFormatter("Please enter your 2-character country code: ");
-					if (UserValidityChecks.isCountryCodeValid(countryCode))
-					{
-						// Country code is valid, exit the loop
-						registering = false;
-					}
-					else
-					{
-						// Country code is not valid, prompt for re-entry
-						Console.WriteLine("Invalid country code. Please try again.");
-					}
+					UserValidityChecks.isCountryCodeValid(countryCode);
+					registering = false;
 				}
 				catch (Exception e)
 				{
@@ -170,8 +163,27 @@ namespace Toasted.App
 
 			// for now we'll assume the user 
 			Location location = await Request.GetLocation("<API KEY HERE>", Int32.Parse(zipcode), countryCode);
-			User u = new User(username, password, firstName, lastName, 1, email, new Location());
+			//User u = new User(username, password, firstName, lastName, 1, email, new Location());
 
+		}
+		
+		public async void Login()
+		{
+
+			string username = "";
+			string password = "";
+			
+			bool loggingIn = true;
+			while (loggingIn)
+			{
+				
+				try{
+
+				}
+				catch{
+
+				}
+			}
 		}
 		private string inputFormatter(string s)
 		{
