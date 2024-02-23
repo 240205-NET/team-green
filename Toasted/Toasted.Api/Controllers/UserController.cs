@@ -31,13 +31,5 @@ namespace Toasted.Api.Controllers
             return false;
         }
 
-
-
-
-
-
-
-
-
     }
 }
