@@ -27,10 +27,20 @@ namespace Toasted.Api.Controllers
         {
             //check database if exists return true
 
+            SqlRepository sqlRepository = new SqlRepository(_logger);
+          User user =  sqlRepository.GetUserByUsernameAsync(username);
 
-            //else return false
-            return false;
+            if (user.userId == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
+
+        
 
 
 
