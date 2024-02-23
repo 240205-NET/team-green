@@ -149,14 +149,16 @@ namespace Toasted.App
 				try
 				{
 					countryCode = inputFormatter("Please enter your 2-character country code: ");
-					bool isCountryCodeValid = UserValidityChecks.isCountryCodeValid(countryCode);
-					if (isCountryCodeValid)
+					if (UserValidityChecks.isCountryCodeValid(countryCode))
 					{
-						Console.WriteLine("true");
+						// Country code is valid, exit the loop
+						registering = false;
 					}
-					else { Console.WriteLine("false"); }
-
-					registering = false;
+					else
+					{
+						// Country code is not valid, prompt for re-entry
+						Console.WriteLine("Invalid country code. Please try again.");
+					}
 				}
 				catch (Exception e)
 				{
@@ -167,7 +169,7 @@ namespace Toasted.App
 			string encryptedPassword = PasswordEncryptor.Encrypt(password);
 
 			// for now we'll assume the user 
-			// Location location = await Request.GetLocation("<API KEY HERE>", Int32.Parse(zipcode), countryCode);
+			Location location = await Request.GetLocation("<API KEY HERE>", Int32.Parse(zipcode), countryCode);
 			User u = new User(username, password, firstName, lastName, 1, email, new Location());
 
 		}
