@@ -58,7 +58,7 @@ namespace Toasted.Data
         public async Task<User> GetUserByUsernameAsync(string username)
         {
             using SqlConnection connection = new SqlConnection(this._connectionString);
-            connection.OpenAsync();
+           await connection.OpenAsync();
 
             string cmdText = "SELECT * FROM [dbo].[User] WHERE username = @username;";
 
@@ -83,7 +83,7 @@ namespace Toasted.Data
 
                 tmpUser = new User(userId, dbUsername, email, location, firstName, lastName, password, tempUnit, countryCode);
             }
-            connection.CloseAsync();
+           await connection.CloseAsync();
             return tmpUser;
         }
 

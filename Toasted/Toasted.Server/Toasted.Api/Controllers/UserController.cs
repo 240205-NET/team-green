@@ -25,11 +25,11 @@ namespace Toasted.Api.Controllers
         }
 
         [HttpPost("/UserCheck")]
-        public bool Post([FromBody] string username)
+        public async Task<bool> Post([FromBody] string username)
         {
             //check database if exists return true
 
-            User user =  _repo.GetUserByUsernameAsync(username).Result;
+            User user = await _repo.GetUserByUsernameAsync(username);
 
             if (user.userId == 0)
             {
