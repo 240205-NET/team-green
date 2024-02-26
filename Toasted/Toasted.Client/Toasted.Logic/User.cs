@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 
 namespace Toasted.Logic
@@ -28,7 +29,10 @@ namespace Toasted.Logic
             this.defaultLocation = defaultLocation;
             this.countryCode = CountryCode;
         }
-
+        public User()
+        {
+            //required for serialization?
+        }
 
 
         public  static bool CheckExists(string username, string url)
@@ -63,20 +67,23 @@ namespace Toasted.Logic
 
 
 
-        public string[] ToString()
+        public string ToString()
         {
 
-            return SerializeXML(this);
+            return SerializeJson(this);
         }
 
-        public static string[] SerializeXML(User user)
+        public static string SerializeJson(User user)
         {
-            var stringWriter = new StringWriter();
-            Serializer.Serialize(stringWriter, user);
-            stringWriter.Close();
-            string[] s = { stringWriter.ToString() };
-            return s;
+            string json = JsonConvert.SerializeObject(user);
+            return json;
         }
+
+
+
+
+
+
 
 
 

@@ -22,4 +22,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Toasted.Logic\Toasted.Logic.csproj" />
+    <ProjectReference Include="..\Toasted.App\Toasted.App.csproj" />
+  </ItemGroup>
+
 </Project>

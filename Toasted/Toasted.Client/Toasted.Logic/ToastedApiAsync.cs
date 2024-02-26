@@ -8,38 +8,71 @@ using System.Net.Http.Formatting;
 
 namespace Toasted.Logic
 {
-	public class ToastedApiAsync
-	{
-		//this class should contain all static async methods for Toasted.Api
-  public static async Task<bool> TryPostCheckUsername(string userName, string BaseUrl) //should just past the base URL here, will add /UserCheck in code
+    public class ToastedApiAsync
     {
-		
-        // Create HttpClient instance
-        using var client = new HttpClient();
-        client.BaseAddress = new Uri(BaseUrl);
-
-        // Serialize the username to JSON
-        var content = new StringContent($"\"{userName}\"");
-
-        // Set content type
-        content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-
-        // Make the POST request
-        var response = await client.PostAsync("UserCheck", content);
-
-        // Check if request was successful
-        if (response.IsSuccessStatusCode)
+        //this class should contain all static async methods for Toasted.Api
+        public static async Task<bool> TryPostCheckUsername(string userName, string BaseUrl) //should just past the base URL here, will add /UserCheck in code
         {
-            // Read response content as boolean
-            var result = await response.Content.ReadAsAsync<bool>();
-            return result;
+
+            // Create HttpClient instance
+            using var client = new HttpClient();
+            client.BaseAddress = new Uri(BaseUrl);
+
+            // Serialize the username to JSON
+            var content = new StringContent($"\"{userName}\"");
+
+            // Set content type
+            content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+
+            // Make the POST request
+            var response = await client.PostAsync("UserCheck", content);
+
+            // Check if request was successful
+            if (response.IsSuccessStatusCode)
+            {
+                // Read response content as boolean
+                var result = await response.Content.ReadAsAsync<bool>();
+                return result;
+            }
+            else
+            {
+                // Throw exception for unsuccessful response
+                throw new HttpRequestException($"Failed to check username. Status code: {response.StatusCode}");
+            }
         }
-        else
-        {
-            // Throw exception for unsuccessful response
-            throw new HttpRequestException($"Failed to check username. Status code: {response.StatusCode}");
+
+
+        //Posts a new USER, should be used to create a new account as stored in a User object
+        public static async Task<bool> TryPostNewAccount(User user, string BaseUrl){
+
+
+            // Create HttpClient instance
+            using var client = new HttpClient();
+            client.BaseAddress = new Uri(BaseUrl);
+
+            //serialize
+            string json = User.SerializeJson(user);
+            var content =  new StringContent(json, Encoding.UTF8, "application/json");
+            // Make the POST request
+            var response = await client.PostAsync("NewAccount", content);
+
+            // Check if request was successful
+            if (response.IsSuccessStatusCode)
+            {
+                // Read response content as boolean
+                var result = await response.Content.ReadAsAsync<bool>();
+                return result;
+            }
+            else
+            {
+                // Throw exception for unsuccessful response
+                throw new HttpRequestException($"Failed to register user. Status code: {response.StatusCode}");
+            }
+
+      
         }
+
+
+
     }
-		
-	}
 }

@@ -41,6 +41,19 @@ namespace Toasted.Api.Controllers
             }
         }
 
+        [HttpPost("/NewAccount")]
+        public async Task<bool> PostNewUser([FromBody] User user)
+        {
+
+
+            
+
+
+
+            _logger.LogInformation($"{user.username}, {user.firstName} {user.lastName}");
+            throw new NotImplementedException();
+            return false;
+        }
         
 
 
