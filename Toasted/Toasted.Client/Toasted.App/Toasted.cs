@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using System.ComponentModel;
 using Toasted.Logic;
+using static Toasted.Logic.ToastedApiAsync;
 
 namespace Toasted.App
 {
@@ -8,6 +9,7 @@ namespace Toasted.App
 	{
 		private IConfiguration _configuration;
 		private string? OpenWeatherApiKey;
+		private const string LocalUrl = "http://localhost:5083";
 
 		public Toasted()
 		{
@@ -55,6 +57,7 @@ namespace Toasted.App
 			Menu.GetCurrentView();
 			content();
 		}
+		//register method with loops for each field and check for errors
 		public async void Register()
 		{
 			string username = "";
@@ -174,8 +177,20 @@ namespace Toasted.App
 			// Create a new Location and then create a new User and set their defaultLocation to the new Location.
 			Location defaultLocation = await Request.GetLocation(this.OpenWeatherApiKey, zipcode, countryCode);
 			User u = new User(username, encryptedPassword, firstName, lastName, 1, email, defaultLocation, countryCode, 'F');
+			bool check = await ToastedApiAsync.TryPostNewAccount(u, LocalUrl);
+			if (check)
+			{
+				//User has been registered go to Weather home page with user logged in
+				//return;
+			}
+			else
+			{
+				//Should not happen but just in case server error isnt handled
+				Console.WriteLine("Registration Failed");
+			}
 
 			// This is purely for testing purposes (just to check that the objects are successfully created)
+			/*
 			Console.WriteLine("\nHere is your new User and Location objects:\n");
 			Console.WriteLine($"Username: {u.username}");
 			Console.WriteLine($"Password: {u.password}");
@@ -189,8 +204,10 @@ namespace Toasted.App
 			Console.WriteLine($"Location Latitude: {defaultLocation.lat}");
 			Console.WriteLine($"Location Longitude: {defaultLocation.lon}");
 			Console.WriteLine($"Location Longitude: {defaultLocation.country}");
+			*/
 		}
 
+		//login method with loop for checking incorrect user pass combo
 		public async void Login()
 		{
 
@@ -202,15 +219,19 @@ namespace Toasted.App
 			{
 				username = inputFormatter("Username: ");
 				password = inputFormatter("Password: ");
-				try
+				string encryptedPassword = PasswordEncryptor.Encrypt(password);
+				bool check = await TryPostAuthentication(username, encryptedPassword,LocalUrl);
+				if (check)
 				{
-					
-					
+					//go to user homepage with weather
+					Console.WriteLine("Logged in Successfully!");
+					loggingIn = false;
 				}
-				catch
+				else
 				{
+					Console.WriteLine("Log In failed...Please Try Again");
+				}
 
-				}
 			}
 		}
 		private string inputFormatter(string s)

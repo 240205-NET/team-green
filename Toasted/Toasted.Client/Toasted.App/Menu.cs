@@ -31,5 +31,10 @@ namespace Toasted.App
 		{
 			Console.WriteLine("Welcome to Toasted - Your Daily Slice of Weather!\n");
 		}
+
+		public static void DisplayExitMessage()
+		{
+			Console.WriteLine("Successfully Exited Application.\n");
+		}
 	}
 }
