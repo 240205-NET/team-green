@@ -7,17 +7,17 @@ namespace Toasted.Logic
 	{
 		public static List<Icon> list { set; get; }
 		// https://openweathermap.org/weather-conditions#How-to-get-icon-URL
-		public static void DisplayMultipleIcons(List<Icon> icons)
-		{
-			for (int j = 0; j < icons[0].text.Count; j++)
-			{
-				for (int i = 0; i < 16; i++)
-				{
-					Console.Write(icons[i].text[j] + "   ");
-				}
-				Console.WriteLine();
-			}
-		}
+		// public static void DisplayMultipleIcons(List<Icon> icons)
+		// {
+		// 	for (int j = 0; j < icons[0].text.Count; j++)
+		// 	{
+		// 		for (int i = 0; i < icons.Count; i++)
+		// 		{
+		// 			Console.Write(icons[i].text[j] + "   ");
+		// 		}
+		// 		Console.WriteLine();
+		// 	}
+		// }
 
 		static Icons()
 		{
@@ -34,8 +34,6 @@ namespace Toasted.Logic
 						"\u001b[38;5;111m  ‚’‚’<’‚’   \u001b[0m",
 					}
 				},
-
-
 				new Icon {
 					name = "Drizzle",
 					text = new List<string>
@@ -203,6 +201,11 @@ namespace Toasted.Logic
 						"\u001b[38;5;111m           _-        \u001b[0m"
 					}
 				},
+				/*
+				#####################
+				Group 8XX: Clouds 
+				#####################
+				*/
 				new Icon
 				{
 					name = "Clouds",

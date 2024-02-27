@@ -1,6 +1,5 @@
 using System.Text.Json;
 
-
 namespace Toasted.Logic
 {
 	public static class Request
@@ -13,46 +12,47 @@ namespace Toasted.Logic
 		// public static void Register()
 		// {
 		// }
-		/*
-		public static async Task<WeatherApiResponse> GetCurrentWeatherAsync(string appId, double? lat, double? lon, string[] exclude = null, string[] units = null, string lang = "en")
+
+		public static async Task<ForecastApiResponse> GetForecastAsync(string appId, double? lat, double? lon, string[] units = null, string lang = "en")
 		{
-			exclude ??= new string[] { "minutely", "hourly", "daily", "alerts" };
 			units ??= new string[] { "imperial" };
-
-			string excludeValues = string.Join(",", exclude);
 			string unitsValues = string.Join(",", units);
-
-			string uri = $"https://api.openweathermap.org/data/2.0/onecall?lat={lat}&lon={lon}&exclude={excludeValues}&units={unitsValues}&appid={appId}&lang={lang}";
+			string uri = $"https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&units={unitsValues}&lang={lang}&appid={appId}";
 			try
 			{
 				string response = await client.GetStringAsync(uri);
-
 				using JsonDocument doc = JsonDocument.Parse(response);
 				JsonElement root = doc.RootElement;
 
-				WeatherApiResponse weatherApiResponse = new WeatherApiResponse()
+				var forecastApiResponse = new ForecastApiResponse
 				{
-					lat = root.GetProperty("lat").GetDouble(),
-					lon = root.GetProperty("lon").GetDouble(),
-					timezone = root.GetProperty("timezone").GetString(),
-					current = new CurrentWeather()
+					forecastList = new ForecastList
 					{
-						dt = root.GetProperty("dt").GetInt64(),
-						sunrise = root.GetProperty("sunrise").GetInt64(),
-						sunset = root.GetProperty("sunset").GetInt64(),
-						temp = root.GetProperty("temp").GetDouble(),
-						feelsLike = root.GetProperty("feels_like").GetDouble(),
-						weather = new Weather()
-						{
-							id = Int32.Parse(root.GetProperty("id").GetString()),
-							main = root.GetProperty("main").GetString(),
-							description = root.GetProperty("description").GetString(),
-							icon = root.GetProperty("icon").GetString(),
-
-						}
+						forecastItems = new List<ForecastItem>()
 					}
 				};
-				return weatherApiResponse;
+
+				foreach (var item in root.GetProperty("list").EnumerateArray())
+				{
+					var forecastItem = new ForecastItem
+					{
+						dt = item.GetProperty("dt").GetInt64(),
+						main = new ForecastItemMain
+						{
+							temp = item.GetProperty("main").GetProperty("temp").GetDouble(),
+							feelsLike = item.GetProperty("main").GetProperty("feels_like").GetDouble()
+						},
+						weather = new Weather
+						{
+							id = item.GetProperty("weather")[0].GetProperty("id").GetInt32(),
+							main = item.GetProperty("weather")[0].GetProperty("main").GetString(),
+							description = item.GetProperty("weather")[0].GetProperty("description").GetString(),
+							icon = item.GetProperty("weather")[0].GetProperty("icon").GetString(),
+						}
+					};
+					forecastApiResponse.forecastList.forecastItems.Add(forecastItem);
+				}
+				return forecastApiResponse;
 			}
 			catch (HttpRequestException e)
 			{
@@ -60,7 +60,6 @@ namespace Toasted.Logic
 			}
 			return null;
 		}
-*/
 
 		public static async Task<WeatherApiResponse> GetCurrentWeatherAsync(string appId, double? lat, double? lon, string[] units = null, string lang = "en")
 		{
@@ -106,10 +105,10 @@ namespace Toasted.Logic
 			}
 			return null;
 		}
+
 		public static async Task<Location?> GetLocation(string appId, string zip, string countryCode)
 		{
 			string uri = $"http://api.openweathermap.org/geo/1.0/zip?zip={zip},{countryCode}&appid={appId}";
-
 			try
 			{
 				string response = await client.GetStringAsync(uri);
