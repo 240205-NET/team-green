@@ -29,9 +29,7 @@ namespace Toasted.Logic
             this.countryCode = CountryCode;
         }
 
-
-
-        public  static bool CheckExists(string username, string url)
+        public static bool CheckExists(string username, string url)
         {
             //check availability of username, send serialized object to API
             //should call ASYNC function from an ASYNC class that returns TRUE or FALSE depending on availability by asking the API

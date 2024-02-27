@@ -7,6 +7,18 @@ namespace Toasted.Logic
 	{
 		public static List<Icon> list { set; get; }
 		// https://openweathermap.org/weather-conditions#How-to-get-icon-URL
+		public static void DisplayMultipleIcons(List<Icon> icons)
+		{
+			for (int j = 0; j < icons[0].text.Count; j++)
+			{
+				for (int i = 0; i < 16; i++)
+				{
+					Console.Write(icons[i].text[j] + "   ");
+				}
+				Console.WriteLine();
+			}
+		}
+
 		static Icons()
 		{
 			list = new List<Icon>
@@ -42,8 +54,8 @@ namespace Toasted.Logic
 						"\u001b[38;5;240;1m     .-.     \u001b[0m",
 						"\u001b[38;5;240;1m    (   ).   \u001b[0m",
 						"\u001b[38;5;240;1m   (___(__)  \u001b[0m",
-						"\u001b[38;5;21;1m  ‚‘‚‘‚‘‚‘   \u001b[0m",
-						"\u001b[38;5;21;1m  ‚’‚’‚’‚’   \u001b[0m",
+						"\u001b[38;5;21;1m   ‚‘‚‘‚‘‚‘   \u001b[0m",
+						"\u001b[38;5;21;1m   ‚’‚’‚’‚’   \u001b[0m",
 					}
 				},
 				new Icon {
@@ -64,8 +76,8 @@ namespace Toasted.Logic
 						"\u001b[38;5;226m    \\   /    \u001b[0m",
 						"\u001b[38;5;226m     .-.     \u001b[0m",
 						"\u001b[38;5;226m  ― (   ) ―  \u001b[0m",
-						"\u001b[38;5;226m     `-’     \u001b[0m",
-						"\u001b[38;5;226m    /   \\    \u001b[0m",
+						"\u001b[38;5;226m    `-’     \u001b[0m",
+						"\u001b[38;5;226m    /  \\    \u001b[0m",
 					}
 				},
 				/*
@@ -80,6 +92,8 @@ namespace Toasted.Logic
 						"\u001b[38;5;250m   ~ ~ ~ ~   \u001b[0m",
 						"\u001b[38;5;250m   ~ ~ ~ ~   \u001b[0m",
 						"\u001b[38;5;250m   ~ ~ ~ ~   \u001b[0m",
+						"\u001b[38;5;250m   ~ ~ ~ ~   \u001b[0m",
+						"\u001b[38;5;250m   ~ ~ ~ ~   \u001b[0m",
 					}
 				},
 
@@ -90,6 +104,8 @@ namespace Toasted.Logic
 						"\u001b[38;5;250m   ))) (     \u001b[0m",
 						"\u001b[38;5;250m   ( (((     \u001b[0m",
 						"\u001b[38;5;250m   ))) )     \u001b[0m",
+						"\u001b[38;5;250m   )) ))     \u001b[0m",
+						"\u001b[38;5;250m   ) ) )     \u001b[0m",
 					}
 				},
 
@@ -97,6 +113,8 @@ namespace Toasted.Logic
 					name = "Haze",
 					text = new List<string>
 					{
+						"\u001b[38;5;250m   - - - -   \u001b[0m",
+						"\u001b[38;5;250m    - - -    \u001b[0m",
 						"\u001b[38;5;250m   - - - -   \u001b[0m",
 						"\u001b[38;5;250m    - - -    \u001b[0m",
 						"\u001b[38;5;250m   - - - -   \u001b[0m",
@@ -110,6 +128,8 @@ namespace Toasted.Logic
 						"\u001b[38;5;250m   * * *     \u001b[0m",
 						"\u001b[38;5;250m    * * *    \u001b[0m",
 						"\u001b[38;5;250m   * * *     \u001b[0m",
+						"\u001b[38;5;250m    * * *    \u001b[0m",
+						"\u001b[38;5;250m   * * *     \u001b[0m",
 					}
 				},
 
@@ -117,6 +137,8 @@ namespace Toasted.Logic
 					name = "Fog",
 					text = new List<string>
 					{
+						"\u001b[38;5;250m   ~ ~ ~     \u001b[0m",
+						"\u001b[38;5;250m    ~ ~      \u001b[0m",
 						"\u001b[38;5;250m   ~ ~ ~     \u001b[0m",
 						"\u001b[38;5;250m    ~ ~      \u001b[0m",
 						"\u001b[38;5;250m   ~ ~ ~     \u001b[0m",
@@ -130,6 +152,8 @@ namespace Toasted.Logic
 						"\u001b[38;5;250m   . . .     \u001b[0m",
 						"\u001b[38;5;250m    . . .    \u001b[0m",
 						"\u001b[38;5;250m   . . .     \u001b[0m",
+						"\u001b[38;5;250m    . . .    \u001b[0m",
+						"\u001b[38;5;250m   . . .     \u001b[0m",
 					}
 				},
 
@@ -137,6 +161,8 @@ namespace Toasted.Logic
 					name = "Dust",
 					text = new List<string>
 					{
+						"\u001b[38;5;250m   * * *     \u001b[0m",
+						"\u001b[38;5;250m    * * *    \u001b[0m",
 						"\u001b[38;5;250m   * * *     \u001b[0m",
 						"\u001b[38;5;250m    * * *    \u001b[0m",
 						"\u001b[38;5;250m   * * *     \u001b[0m",
@@ -150,6 +176,8 @@ namespace Toasted.Logic
 						"\u001b[38;5;250m   @ @ @     \u001b[0m",
 						"\u001b[38;5;250m    @ @      \u001b[0m",
 						"\u001b[38;5;250m   @ @ @     \u001b[0m",
+						"\u001b[38;5;250m    @ @      \u001b[0m",
+						"\u001b[38;5;250m   @ @ @     \u001b[0m",
 					}
 				},
 
@@ -157,6 +185,8 @@ namespace Toasted.Logic
 					name = "Squall",
 					text = new List<string>
 					{
+						"\u001b[38;5;250m   /// //    \u001b[0m",
+						"\u001b[38;5;250m   // ///    \u001b[0m",
 						"\u001b[38;5;250m   /// //    \u001b[0m",
 						"\u001b[38;5;250m   // ///    \u001b[0m",
 						"\u001b[38;5;250m   /// //    \u001b[0m",
@@ -168,9 +198,6 @@ namespace Toasted.Logic
 					{
 						"\u001b[38;5;250m     --_-_-_-_---     \u001b[0m",
 						"\u001b[38;5;250m       -_-_-_        \u001b[0m",
-						"\u001b[38;5;250m        -_-_         \u001b[0m",
-						"\u001b[38;5;111m         -__-        \u001b[0m",
-						"\u001b[38;5;111m         _-_         \u001b[0m",
 						"\u001b[38;5;111m          _-         \u001b[0m",
 						"\u001b[38;5;111m          -_         \u001b[0m",
 						"\u001b[38;5;111m           _-        \u001b[0m"
@@ -181,9 +208,12 @@ namespace Toasted.Logic
 					name = "Clouds",
 					text = new List<string>
 					{
-						"\u001b[38;5;250m     .--.    \u001b[0m",
-						"\u001b[38;5;250m  .-(    ).  \u001b[0m",
-						"\u001b[38;5;250m (___.__)__) \u001b[0m"
+
+					"\u001b[38;5;250m     .--.       .--.    \u001b[0m",
+					"\u001b[38;5;250m  .-(    ).   (    ).  \u001b[0m",
+					"\u001b[38;5;250m (___.__)__) (___(__)  \u001b[0m",
+					"\u001b[38;5;250m             (      )  \u001b[0m",
+					"\u001b[38;5;250m              `----'   \u001b[0m",
 					}
 				},
 			};

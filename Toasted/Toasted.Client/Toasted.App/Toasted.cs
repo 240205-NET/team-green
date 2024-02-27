@@ -55,6 +55,7 @@ namespace Toasted.App
 					case "5":
 						Console.Clear();
 						Console.WriteLine("Get 12 Hour Forecast");
+						Icons.DisplayMultipleIcons(Icons.list);
 						break;
 					default:
 						break;
