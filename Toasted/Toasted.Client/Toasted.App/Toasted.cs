@@ -44,7 +44,6 @@ namespace Toasted.App
 						break;
 					case "3":
 						Console.Clear();
-
 						Console.WriteLine("Exit");
 						break;
 					case "4":
@@ -54,8 +53,8 @@ namespace Toasted.App
 						break;
 					case "5":
 						Console.Clear();
-						Console.WriteLine("Get 12 Hour Forecast");
-						Icons.DisplayMultipleIcons(Icons.list);
+						Menu.currentView = "Hourly Forecast";
+						this.ContentWrapper(GetForecast);
 						break;
 					default:
 						break;
@@ -75,10 +74,13 @@ namespace Toasted.App
 			Menu.DisplayCurrentWeather(currentWeather, defaultLocation);
 		}
 
-		public void Get12HourForecast()
+		public async void GetForecast()
 		{
-
+			Location defaultLocation = await Request.GetLocation(this.OpenWeatherApiKey, "91401", "US");
+			ForecastApiResponse forecastApiResponse = await Request.GetForecastAsync(this.OpenWeatherApiKey, defaultLocation.lat, defaultLocation.lon);
+			Menu.DisplayForecast(forecastApiResponse);
 		}
+
 		public void ContentWrapper(Action content)
 		{
 			Menu.GetCurrentView();

@@ -33,8 +33,6 @@ namespace Toasted.App
 			Console.WriteLine("+++++++++++++++++++++++++\n");
 		}
 
-
-
 		public static void DisplayMenuView()
 		{
 			Console.WriteLine("Select a number (1-5) from the options below:\n");
@@ -43,7 +41,7 @@ namespace Toasted.App
 			Console.WriteLine("3: Exit");
 			Console.WriteLine("======= TESTING ======");
 			Console.WriteLine("4: Get Current Weather");
-			Console.WriteLine("5: Get 12 Hour Forecast");
+			Console.WriteLine("5: Get Hourly Forecast");
 		}
 
 		public static void DisplayWelcomeMessage()
@@ -60,30 +58,74 @@ namespace Toasted.App
 			");
 		}
 
+		public static void DisplayForecastItems(List<StringBuilder> forecastItemOutput)
+		{
+			for (int i = 0; i < forecastItemOutput.Count; i++)
+			{
+				Console.WriteLine(forecastItemOutput[i]);
+			}
+		}
+
+		public static List<StringBuilder> GenerateForecastStringBuilderList(ForecastList forecastList)
+		{
+			List<StringBuilder> sbList = new List<StringBuilder>();
+			foreach (ForecastItem i in forecastList.forecastItems.Take(4).ToList())
+			{
+				// Create new StringBuilder for current forecast item
+				StringBuilder sb = new StringBuilder();
+				// Get the icon from the current forecast item
+				Icon icon = GetCurrentIcon(i.weather.main);
+				// Append each line of the icon to the StringBuilder
+				foreach (string line in icon.text)
+				{
+					sb.AppendLine(line);
+				}
+				// Description (Moderate Rain, Heavy Rain, etc.)
+				sb.AppendLine(TitleCase(i.weather.description));
+				// Temperature (12°C · 54°F)
+				double celsius = FahrenheitToCelsius(i.main.temp);
+
+				sb.AppendLine(FormatTemperatureInColor(celsius, i.main.temp));
+				sbList.Add(sb);
+			}
+			return sbList;
+		}
+
+		public static void DisplayForecast(ForecastApiResponse forecastApiResponse)
+		{
+			List<StringBuilder> forecastStringBuilderList = GenerateForecastStringBuilderList(forecastApiResponse.forecastList);
+			DisplayForecastItems(forecastStringBuilderList);
+		}
+
 		public static void DisplayCurrentWeather(WeatherApiResponse weatherApiResponse, Location defaultLocation)
 		{
+			StringBuilder sb = new StringBuilder();
 			// Shorten property references
-			string main = weatherApiResponse.current.weather.main;
-			string description = weatherApiResponse.current.weather.description;
-			double temperature = Math.Truncate(weatherApiResponse.current.temp);
-			double feelsLike = weatherApiResponse.current.feelsLike;
+			string main = weatherApiResponse.current.weather.main; // Category - "Rain", "Snow", etc.
+			string description = weatherApiResponse.current.weather.description; // Further Description - "Light Rain", "Heavy Rain", etc.
+			double tempF = Math.Truncate(weatherApiResponse.current.temp); // in Fahrenheit
+			double feelsLike = weatherApiResponse.current.feelsLike; // in Fahrenheit
 			string countryCode = defaultLocation.country;
 
 			string countryName = GetCurrentCountry(countryCode);
 			Icon icon = GetCurrentIcon(main);
-
+			string dateTime = ConvertUnixTimeToDateTime(weatherApiResponse.current.dt, weatherApiResponse.timezone);
+			string[] dateTimeArray = dateTime.Split(" ");
+			string formattedDateTime = dateTimeArray[0] + " - " + dateTimeArray[1] + " " + dateTimeArray[2] + "\n";
+			sb.AppendLine(formattedDateTime);
 			// City + Country
-			Console.WriteLine($"{weatherApiResponse.name}, {countryName}");
+			string cityAndCountry = $"{weatherApiResponse.name}, {countryName}\n";
+			sb.AppendLine(cityAndCountry);
 			// ASCII icon
-			Console.WriteLine(icon.ToString());
+			sb.AppendLine(icon.ToString());
 			// Description (Moderate Rain, Heavy Rain, etc.)
-			Console.WriteLine(TitleCase(description));
+			sb.AppendLine(TitleCase(description));
 			// Temperature (12°C · 54°F)
-			double celsius = FahrenheitToCelsius(temperature);
+			double tempC = FahrenheitToCelsius(tempF);
 
-			Console.ForegroundColor = GetTemperatureColor(celsius);
-			Console.WriteLine($"{celsius}°C · {temperature}°F");
-			Console.ResetColor();
+			sb.AppendLine(FormatTemperatureInColor(tempC, tempF));
+			Console.WriteLine(sb);
+
 		}
 
 		public static string TitleCase(string str)
@@ -111,20 +153,43 @@ namespace Toasted.App
 			return celsius;
 		}
 
-		public static ConsoleColor GetTemperatureColor(double celsius)
+		public static string FormatTemperatureInColor(double celsius, double fahrenheit)
 		{
-			return celsius switch
+			string color;
+			var colorMap = new Dictionary<Func<double, bool>, string>
 			{
-				_ when celsius <= -20 => ConsoleColor.Blue, // Extreme Cold
-				_ when celsius <= -10 => ConsoleColor.Cyan, // Very Cold
-				_ when celsius < 0 => ConsoleColor.DarkCyan, // Cold
-				_ when celsius < 10 => ConsoleColor.Green, // Cool
-				_ when celsius < 20 => ConsoleColor.DarkGreen, // Mild
-				_ when celsius < 30 => ConsoleColor.Yellow, // Warm
-				_ when celsius < 40 => ConsoleColor.DarkYellow, // Hot
-				_ when celsius < 50 => ConsoleColor.Red, // Very Hot
-				_ => ConsoleColor.DarkRed, // Extreme Heat
+				{ temp => temp <= -20, "\u001b[34m" }, // Blue for Extreme Cold
+				{ temp => temp <= -10, "\u001b[36m" }, // Cyan for Very Cold
+				{ temp => temp < 0, "\u001b[46m" }, // Dark Cyan for Cold
+				{ temp => temp < 10, "\u001b[32m" }, // Green for Cool
+				{ temp => temp < 20, "\u001b[34m" }, // Dark Green for Mild
+				{ temp => temp < 30, "\u001b[33m" }, // Yellow for Warm
+				{ temp => temp < 40, "\u001b[33;1m" }, // Dark Yellow (Bright) for Hot
+				{ temp => temp < 50, "\u001b[31m" }, // Red for Very Hot
+				{ temp => true, "\u001b[31;1m" } // Bright Red for Extreme Heat
 			};
+			foreach (var entry in colorMap)
+			{
+				if (entry.Key(celsius))
+				{
+					color = entry.Value;
+					return $"{color}{celsius}°C · {fahrenheit}°F \u001b[0m";
+				}
+			}
+			return "\u001b[0m"; // this is the default color (stripped)
+		}
+
+		public static string ConvertUnixTimeToDateTime(long unixTime, int timezoneOffsetInSeconds)
+		{
+			DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(unixTime);
+
+			TimeSpan offset = TimeSpan.FromSeconds(timezoneOffsetInSeconds);
+			DateTimeOffset dateTimeWithOffset = dateTimeOffset.ToOffset(offset);
+
+			// Format the DateTimeOffset to a readable string
+			string formattedDateTime = dateTimeWithOffset.ToString("yyyy-MM-dd H:m:s tt", CultureInfo.InvariantCulture);
+
+			return formattedDateTime;
 		}
 	}
 }
