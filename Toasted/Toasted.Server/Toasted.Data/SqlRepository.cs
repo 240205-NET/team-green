@@ -87,28 +87,43 @@ namespace Toasted.Data
             return tmpUser;
         }
 
-        public async Task AddUserAsync(User user)
+        public async Task<bool> AddUserAsync(User user)
         {
+            bool success = false;
+
             using SqlConnection connection = new SqlConnection(this._connectionString);
-            await connection.OpenAsync();
+            {
+                await connection.OpenAsync();
 
-            string cmdText = "INSERT INTO [dbo].[User] (username, email, location, firstName, lastName, password, tempUnit, countryCode) " +
-                             "VALUES (@username, @email, @location, @firstName, @lastName, @password, @tempUnit, @countryCode);";
+                string cmdText = "INSERT INTO [dbo].[User] (username, email, location, firstName, lastName, password, tempUnit, countryCode) " +
+                                 "VALUES (@username, @email, @location, @firstName, @lastName, @password, @tempUnit, @countryCode);";
 
-            using SqlCommand cmd = new SqlCommand(cmdText, connection);
+                using SqlCommand cmd = new SqlCommand(cmdText, connection);
+                {
+                    cmd.Parameters.AddWithValue("@username", user.username);
+                    cmd.Parameters.AddWithValue("@email", user.email);
+                    cmd.Parameters.AddWithValue("@location", user.location);
+                    cmd.Parameters.AddWithValue("@firstName", user.firstName);
+                    cmd.Parameters.AddWithValue("@lastName", user.lastName);
+                    cmd.Parameters.AddWithValue("@password", user.password);
+                    cmd.Parameters.AddWithValue("@tempUnit", user.tempUnit);
+                    cmd.Parameters.AddWithValue("@countryCode", user.countryCode);
 
-            cmd.Parameters.AddWithValue("@username", user.username);
-            cmd.Parameters.AddWithValue("@email", user.email);
-            cmd.Parameters.AddWithValue("@location", user.location);
-            cmd.Parameters.AddWithValue("@firstName", user.firstName);
-            cmd.Parameters.AddWithValue("@lastName", user.lastName);
-            cmd.Parameters.AddWithValue("@password", user.password);
-            cmd.Parameters.AddWithValue("@tempUnit", user.tempUnit);
-            cmd.Parameters.AddWithValue("@countryCode", user.countryCode);
+                    await cmd.ExecuteNonQueryAsync();
+                    // If rowsAffected is greater than 0, the insertion was successful
+                    int rowsAffected = await cmd.ExecuteNonQueryAsync();
+                    success = rowsAffected > 0; //if >0, this expression will be valid and this success will be true.
+                                                //Pretty cool way to avoid having to type out a whole if statement.
+                                                //Although, this comment is so long that it would have been quicker for me
+                                                //to just type out the if statement instead of using this trick then writing out
+                                                //a long comment to explain it. On top of that, explaining the fact that writing
+                                                //this comment took a long time further increases the amount of time it has taken
+                                                //to write this expression. I should probably just stop commenting here.
+                }
+                await connection.CloseAsync();
+            }
 
-            await cmd.ExecuteNonQueryAsync();
-
-            await connection.CloseAsync();
+            return success;
         }
 
     }
