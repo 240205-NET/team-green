@@ -12,13 +12,13 @@ namespace Toasted.Logic
         public string lastName { get; set; }
         public int userID { get; set; }
         public string email { get; set; }
-        public Location defaultLocation { get; set; }
-        private static XmlSerializer Serializer = new XmlSerializer(typeof(User));
-        public char temperaturePreference { get; set; }
+        public Location location { get; set; }
+  //      private static XmlSerializer Serializer = new XmlSerializer(typeof(User));
+        public char tempUnit { get; set; }
 
         public string countryCode { get; set; }
 
-        public User(string username, string password, string firstName, string lastName, int userID, string email, Location defaultLocation, string CountryCode)
+        public User(string username, string password, string firstName, string lastName, int userID, string email, Location defaultLocation, string CountryCode, char temperaturePreference)
         {
             this.username = username;
             this.password = password;
@@ -26,8 +26,9 @@ namespace Toasted.Logic
             this.lastName = lastName;
             this.userID = userID;
             this.email = email;
-            this.defaultLocation = defaultLocation;
+            this.location = defaultLocation;
             this.countryCode = CountryCode;
+            this.tempUnit = temperaturePreference;
         }
         public User()
         {
@@ -73,11 +74,51 @@ namespace Toasted.Logic
             return SerializeJson(this);
         }
 
+
+        //this works well but I actually am going to manually convert it into JSON because we will be now using a nested LOCATION object that I Want to also be in JSON format to store in our database.
         public static string SerializeJson(User user)
         {
             string json = JsonConvert.SerializeObject(user);
             return json;
         }
+
+
+
+
+        public static string SerializeToJsonCustom(User user)
+        {
+            // Construct the JSON string manually
+            string jsonString = "{";
+
+            // Add properties to the JSON string
+            jsonString += "\"username\":\"" + user.username + "\",";
+            jsonString += "\"password\":\"" + user.password + "\",";
+            jsonString += "\"firstName\":\"" + user.firstName + "\",";
+            jsonString += "\"lastName\":\"" + user.lastName + "\",";
+            jsonString += "\"userID\":" + user.userID + ",";
+            jsonString += "\"email\":\"" + user.email + "\",";
+            jsonString += "\"location\":\"" + Location.SerializeJson(user.location) + "\","; //this is a nested json string... 
+            jsonString += "\"temperaturePreference\":\"" + user.tempUnit + "\",";
+            jsonString += "\"countryCode\":\"" + user.countryCode + "\"";
+
+            // Close the JSON object
+            jsonString += "}";
+
+            return jsonString;
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
 
 
 

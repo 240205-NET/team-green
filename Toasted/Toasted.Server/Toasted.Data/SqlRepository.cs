@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using System.Text;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace Toasted.Data
 {
@@ -39,14 +40,14 @@ namespace Toasted.Data
                 int userId = (int)reader["userID"];
                 string username = reader["username"].ToString() ?? "";
                 string email = reader["Email"].ToString() ?? "";
-                int location = (int)reader["location"];
+                string location = (string)reader["location"];
                 string firstName = reader["firstName"].ToString() ?? "";
                 string lastName = reader["lastName"].ToString() ?? "";
                 string password = reader["password"].ToString() ?? "";
                 char tempUnit = reader["tempUnit"].ToString()[0];
                 string countryCode = reader["countryCode"].ToString() ?? "";
 
-                users.Add(new User(userId, username, email, location, firstName, lastName, password, tempUnit, countryCode));
+                users.Add(new User(userId, username, email, JsonConvert.DeserializeObject<Location>(location), firstName, lastName, password, tempUnit, countryCode));
             }
 
             await connection.CloseAsync();
@@ -74,14 +75,14 @@ namespace Toasted.Data
                 int userId = (int)reader["userID"];
                 string dbUsername = reader["username"].ToString() ?? "";
                 string email = reader["Email"].ToString() ?? "";
-                int location = (int)reader["location"];
+                string location = (string)reader["location"];
                 string firstName = reader["firstName"].ToString() ?? "";
                 string lastName = reader["lastName"].ToString() ?? "";
                 string password = reader["password"].ToString() ?? "";
                 char tempUnit = reader["tempUnit"].ToString()[0];
                 string countryCode = reader["countryCode"].ToString() ?? "";
 
-                tmpUser = new User(userId, dbUsername, email, location, firstName, lastName, password, tempUnit, countryCode);
+                tmpUser = new User(userId, dbUsername, email, JsonConvert.DeserializeObject<Location>(location), firstName, lastName, password, tempUnit, countryCode); //de-jsonify LOCATION 
             }
            await connection.CloseAsync();
             return tmpUser;
@@ -90,6 +91,7 @@ namespace Toasted.Data
         public async Task<bool> AddUserAsync(User user)
         {
             bool success = false;
+
 
             using SqlConnection connection = new SqlConnection(this._connectionString);
             {
@@ -102,23 +104,33 @@ namespace Toasted.Data
                 {
                     cmd.Parameters.AddWithValue("@username", user.username);
                     cmd.Parameters.AddWithValue("@email", user.email);
-                    cmd.Parameters.AddWithValue("@location", user.location);
+                    cmd.Parameters.AddWithValue("@location", user.location.JsonThis()); //always send location as JSON to database
                     cmd.Parameters.AddWithValue("@firstName", user.firstName);
                     cmd.Parameters.AddWithValue("@lastName", user.lastName);
                     cmd.Parameters.AddWithValue("@password", user.password);
-                    cmd.Parameters.AddWithValue("@tempUnit", user.tempUnit);
+
+
+
+  
+                     cmd.Parameters.AddWithValue("@tempUnit", user.tempUnit);
+     
+
+
+      
+
+
                     cmd.Parameters.AddWithValue("@countryCode", user.countryCode);
 
-                    await cmd.ExecuteNonQueryAsync();
+                  //  await cmd.ExecuteNonQueryAsync();
                     // If rowsAffected is greater than 0, the insertion was successful
                     int rowsAffected = await cmd.ExecuteNonQueryAsync();
-                    success = rowsAffected > 0; //if >0, this expression will be valid and this success will be true.
-                                                //Pretty cool way to avoid having to type out a whole if statement.
-                                                //Although, this comment is so long that it would have been quicker for me
-                                                //to just type out the if statement instead of using this trick then writing out
-                                                //a long comment to explain it. On top of that, explaining the fact that writing
-                                                //this comment took a long time further increases the amount of time it has taken
-                                                //to write this expression. I should probably just stop commenting here.
+                    success = rowsAffected > 0; /*if >0, this expression will be valid and this success will be true.
+                                                **Pretty cool way to avoid having to type out a whole 'if statement'.
+                                                **Although, this comment is so long that it would have been quicker for me
+                                                **to just type out the if statement instead of using this trick then writing out
+                                                **a long comment to explain it. On top of that, explaining the fact that writing
+                                                **this comment took a long time further increases the amount of time it has taken
+                                                **to write this expression. I should probably just stop commenting here.*/
                 }
                 await connection.CloseAsync();
             }
@@ -126,5 +138,11 @@ namespace Toasted.Data
             return success;
         }
 
+      /*  Task<bool> IRepository.AddUserAsync(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        */
     }
 }

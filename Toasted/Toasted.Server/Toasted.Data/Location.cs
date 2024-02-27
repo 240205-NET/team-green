@@ -1,19 +1,12 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
-using System.Xml.Serialization;
 
-namespace Toasted.Logic
+namespace Toasted.Data
 {
-	/// <summary>
-	/// This class adheres to the API response on https://openweathermap.org/api/geocoding-api
-	/// An example of such an API response is the following:
-	/// {
-	///		"zip": "90210",
-	///		"name": "Beverly Hills",
-	///		"lat": 34.0901,
-	///		"lon": -118.4065,
-	///		"country": "US"
-	///	}
-	/// </summary>
 	public class Location
 	{
 		public int? zip { get; set; }
@@ -38,5 +31,22 @@ namespace Toasted.Logic
             string json = JsonConvert.SerializeObject(location);
             return json;
         }
+
+        public string JsonThis() //this objects needs to be serialized into JSON format
+        {
+            string json = JsonConvert.SerializeObject(this);
+            return json;
+        }
+
+
+
+
+
+
+        public string ToString()
+		{
+
+			return SerializeJson(this);
+		}
     }
 }
