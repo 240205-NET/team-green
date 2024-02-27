@@ -3,13 +3,27 @@ namespace Toasted.Logic
 	using System;
 	using System.Text.RegularExpressions;
 	using System.Net.Mail;
+	using static Toasted.Logic.ToastedApiAsync;
 
 	public class UserValidityChecks
 	{
+		private const string LocalUrl = "http://localhost:5083";
+
 		public static bool IsUsernameValid(string username)
 		{
-			if (username.Equals("")) throw new Exception("Username cannot be empty.");
-			else if (username.Contains(" ")) throw new Exception("Username cannot have space.");
+			var userNameCheck = TryPostCheckUsername(username, LocalUrl);
+			if (username.Equals(""))
+			{
+				throw new Exception("Username cannot be empty.");
+			}
+			else if (username.Contains(" "))
+			{
+				throw new Exception("Username cannot have space.");
+			}
+			else if (userNameCheck.Result)
+			{
+				throw new Exception("Username already exists");
+			}
 			return true;
 		}
 
@@ -51,6 +65,13 @@ namespace Toasted.Logic
 		public static bool isCountryCodeValid(string countryCode)
 		{
 			if (!Enum.IsDefined(typeof(Countries), countryCode)) throw new Exception("Invalid Country Code");
+			return true;
+		}
+
+		public static bool IsLoginValid(string username, string password)
+		{
+			var check = TryPostAuthentication(username, password,LocalUrl);
+			if (!check.Result) throw new Exception("Username and Password Combo does not match!");
 			return true;
 		}
 

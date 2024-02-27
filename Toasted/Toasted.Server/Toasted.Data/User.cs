@@ -11,14 +11,14 @@ namespace Toasted.Data
 		public string lastName { get; set; }
 		public int userId { get; set; }
 		public string email { get; set; }
-		public int location { get; set; } //default location choice
+		public Location location { get; set; } //default location choice
 		private static XmlSerializer Serializer = new XmlSerializer(typeof(User));
 		public char tempUnit { get; set; }
 		
 		public string countryCode { get; set; }
 
 
-		public User(int userId,string username,string email,int location,string firstName,string lastName,string password,char tempUnit,string countryCode)
+		public User(int userId,string username,string email,Location location,string firstName,string lastName,string password,char tempUnit,string countryCode)
 		{
 			this.countryCode = countryCode;
 			this.username = username;	

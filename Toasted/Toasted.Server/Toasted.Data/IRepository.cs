@@ -7,6 +7,6 @@ namespace Toasted.Data
         public Task<IEnumerable<User>> GetAllUsersAsync();
         public Task<User> GetUserByUsernameAsync(string username);
 
-        public Task AddUserAsync(User user);
+        public Task<bool> AddUserAsync(User user);
     }
 }

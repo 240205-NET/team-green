@@ -191,5 +191,10 @@ namespace Toasted.App
 
 			return formattedDateTime;
 		}
+
+		public static void DisplayExitMessage()
+		{
+			Console.WriteLine("Successfully Exited Application.\n");
+		}
 	}
 }

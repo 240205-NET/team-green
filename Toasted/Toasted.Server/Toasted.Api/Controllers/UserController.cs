@@ -18,18 +18,47 @@ namespace Toasted.Api.Controllers
             this._repo = repo;
         }
 
-        [HttpGet(Name = "GetUsers")]
-        public bool Get()
+        [HttpPost("/GetUserByUsername")] //returns USER by username
+        public async Task<User> GetUserInformation([FromBody] string username)
         {
-            return true;
+            User user = await _repo.GetUserByUsernameAsync(username);
+            _logger.LogInformation($"Username: {user.username}, Temperature Preference is: {user.tempUnit}");
+            return user;
+       
         }
 
+
+
+        [HttpPost("/AuthenticateUser")]
+        public async Task<bool> PostAuthenticate([FromBody] string[] userPass)
+        {
+            string username = userPass[0];
+            string encryptedPassword = userPass[1];
+          
+
+
+            User user = await _repo.GetUserByUsernameAsync(username);
+             _logger.LogInformation($"Username: {user.username}, Temperature Preference is: {user.tempUnit}" );
+
+            if (user.password == encryptedPassword)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+
+
         [HttpPost("/UserCheck")]
-        public bool Post([FromBody] string username)
+        public async Task<bool> Post([FromBody] string username)
         {
             //check database if exists return true
 
-            User user =  _repo.GetUserByUsernameAsync(username).Result;
+            User user = await _repo.GetUserByUsernameAsync(username);
 
             if (user.userId == 0)
             {
@@ -41,6 +70,20 @@ namespace Toasted.Api.Controllers
             }
         }
 
+        [HttpPost("/NewAccount")]
+        public async Task<bool> PostNewUser([FromBody] User user)
+        {
+            _logger.LogInformation($"Username: {user.username}, Temperature Preference is: {user.tempUnit}" );
+
+            bool result = await _repo.AddUserAsync(user);
+
+            //in progress
+
+
+            _logger.LogInformation($"{user.username}, {user.firstName} {user.lastName}, Location: {user.location.ToString()}");
+         //   throw new NotImplementedException();
+            return result;
+        }
         
 
 
