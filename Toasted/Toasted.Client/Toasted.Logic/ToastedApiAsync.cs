@@ -48,7 +48,7 @@ namespace Toasted.Logic
 
 
 
-        public static async Task<User> TryGetUsername(string userName, string baseUrl) //should just past the base URL here, will add /UserCheck in code
+        public static async Task<User> TryPostGetUser(string userName, string baseUrl) //should just past the base URL here, will add /UserCheck in code
         {
 
             // Create HttpClient instance
@@ -62,7 +62,7 @@ namespace Toasted.Logic
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
             // Make the POST request
-            var response = await client.PostAsync("UserGet", content);
+            var response = await client.PostAsync("GetUserByUsername", content);
 
             // Check if request was successful
             if (response.IsSuccessStatusCode)

@@ -18,10 +18,11 @@ namespace Toasted.Api.Controllers
             this._repo = repo;
         }
 
-        [HttpGet("/UserGet")] //returns USER by username
+        [HttpPost("/GetUserByUsername")] //returns USER by username
         public async Task<User> GetUserInformation([FromBody] string username)
         {
             User user = await _repo.GetUserByUsernameAsync(username);
+            _logger.LogInformation($"Username: {user.username}, Temperature Preference is: {user.tempUnit}");
             return user;
        
         }
@@ -37,7 +38,7 @@ namespace Toasted.Api.Controllers
 
 
             User user = await _repo.GetUserByUsernameAsync(username);
-
+             _logger.LogInformation($"Username: {user.username}, Temperature Preference is: {user.tempUnit}" );
 
             if (user.password == encryptedPassword)
             {
