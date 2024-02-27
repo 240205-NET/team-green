@@ -24,6 +24,32 @@ namespace Toasted.Api.Controllers
             return true;
         }
 
+
+
+        [HttpPost("/AuthenticateUser")]
+        public async Task<bool> GetAuthenticate([FromBody] string[] userPass)
+        {
+            string username = userPass[0];
+            string encryptedPassword = userPass[1];
+          
+
+
+            User user = await _repo.GetUserByUsernameAsync(username);
+
+
+            if (user.password == encryptedPassword)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+
+
         [HttpPost("/UserCheck")]
         public async Task<bool> Post([FromBody] string username)
         {

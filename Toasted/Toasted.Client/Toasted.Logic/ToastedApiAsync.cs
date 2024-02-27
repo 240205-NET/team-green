@@ -5,18 +5,19 @@ using System.Text.Json;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Net.Http.Formatting;
+using Newtonsoft.Json;
 
 namespace Toasted.Logic
 {
     public class ToastedApiAsync
     {
         //this class should contain all static async methods for Toasted.Api
-        public static async Task<bool> TryPostCheckUsername(string userName, string BaseUrl) //should just past the base URL here, will add /UserCheck in code
+        public static async Task<bool> TryPostCheckUsername(string userName, string baseUrl) //should just past the base URL here, will add /UserCheck in code
         {
 
             // Create HttpClient instance
             using var client = new HttpClient();
-            client.BaseAddress = new Uri(BaseUrl);
+            client.BaseAddress = new Uri(baseUrl);
 
             // Serialize the username to JSON
             var content = new StringContent($"\"{userName}\"");
@@ -42,13 +43,49 @@ namespace Toasted.Logic
         }
 
 
+
+
+        //Get USER authentication. Send username and password as they are stored in the database.
+        public static async Task<bool> TryPostAuthentication(string username, string encryptedPassword, string baseUrl)
+        {
+            bool authenticated = false;
+            using var client = new HttpClient();
+                client.BaseAddress = new Uri(baseUrl);
+
+            string[] userPass = {username,encryptedPassword };
+            var json = JsonConvert.SerializeObject(userPass);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("AuthenticateUser", content);
+
+            try
+            {
+              authenticated = await response.Content.ReadAsAsync<bool>();
+            }
+            catch
+            {
+                throw new HttpRequestException($"Server error. Status code: {response.StatusCode}");
+            }
+
+
+
+
+
+            return authenticated;
+        }
+
+
+
+
+
+
+
         //Posts a new USER, should be used to create a new account as stored in a User object
-        public static async Task<bool> TryPostNewAccount(User user, string BaseUrl){
+        public static async Task<bool> TryPostNewAccount(User user, string baseUrl){
 
 
             // Create HttpClient instance
             using var client = new HttpClient();
-            client.BaseAddress = new Uri(BaseUrl);
+            client.BaseAddress = new Uri(baseUrl);
 
             //serialize
             string json = User.SerializeJson(user);
