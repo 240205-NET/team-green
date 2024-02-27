@@ -23,32 +23,60 @@ namespace Toasted.App
 		public async Task Run()
 		{
 			Menu.DisplayWelcomeMessage();
+
+			Menu.DisplayMenuView();
 			// main program loop
 			while (true)
 			{
-				Menu.DisplayMenuView();
 				string userInput = Console.ReadKey().KeyChar.ToString();
 				Console.WriteLine();
 				switch (userInput)
 				{
 					case "1":
 						Console.Clear();
+						Menu.currentView = "Register";
 						this.ContentWrapper(Register);
 						break;
 					case "2":
 						Console.Clear();
-						Console.WriteLine("Login");
+						Menu.currentView = "Register";
 						this.ContentWrapper(Login);
 						break;
 					case "3":
 						Console.Clear();
+
 						Console.WriteLine("Exit");
+						break;
+					case "4":
+						Console.Clear();
+						Menu.currentView = "Current Weather";
+						this.ContentWrapper(GetCurrentWeather);
+						break;
+					case "5":
+						Console.Clear();
+						Console.WriteLine("Get 12 Hour Forecast");
 						break;
 					default:
 						break;
 				}
 			}
 			// functions that execute the options
+		}
+
+		public async void GetCurrentWeather()
+		{
+			Location defaultLocation = await Request.GetLocation(this.OpenWeatherApiKey, "91401", "US");
+
+			User u = new User("gumshoe", "Somepass123", "M", "S", 1, "e@mail.com", defaultLocation, "US");
+
+			WeatherApiResponse currentWeather = await Request.GetCurrentWeatherAsync(this.OpenWeatherApiKey, defaultLocation.lat, defaultLocation.lon);
+
+			Menu.DisplayCurrentWeather(currentWeather, defaultLocation);
+		}
+
+		public void Get12HourForecast()
+		{
+
 		}
 		public void ContentWrapper(Action content)
 		{
@@ -174,6 +202,8 @@ namespace Toasted.App
 			// Create a new Location and then create a new User and set their defaultLocation to the new Location.
 			Location defaultLocation = await Request.GetLocation(this.OpenWeatherApiKey, zipcode, countryCode);
 			User u = new User(username, encryptedPassword, firstName, lastName, 1, email, defaultLocation, countryCode);
+			// Get the current weather using the data in defaultLocation
+			WeatherApiResponse currentWeather = await Request.GetCurrentWeatherAsync(this.OpenWeatherApiKey, defaultLocation.lat, defaultLocation.lon);
 
 			// This is purely for testing purposes (just to check that the objects are successfully created)
 			Console.WriteLine("\nHere is your new User and Location objects:\n");
