@@ -217,21 +217,18 @@ namespace Toasted.App
 			bool loggingIn = true;
 			while (loggingIn)
 			{
-				username = inputFormatter("Username: ");
-				password = inputFormatter("Password: ");
-				string encryptedPassword = PasswordEncryptor.Encrypt(password);
-				bool check = await TryPostAuthentication(username, encryptedPassword,LocalUrl);
-				if (check)
+				try
 				{
-					//go to user homepage with weather
-					Console.WriteLine("Logged in Successfully!");
+					username = inputFormatter("Username: ");
+					password = inputFormatter("Password: ");
+					string encryptedPassword = PasswordEncryptor.Encrypt(password);
+					UserValidityChecks.IsLoginValid(username, encryptedPassword);
 					loggingIn = false;
 				}
-				else
+				catch(Exception e)
 				{
-					Console.WriteLine("Log In failed...Please Try Again");
+					Console.WriteLine(e.Message);
 				}
-
 			}
 		}
 		private string inputFormatter(string s)
