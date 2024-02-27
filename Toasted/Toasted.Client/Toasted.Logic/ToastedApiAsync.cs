@@ -45,6 +45,43 @@ namespace Toasted.Logic
 
 
 
+
+
+
+        public static async Task<User> TryGetUsername(string userName, string baseUrl) //should just past the base URL here, will add /UserCheck in code
+        {
+
+            // Create HttpClient instance
+            using var client = new HttpClient();
+            client.BaseAddress = new Uri(baseUrl);
+
+            // Serialize the username to JSON
+            var content = new StringContent($"\"{userName}\"");
+
+            // Set content type
+            content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+
+            // Make the POST request
+            var response = await client.PostAsync("UserGet", content);
+
+            // Check if request was successful
+            if (response.IsSuccessStatusCode)
+            {
+                // Read response content as boolean
+                User result = await response.Content.ReadAsAsync<User>();
+                return result;
+            }
+            else
+            {
+                // Throw exception for unsuccessful response
+                throw new HttpRequestException($"Failed to get user. Status code: {response.StatusCode}");
+            }
+        }
+
+
+
+
+
         //Get USER authentication. Send username and password as they are stored in the database.
         public static async Task<bool> TryPostAuthentication(string username, string encryptedPassword, string baseUrl)
         {

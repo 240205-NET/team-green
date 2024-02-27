@@ -18,16 +18,18 @@ namespace Toasted.Api.Controllers
             this._repo = repo;
         }
 
-        [HttpGet(Name = "GetUsers")]
-        public bool Get()
+        [HttpGet("/UserGet")] //returns USER by username
+        public async Task<User> GetUserInformation([FromBody] string username)
         {
-            return true;
+            User user = await _repo.GetUserByUsernameAsync(username);
+            return user;
+       
         }
 
 
 
         [HttpPost("/AuthenticateUser")]
-        public async Task<bool> GetAuthenticate([FromBody] string[] userPass)
+        public async Task<bool> PostAuthenticate([FromBody] string[] userPass)
         {
             string username = userPass[0];
             string encryptedPassword = userPass[1];
