@@ -200,10 +200,12 @@ namespace Toasted.App
 			bool loggingIn = true;
 			while (loggingIn)
 			{
-
+				username = inputFormatter("Username: ");
+				password = inputFormatter("Password: ");
 				try
 				{
-
+					
+					
 				}
 				catch
 				{
