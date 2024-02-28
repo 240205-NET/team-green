@@ -81,7 +81,7 @@ namespace Toasted.App
 					sb.AppendLine(line);
 				}
 				// Description (Moderate Rain, Heavy Rain, etc.)
-				sb.AppendLine(TitleCase(i.weather.description));
+				sb.AppendLine(TitleCase(i.weather.Description));
 				// Temperature (12°C · 54°F)
 				double celsius = FahrenheitToCelsius(i.main.temp);
 
@@ -101,15 +101,15 @@ namespace Toasted.App
 		{
 			StringBuilder sb = new StringBuilder();
 			// Shorten property references
-			string main = weatherApiResponse.current.weather.main; // Category - "Rain", "Snow", etc.
-			string description = weatherApiResponse.current.weather.description; // Further Description - "Light Rain", "Heavy Rain", etc.
-			double tempF = Math.Truncate(weatherApiResponse.current.temp); // in Fahrenheit
-			double feelsLike = weatherApiResponse.current.feelsLike; // in Fahrenheit
+			string main = weatherApiResponse.current.Weather.main; // Category - "Rain", "Snow", etc.
+			string description = weatherApiResponse.current.Weather.Description; // Further Description - "Light Rain", "Heavy Rain", etc.
+			double tempF = Math.Truncate(weatherApiResponse.current.Temp); // in Fahrenheit
+			double feelsLike = weatherApiResponse.current.FeelsLike; // in Fahrenheit
 			string countryCode = defaultLocation.country;
 
 			string countryName = GetCurrentCountry(countryCode);
 			Icon icon = GetCurrentIcon(main);
-			string dateTime = ConvertUnixTimeToDateTime(weatherApiResponse.current.dt, weatherApiResponse.timezone);
+			string dateTime = ConvertUnixTimeToDateTime(weatherApiResponse.current.Dt, weatherApiResponse.timezone);
 			string[] dateTimeArray = dateTime.Split(" ");
 			string formattedDateTime = dateTimeArray[0] + " - " + dateTimeArray[1] + " " + dateTimeArray[2] + "\n";
 			sb.AppendLine(formattedDateTime);

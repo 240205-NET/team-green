@@ -77,16 +77,37 @@ namespace Toasted.Api.Controllers
 
             bool result = await _repo.AddUserAsync(user);
 
-            //in progress
-
 
             _logger.LogInformation($"{user.username}, {user.firstName} {user.lastName}, Location: {user.location.ToString()}");
          //   throw new NotImplementedException();
             return result;
         }
-        
 
+        [HttpPatch("/updatePassword")]
+        public async Task<bool> PatchUpdatePassword([FromBody] string[] patch)
+        {
+            _logger.LogInformation($"Username: {patch[0]}, encrypted password: {patch[1]}");
+            bool result = await _repo.UpdatePasswordAsync(patch[0], patch[1]);
+            return result;
+        }
 
+        [HttpPatch("/updateTempUnit")]
+        public async Task<bool> PatchUpdateTempUnit([FromBody] string[] patch)
+        {
+            _logger.LogInformation($"Username: {patch[0]}, Temp Unit: {patch[1]}");
+            bool result = await _repo.UpdateTempUnitAsync(patch[0], char.Parse(patch[1]));
+            return result;
+        }
+
+        [HttpPatch("/updateLocation")]
+        public async Task<bool> PatchUpdateLocation([FromBody] LocationUpdateContainer locationUpdateContainer)
+        {
+            _logger.LogInformation("UPDATE LOCATION");
+            _logger.LogInformation($"Username: {locationUpdateContainer.username}, LocationJSON: {locationUpdateContainer.location.JsonThis()}");
+            bool result = await _repo.UpdateLocationAsync(locationUpdateContainer.username,locationUpdateContainer.location.JsonThis()); //send JSON string to database
+            return result;
+
+        }
 
 
 

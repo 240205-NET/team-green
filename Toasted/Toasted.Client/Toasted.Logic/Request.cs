@@ -46,8 +46,8 @@ namespace Toasted.Logic
 						{
 							id = item.GetProperty("weather")[0].GetProperty("id").GetInt32(),
 							main = item.GetProperty("weather")[0].GetProperty("main").GetString(),
-							description = item.GetProperty("weather")[0].GetProperty("description").GetString(),
-							icon = item.GetProperty("weather")[0].GetProperty("icon").GetString(),
+							Description = item.GetProperty("weather")[0].GetProperty("description").GetString(),
+							Icon = item.GetProperty("weather")[0].GetProperty("icon").GetString(),
 						}
 					};
 					forecastApiResponse.forecastList.forecastItems.Add(forecastItem);
@@ -83,17 +83,17 @@ namespace Toasted.Logic
 					name = root.GetProperty("name").GetString(),
 					current = new CurrentWeather()
 					{
-						dt = root.GetProperty("dt").GetInt64(),
-						sunrise = root.GetProperty("sys").GetProperty("sunrise").GetInt64(),
-						sunset = root.GetProperty("sys").GetProperty("sunset").GetInt64(),
-						temp = root.GetProperty("main").GetProperty("temp").GetDouble(),
-						feelsLike = root.GetProperty("main").GetProperty("feels_like").GetDouble(),
-						weather = new Weather()
+						Dt = root.GetProperty("dt").GetInt64(),
+						Sunrise = root.GetProperty("sys").GetProperty("sunrise").GetInt64(),
+						Sunset = root.GetProperty("sys").GetProperty("sunset").GetInt64(),
+						Temp = root.GetProperty("main").GetProperty("temp").GetDouble(),
+						FeelsLike = root.GetProperty("main").GetProperty("feels_like").GetDouble(),
+						Weather = new Weather()
 						{
 							id = root.GetProperty("weather")[0].GetProperty("id").GetInt32(),
 							main = root.GetProperty("weather")[0].GetProperty("main").GetString(),
-							description = root.GetProperty("weather")[0].GetProperty("description").GetString(),
-							icon = root.GetProperty("weather")[0].GetProperty("icon").GetString(),
+							Description = root.GetProperty("weather")[0].GetProperty("description").GetString(),
+							Icon = root.GetProperty("weather")[0].GetProperty("icon").GetString(),
 						}
 					}
 				};

@@ -49,4 +49,21 @@ namespace Toasted.Data
 			return SerializeJson(this);
 		}
     }
+
+
+    public class LocationUpdateContainer //This class is used to store a username and its potentially updated Location. This will be sent to the server to update the database.
+    {
+        public LocationUpdateContainer() { }
+
+        public LocationUpdateContainer(string username, Location location)
+        {
+            this.username = username;
+            this.location = location;
+        }
+        public string username { get; set; }
+        public Location location { get; set; }
+
+    }
+
+
 }

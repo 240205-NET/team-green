@@ -23,20 +23,20 @@ namespace Toasted.Logic
 
 	public class CurrentWeather
 	{
-		public long dt { get; set; }
-		public long sunrise { get; set; }
-		public long sunset { get; set; }
-		public double temp { get; set; }
-		public double feelsLike { get; set; }
-		public Weather weather { get; set; }
+		public long Dt { get; set; }
+		public long Sunrise { get; set; }
+		public long Sunset { get; set; }
+		public double Temp { get; set; }
+		public double FeelsLike { get; set; }
+		public Weather Weather { get; set; }
 	}
 
 	public class Weather
 	{
 		public int id { get; set; }
 		public string main { get; set; }
-		public string description { get; set; }
-		public string icon { get; set; }
+		public string Description { get; set; }
+		public string Icon { get; set; }
 	}
 	/*
 	public class MinutelyForecast

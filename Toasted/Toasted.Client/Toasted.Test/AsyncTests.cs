@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Toasted.Logic;
 using Toasted.App;
 using Xunit.Abstractions;
+using Newtonsoft.Json;
 
 namespace Toasted.Test
 {
@@ -92,6 +93,48 @@ namespace Toasted.Test
         }
 
 
+        [Fact]
+        public async void TryPatchPasswordAsync()
+        {
+            int seed = (int)DateTime.Now.Ticks;
+            var rand = new Random(seed);
+            string username = "Vayro";
+            string password = "Test" + rand.Next(1, 999999999).ToString();
+            bool result = await ToastedApiAsync.TryPatchPassword(username,password, testURL);
+            Assert.True(result);
+
+        }
+
+        [Fact]
+        public async void TryPatchLocationAsync()
+        {
+
+            Location local = new Location(91789, "Walnut, Ca", 37.901760, -122.061920, "USA");
+            string username = "Vayro";
+
+
+
+            LocationUpdateContainer locationUpdateContainer = new LocationUpdateContainer(username, local);
+            var json = JsonConvert.SerializeObject(locationUpdateContainer);
+
+            _testOutputHelper.WriteLine(json);
+
+            bool result = await ToastedApiAsync.TryPatchLocation(username, local, testURL);
+            Assert.True(result);
+        }
+
+
+        [Fact]
+        public async void TryPatchTempUnitAsync()
+        {
+            string username = "jane_smith";
+            char cf = 'C';
+            bool result = await ToastedApiAsync.TryPatchTempUnit(username, cf, testURL);
+            Assert.True(result);
+
+
+
+        }
 
 
 
