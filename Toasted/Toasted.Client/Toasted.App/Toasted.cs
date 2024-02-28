@@ -45,7 +45,8 @@ namespace Toasted.App
 					case "2":
 						Console.Clear();
 						Menu.currentView = "Login";
-						User loggedInUser = await this.ContentWrapper(Login);
+						User loggedInUser =  this.ContentWrapper(Login).Result;
+					//	Console.WriteLine(loggedInUser.ToString());
 						this.ContentWrapper(DisplayWeatherHomepage, loggedInUser);
 						break;
 					case "3":
@@ -225,12 +226,12 @@ namespace Toasted.App
 			// Create a new Location and then create a new User and set their defaultLocation to the new Location.
 			Location defaultLocation = await Request.GetLocation(this.OpenWeatherApiKey, zipcode, countryCode);
 			User u = new User(username, encryptedPassword, firstName, lastName, 1, email, defaultLocation, countryCode, 'F');
-            Console.Write(u.ToString());
+         //   Console.Write(u.ToString());
             // Get the current weather using the data in defaultLocation
-            //		WeatherApiResponse currentWeather = await Request.GetCurrentWeatherAsync(this.OpenWeatherApiKey, defaultLocation.lat, defaultLocation.lon);
-            bool check = await ToastedApiAsync.TryPostNewAccount(u, LocalUrl);
+           // WeatherApiResponse currentWeather = await Request.GetCurrentWeatherAsync(this.OpenWeatherApiKey, defaultLocation.lat, defaultLocation.lon);
+            bool check =  ToastedApiAsync.TryPostNewAccount(u, LocalUrl).Result;
 
-            Console.Write("test " + u.ToString());
+         //   Console.Write("test " + u.ToString());
 
             if (!check)
 			{
@@ -299,6 +300,7 @@ namespace Toasted.App
 			Weather w = currentWeather.current.Weather;
 			CurrentWeather cw = currentWeather.current;
 			WeatherHomepage homepage = new WeatherHomepage(w,cw,u);
+			homepage.DisplayCurrentWeather();
 		}
 	}
 }
