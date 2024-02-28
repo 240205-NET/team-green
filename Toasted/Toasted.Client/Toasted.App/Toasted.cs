@@ -38,11 +38,14 @@ namespace Toasted.App
 						Console.Clear();
 						Menu.currentView = "Register";
 						User registeredUser = await this.ContentWrapper(Register);
+						this.ContentWrapper(DisplayWeatherHomepage, registeredUser);
+
 						break;
 					case "2":
 						Console.Clear();
 						Menu.currentView = "Register";
 						User loggedInUser = await this.ContentWrapper(Login);
+						this.ContentWrapper(DisplayWeatherHomepage, loggedInUser);
 						break;
 					case "3":
 						Console.Clear();
@@ -89,6 +92,13 @@ namespace Toasted.App
 			ContentWrapper(() => { result = func(); });
 			return result;
 		}
+		
+		public void ContentWrapper(Action<User> content, User u)
+		{
+			Menu.GetCurrentView();
+			content(u);
+		}
+		
 		public void ContentWrapper(Action content)
 		{
 			Menu.GetCurrentView();
@@ -275,7 +285,7 @@ namespace Toasted.App
 			return Console.ReadLine();
 		}
 
-		public async void displayWeatherHomepage(User u)
+		public async void DisplayWeatherHomepage(User u)
 		{
 			
 		}
