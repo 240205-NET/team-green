@@ -35,7 +35,7 @@ namespace Taosted.App
             Console.WriteLine("\x1b[1m├──────────────┼──────────────┼──────────────┼──────────────┤\x1b[0m");
 
             // Use string formatting to align the columns
-            Console.WriteLine($"\x1b[1m│ \x1b[36m{currentWeather.Temp,-14:F2}\x1b[0m │ \x1b[36m{currentWeather.FeelsLike,-16:F2}\x1b[0m │ \x1b[36m{UnixTimeStampToDateTime(currentWeather.sunrise),-16}\x1b[0m │ \x1b[36m{UnixTimeStampToDateTime(currentWeather.sunset),-16}\x1b[0m │\x1b[0m");
+            Console.WriteLine($"\x1b[1m│ \x1b[36m{currentWeather.Temp,-14:F2}\x1b[0m │ \x1b[36m{currentWeather.FeelsLike,-16:F2}\x1b[0m │ \x1b[36m{UnixTimeStampToDateTime(currentWeather.Sunrise),-16}\x1b[0m │ \x1b[36m{UnixTimeStampToDateTime(currentWeather.Sunset),-16}\x1b[0m │\x1b[0m");
 
             Console.WriteLine("\x1b[1m└──────────────┴──────────────┴──────────────┴──────────────┘\x1b[0m");
 
