@@ -26,7 +26,7 @@ namespace Toasted.Logic
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
             // Make the POST request
-            var response = await client.PostAsync("UserCheck", content);
+            var response = await client.PostAsync("api/ExistingUser", content);
 
             // Check if request was successful
             if (response.IsSuccessStatusCode)
@@ -62,7 +62,7 @@ namespace Toasted.Logic
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
             // Make the POST request
-            var response = await client.PostAsync("GetUserByUsername", content);
+            var response = await client.PostAsync("api/User", content);
 
             // Check if request was successful
             if (response.IsSuccessStatusCode)
@@ -92,7 +92,7 @@ namespace Toasted.Logic
             string[] userPass = {username,encryptedPassword };
             var json = JsonConvert.SerializeObject(userPass);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("AuthenticateUser", content);
+            var response = await client.PostAsync("api/Authentication", content);
 
             try
             {
@@ -122,7 +122,7 @@ namespace Toasted.Logic
             string json = User.SerializeJson(user);
             var content =  new StringContent(json, Encoding.UTF8, "application/json");
             // Make the POST request
-            var response = await client.PostAsync("NewAccount", content);
+            var response = await client.PostAsync("api/Account", content);
 
             // Check if request was successful
             if (response.IsSuccessStatusCode)
@@ -150,7 +150,7 @@ namespace Toasted.Logic
             string[] userPass = { username, encryptedPassword };
             var json = JsonConvert.SerializeObject(userPass);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await client.PatchAsync("updatePassword", content);
+            var response = await client.PatchAsync("api/EncryptedPassword", content);
 
             try
             {
@@ -177,7 +177,7 @@ namespace Toasted.Logic
             using var client = new HttpClient();
             client.BaseAddress = new Uri(baseUrl);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await client.PatchAsync("updateLocation", content);
+            var response = await client.PatchAsync("api/Location", content);
             try
             {
                 patched = await response.Content.ReadAsAsync<bool>();
@@ -205,7 +205,7 @@ namespace Toasted.Logic
             string[] userPass = { username, tempUnit.ToString() };
             var json = JsonConvert.SerializeObject(userPass);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await client.PatchAsync("updateTempUnit", content);
+            var response = await client.PatchAsync("api/TempUnit", content);
 
             try
             {

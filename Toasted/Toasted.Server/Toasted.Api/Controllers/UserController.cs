@@ -18,7 +18,7 @@ namespace Toasted.Api.Controllers
             this._repo = repo;
         }
 
-        [HttpPost("/GetUserByUsername")] //returns USER by username
+        [HttpPost("/api/User")] //returns USER by username
         public async Task<User> GetUserInformation([FromBody] string username)
         {
             User user = await _repo.GetUserByUsernameAsync(username);
@@ -29,7 +29,7 @@ namespace Toasted.Api.Controllers
 
 
 
-        [HttpPost("/AuthenticateUser")]
+        [HttpPost("/api/Authentication")]
         public async Task<bool> PostAuthenticate([FromBody] string[] userPass)
         {
             string username = userPass[0];
@@ -53,8 +53,8 @@ namespace Toasted.Api.Controllers
 
 
 
-        [HttpPost("/UserCheck")]
-        public async Task<bool> Post([FromBody] string username)
+        [HttpPost("/api/ExistingUser")]
+        public async Task<bool> PostGetUserExists([FromBody] string username)
         {
             //check database if exists return true
 
@@ -70,7 +70,7 @@ namespace Toasted.Api.Controllers
             }
         }
 
-        [HttpPost("/NewAccount")]
+        [HttpPost("/api/Account")]
         public async Task<bool> PostNewUser([FromBody] User user)
         {
             _logger.LogInformation($"Username: {user.username}, Temperature Preference is: {user.tempUnit}" );
@@ -83,7 +83,7 @@ namespace Toasted.Api.Controllers
             return result;
         }
 
-        [HttpPatch("/updatePassword")]
+        [HttpPatch("/api/EncryptedPassword")]
         public async Task<bool> PatchUpdatePassword([FromBody] string[] patch)
         {
             _logger.LogInformation($"Username: {patch[0]}, encrypted password: {patch[1]}");
@@ -91,7 +91,7 @@ namespace Toasted.Api.Controllers
             return result;
         }
 
-        [HttpPatch("/updateTempUnit")]
+        [HttpPatch("/api/TempUnit")]
         public async Task<bool> PatchUpdateTempUnit([FromBody] string[] patch)
         {
             _logger.LogInformation($"Username: {patch[0]}, Temp Unit: {patch[1]}");
@@ -99,7 +99,7 @@ namespace Toasted.Api.Controllers
             return result;
         }
 
-        [HttpPatch("/updateLocation")]
+        [HttpPatch("/api/Location")]
         public async Task<bool> PatchUpdateLocation([FromBody] LocationUpdateContainer locationUpdateContainer)
         {
             _logger.LogInformation("UPDATE LOCATION");

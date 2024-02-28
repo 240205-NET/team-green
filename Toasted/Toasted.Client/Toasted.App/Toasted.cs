@@ -38,13 +38,13 @@ namespace Toasted.App
 					case "1":
 						Console.Clear();
 						Menu.currentView = "Register";
-						User registeredUser = await this.ContentWrapper(Register);
+						User registeredUser =  this.ContentWrapper(Register).Result;
 						this.ContentWrapper(DisplayWeatherHomepage, registeredUser);
 
 						break;
 					case "2":
 						Console.Clear();
-						Menu.currentView = "Register";
+						Menu.currentView = "Login";
 						User loggedInUser = await this.ContentWrapper(Login);
 						this.ContentWrapper(DisplayWeatherHomepage, loggedInUser);
 						break;
@@ -225,14 +225,19 @@ namespace Toasted.App
 			// Create a new Location and then create a new User and set their defaultLocation to the new Location.
 			Location defaultLocation = await Request.GetLocation(this.OpenWeatherApiKey, zipcode, countryCode);
 			User u = new User(username, encryptedPassword, firstName, lastName, 1, email, defaultLocation, countryCode, 'F');
-			// Get the current weather using the data in defaultLocation
-			WeatherApiResponse currentWeather = await Request.GetCurrentWeatherAsync(this.OpenWeatherApiKey, defaultLocation.lat, defaultLocation.lon);
-			bool check = await ToastedApiAsync.TryPostNewAccount(u, LocalUrl);
-			if (!check)
+            Console.Write(u.ToString());
+            // Get the current weather using the data in defaultLocation
+            //		WeatherApiResponse currentWeather = await Request.GetCurrentWeatherAsync(this.OpenWeatherApiKey, defaultLocation.lat, defaultLocation.lon);
+            bool check = await ToastedApiAsync.TryPostNewAccount(u, LocalUrl);
+
+            Console.Write("test " + u.ToString());
+
+            if (!check)
 			{
 				throw new Exception("Registration Failed");
 			}
-			
+
+
 			return await TryPostGetUser(username, LocalUrl);
 
 			// This is purely for testing purposes (just to check that the objects are successfully created)
