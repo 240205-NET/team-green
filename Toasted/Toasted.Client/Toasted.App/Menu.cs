@@ -71,7 +71,7 @@ namespace Toasted.App
 
 		public static void DisplayForecast(ForecastApiResponse forecastApiResponse)
 		{
-			List<StringBuilder> forecastStringBuilderList = GenerateForecastStringBuilderList(forecastApiResponse);
+			List<StringBuilder> forecastStringBuilderList = GenerateForecastStringBuilderList(forecastApiResponse, 9); // 9 ForecastItem  objects for a full 24-hour forecast
 			Console.WriteLine($"Showing 24-hour forecast for {forecastApiResponse.city}, {forecastApiResponse.country}");
 			for (int i = 0; i < forecastStringBuilderList.Count; i++)
 			{
@@ -79,15 +79,21 @@ namespace Toasted.App
 			};
 		}
 
-		public static List<StringBuilder> GenerateForecastStringBuilderList(ForecastApiResponse forecastApiResponse)
+		/// <summary>
+		/// This method is used to generate a List of StringBuilder objects containing the formatted output of ForecastItem objects that can then be iterated over and displayed neatly in the terminal.
+		/// </summary>
+		/// <param name="forecastApiResponse">A ForecastApiResponse object.</param>
+		/// <param name="numItems">The number of ForecastItem objects to return from the ForecastApiResponse.</param> 
+		/// <returns>A list of StringBuilder items each containing output for a single ForecastItem.</returns>
+		public static List<StringBuilder> GenerateForecastStringBuilderList(ForecastApiResponse forecastApiResponse, int numItems)
 		{
 			List<StringBuilder> sbList = new List<StringBuilder>();
-			foreach (ForecastItem i in forecastApiResponse.forecastList.forecastItems.Take(4).ToList())
+			foreach (ForecastItem i in forecastApiResponse.forecastList.forecastItems.Take(numItems).ToList())
 			{
 				StringBuilder sb = new StringBuilder();
-				sb.AppendLine("------------------------------------");
+				sb.AppendLine("---------------------------------------------\n"); // Divider between entries
 				string dateAndTime = ConvertUnixTimeToDateTime(i.dt, forecastApiResponse.timezoneOffset);
-				sb.AppendLine(dateAndTime);
+				sb.AppendLine(dateAndTime + "\n");
 				// Get the icon from the current forecast item
 				Icon icon = GetCurrentIcon(i.weather.main);
 				// Append each line of the icon to the StringBuilder
@@ -95,10 +101,9 @@ namespace Toasted.App
 				{
 					sb.AppendLine(line);
 				}
+				sb.AppendLine();
 				// Description (Moderate Rain, Heavy Rain, etc.)
 				sb.AppendLine(TitleCase(i.weather.description));
-
-				sb.AppendLine(dateAndTime);
 				// Temperature (12°C · 54°F)
 				double tempC = FahrenheitToCelsius(i.main.temp);
 
@@ -112,6 +117,11 @@ namespace Toasted.App
 		// ### Utilities ###
 		// #################
 
+		/// <summary>
+		/// Converts a string to its title case (e.g., "hello world" becomes "Hello World").
+		//  </summary>
+		/// <param name="str">The target string.</param>
+		/// <returns></returns>
 		public static string TitleCase(string str)
 		{
 			TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
@@ -169,7 +179,11 @@ namespace Toasted.App
 			TimeSpan offset = TimeSpan.FromSeconds(timezoneOffsetInSeconds); // this is the actual offset relative to UTC - it would look like "-01:30:00" if you gave it -5400 or "01:00:00" if you gave it 3600.
 			DateTimeOffset dateTimeWithOffset = dateTimeOffset.ToOffset(offset); // applies the offset to the date and time
 
-			string formattedDateTime = dateTimeWithOffset.ToString("yyyy-MM-dd HH:mm:ss tt", CultureInfo.InvariantCulture);
+			// string formattedDateTime = dateTimeWithOffset.ToString("yyyy-MM-dd HH:mm:ss tt", CultureInfo.InvariantCulture);
+			string formattedDateTime = dateTimeWithOffset.ToString("dddd, MMMM dd, yyyy - h:mm tt", CultureInfo.InvariantCulture);
+
+
+
 			return formattedDateTime;
 		}
 	}
