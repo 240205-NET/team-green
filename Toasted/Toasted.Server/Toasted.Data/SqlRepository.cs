@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
+using System.Xml;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -108,17 +110,7 @@ namespace Toasted.Data
                     cmd.Parameters.AddWithValue("@firstName", user.firstName);
                     cmd.Parameters.AddWithValue("@lastName", user.lastName);
                     cmd.Parameters.AddWithValue("@password", user.password);
-
-
-
-  
                      cmd.Parameters.AddWithValue("@tempUnit", user.tempUnit);
-     
-
-
-      
-
-
                     cmd.Parameters.AddWithValue("@countryCode", user.countryCode);
 
                   //  await cmd.ExecuteNonQueryAsync();
@@ -138,11 +130,84 @@ namespace Toasted.Data
             return success;
         }
 
-      /*  Task<bool> IRepository.AddUserAsync(User user)
+
+
+
+        public async Task<bool> UpdatePasswordAsync(string username, string encryptedPassword) //pass username and new password to update password
         {
-            throw new NotImplementedException();
+            bool success = false;
+            using SqlConnection connection = new SqlConnection(this._connectionString);
+            {
+                await connection.OpenAsync();
+                string sql = "Update[dbo].[User] " +
+                             "SET password = @password " +
+                              "WHERE Username = @username";
+                using SqlCommand cmd = new SqlCommand(sql, connection);
+                {
+                    cmd.Parameters.AddWithValue("@username",username);
+                    cmd.Parameters.AddWithValue("@password", encryptedPassword);
+                    int rowsAffected = await cmd.ExecuteNonQueryAsync();
+                    success = rowsAffected > 0;
+                }
+            }
+            return success;
         }
 
-        */
+        public async Task<bool> UpdateTempUnitAsync(string username, char tempUnit)
+        {
+
+            bool success = false;
+            using SqlConnection connection = new SqlConnection(this._connectionString);
+            {
+                await connection.OpenAsync();
+                string sql = "Update[dbo].[User] " +
+                             "SET tempUnit = @tempUnit " +
+                              "WHERE Username = @username";
+                using SqlCommand cmd = new SqlCommand(sql, connection);
+                {
+                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.Parameters.AddWithValue("@tempUnit", tempUnit);
+                    int rowsAffected = await cmd.ExecuteNonQueryAsync();
+                    success = rowsAffected > 0;
+                }
+            }
+            return success;
+        }
+
+        public async Task<bool> UpdateLocationAsync(string username, string locationJSON)
+        {
+            bool success = false;
+            using SqlConnection connection = new SqlConnection(this._connectionString);
+            {
+                await connection.OpenAsync();
+                string sql = "Update[dbo].[User] " +
+                             "SET location = @locationJSON " +
+                              "WHERE Username = @username";
+                using SqlCommand cmd = new SqlCommand(sql, connection);
+                {
+                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.Parameters.AddWithValue("@locationJSON", locationJSON);
+                    int rowsAffected = await cmd.ExecuteNonQueryAsync();
+                    success = rowsAffected > 0;
+                }
+            }
+            return success;
+        }
+
+
+
+
+
+
+
+
+
+
+        /*  Task<bool> IRepository.AddUserAsync(User user)
+          {
+              throw new NotImplementedException();
+          }
+
+          */
     }
 }

@@ -110,12 +110,6 @@ namespace Toasted.Logic
             return authenticated;
         }
 
-
-
-
-
-
-
         //Posts a new USER, should be used to create a new account as stored in a User object
         public static async Task<bool> TryPostNewAccount(User user, string baseUrl){
 
@@ -146,6 +140,85 @@ namespace Toasted.Logic
       
         }
 
+        //patch password
+        public static async Task<bool> TryPatchPassword(string username, string encryptedPassword, string baseUrl)
+        {
+            bool patched = false;
+            using var client = new HttpClient();
+            client.BaseAddress = new Uri(baseUrl);
+
+            string[] userPass = { username, encryptedPassword };
+            var json = JsonConvert.SerializeObject(userPass);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await client.PatchAsync("updatePassword", content);
+
+            try
+            {
+                patched = await response.Content.ReadAsAsync<bool>();
+            }
+            catch
+            {
+                throw new HttpRequestException($"Server error. Status code: {response.StatusCode}");
+            }
+            return patched;
+
+        }
+
+
+
+
+
+        //patch location
+        public static async Task<bool> TryPatchLocation(string username, Location location,string baseUrl)
+        {
+            LocationUpdateContainer locationUpdateContainer = new LocationUpdateContainer(username, location);
+            var json = JsonConvert.SerializeObject(locationUpdateContainer);
+            bool patched = false;
+            using var client = new HttpClient();
+            client.BaseAddress = new Uri(baseUrl);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await client.PatchAsync("updateLocation", content);
+            try
+            {
+                patched = await response.Content.ReadAsAsync<bool>();
+            }
+            catch
+            {
+                throw new HttpRequestException($"Server error. Status code: {response.StatusCode}");
+            }
+ 
+            return patched;
+
+
+
+        }
+
+
+
+        //patch temp unit
+        public static async Task<bool> TryPatchTempUnit(string username, char tempUnit, string baseUrl)
+        {
+            bool patched = false;
+            using var client = new HttpClient();
+            client.BaseAddress = new Uri(baseUrl);
+
+            string[] userPass = { username, tempUnit.ToString() };
+            var json = JsonConvert.SerializeObject(userPass);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await client.PatchAsync("updateTempUnit", content);
+
+            try
+            {
+                patched = await response.Content.ReadAsAsync<bool>();
+            }
+            catch
+            {
+                throw new HttpRequestException($"Server error. Status code: {response.StatusCode}");
+            }
+            return patched;
+
+
+        }
 
 
     }

@@ -8,5 +8,11 @@ namespace Toasted.Data
         public Task<User> GetUserByUsernameAsync(string username);
 
         public Task<bool> AddUserAsync(User user);
+
+        public Task<bool> UpdatePasswordAsync(string username, string encryptedPassword);
+
+        public Task<bool> UpdateTempUnitAsync(string username, char tempUnit);
+
+        public Task<bool> UpdateLocationAsync(string username, string locationJSON);
     }
 }

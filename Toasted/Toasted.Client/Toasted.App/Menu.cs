@@ -103,7 +103,7 @@ namespace Toasted.App
 				}
 				sb.AppendLine();
 				// Description (Moderate Rain, Heavy Rain, etc.)
-				sb.AppendLine(TitleCase(i.weather.description));
+				sb.AppendLine(TitleCase(i.weather.Description));
 				// Temperature (12°C · 54°F)
 				double tempC = FahrenheitToCelsius(i.main.temp);
 
@@ -111,6 +111,43 @@ namespace Toasted.App
 				sbList.Add(sb);
 			}
 			return sbList;
+		}
+
+		public static void DisplayForecast(ForecastApiResponse forecastApiResponse)
+		{
+			List<StringBuilder> forecastStringBuilderList = GenerateForecastStringBuilderList(forecastApiResponse.forecastList);
+			DisplayForecastItems(forecastStringBuilderList);
+		}
+
+		public static void DisplayCurrentWeather(WeatherApiResponse weatherApiResponse, Location defaultLocation)
+		{
+			StringBuilder sb = new StringBuilder();
+			// Shorten property references
+			string main = weatherApiResponse.current.Weather.main; // Category - "Rain", "Snow", etc.
+			string description = weatherApiResponse.current.Weather.Description; // Further Description - "Light Rain", "Heavy Rain", etc.
+			double tempF = Math.Truncate(weatherApiResponse.current.Temp); // in Fahrenheit
+			double feelsLike = weatherApiResponse.current.FeelsLike; // in Fahrenheit
+			string countryCode = defaultLocation.country;
+
+			string countryName = GetCurrentCountry(countryCode);
+			Icon icon = GetCurrentIcon(main);
+			string dateTime = ConvertUnixTimeToDateTime(weatherApiResponse.current.Dt, weatherApiResponse.timezone);
+			string[] dateTimeArray = dateTime.Split(" ");
+			string formattedDateTime = dateTimeArray[0] + " - " + dateTimeArray[1] + " " + dateTimeArray[2] + "\n";
+			sb.AppendLine(formattedDateTime);
+			// City + Country
+			string cityAndCountry = $"{weatherApiResponse.name}, {countryName}\n";
+			sb.AppendLine(cityAndCountry);
+			// ASCII icon
+			sb.AppendLine(icon.ToString());
+			// Description (Moderate Rain, Heavy Rain, etc.)
+			sb.AppendLine(TitleCase(description));
+			// Temperature (12°C · 54°F)
+			double tempC = FahrenheitToCelsius(tempF);
+
+			sb.AppendLine(FormatTemperatureInColor(tempC, tempF));
+			Console.WriteLine(sb);
+
 		}
 
 		// #################
