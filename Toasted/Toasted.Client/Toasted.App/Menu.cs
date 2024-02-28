@@ -50,7 +50,7 @@ namespace Toasted.App
 		{
 			StringBuilder sb = new StringBuilder();
 			// Date and time (2024-02-27 19:00:00 PM)
-			string dateTime = ConvertUnixTimeToDateTime(weatherApiResponse.current.dt, weatherApiResponse.timezone);
+			string dateTime = ConvertUnixTimeToDateTime(weatherApiResponse.current.Dt, weatherApiResponse.timezone);
 			string[] dateTimeArray = dateTime.Split(" "); // [0] = date, [1] = time, [2] = am or pm
 			string formattedDateTime = dateTimeArray[0] + " - " + dateTimeArray[1] + " " + dateTimeArray[2] + "\n";
 			sb.AppendLine(formattedDateTime);
@@ -58,12 +58,12 @@ namespace Toasted.App
 			string cityAndCountry = $"{weatherApiResponse.name}, {GetCurrentCountry(defaultLocation.country)}\n";
 			sb.AppendLine(cityAndCountry);
 			// ASCII icon
-			Icon icon = GetCurrentIcon(weatherApiResponse.current.weather.main);
+			Icon icon = GetCurrentIcon(weatherApiResponse.current.Weather.main);
 			sb.AppendLine(icon.ToString());
 			// Description (Moderate Rain, Heavy Rain, etc.)
-			sb.AppendLine(TitleCase(weatherApiResponse.current.weather.description));
+			sb.AppendLine(TitleCase(weatherApiResponse.current.Weather.Description));
 			// Temperature (12°C · 54°F)
-			double tempF = Math.Truncate(weatherApiResponse.current.temp), tempC = FahrenheitToCelsius(tempF);
+			double tempF = Math.Truncate(weatherApiResponse.current.Temp), tempC = FahrenheitToCelsius(tempF);
 			sb.AppendLine(FormatTemperatureInColor(tempC, tempF));
 
 			Console.WriteLine(sb);
@@ -113,12 +113,15 @@ namespace Toasted.App
 			return sbList;
 		}
 
+		/*
 		public static void DisplayForecast(ForecastApiResponse forecastApiResponse)
 		{
 			List<StringBuilder> forecastStringBuilderList = GenerateForecastStringBuilderList(forecastApiResponse.forecastList);
 			DisplayForecastItems(forecastStringBuilderList);
 		}
+		*/
 
+		/*
 		public static void DisplayCurrentWeather(WeatherApiResponse weatherApiResponse, Location defaultLocation)
 		{
 			StringBuilder sb = new StringBuilder();
@@ -149,6 +152,7 @@ namespace Toasted.App
 			Console.WriteLine(sb);
 
 		}
+		*/
 
 		// #################
 		// ### Utilities ###

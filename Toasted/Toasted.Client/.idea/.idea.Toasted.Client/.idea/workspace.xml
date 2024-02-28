@@ -10,7 +10,6 @@
     <list default="true" id="1cbd5604-fd8b-45a8-8814-65a4fbb1922b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Toasted.Client/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Toasted.Client/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Toasted.App/Toasted.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Toasted.App/Toasted.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Toasted.Logic/UsernameIsValid.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Toasted.Logic/UsernameIsValid.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,10 +29,10 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ab7345c0dbf14c319279dab3e8c413ebc40c00/bf/dd4c8006/Object.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 1
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="2cmsJuvyNnaIwOfQQWoofUDooTn" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -43,7 +42,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "LogIn",
+    "git-widget-placeholder": "Vish-login-homepage",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
