@@ -8,6 +8,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1cbd5604-fd8b-45a8-8814-65a4fbb1922b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Toasted.Client/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Toasted.Client/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Toasted.App/Toasted.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Toasted.App/Toasted.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

@@ -26,7 +26,7 @@ namespace Taosted.App
             Console.WriteLine($"║             Current Weather for {user.location.name.ToUpper()}             ║");
             Console.WriteLine("╚═══════════════════════════════════════════════════════════╝\n");
 
-            Console.WriteLine($"{UnixTimeStampToDateTime(currentWeather.dt)}\n");
+            Console.WriteLine($"{UnixTimeStampToDateTime(currentWeather.Dt)}\n");
 
             DisplayIcon();
 
@@ -35,7 +35,7 @@ namespace Taosted.App
             Console.WriteLine("\x1b[1m├──────────────┼──────────────┼──────────────┼──────────────┤\x1b[0m");
 
             // Use string formatting to align the columns
-            Console.WriteLine($"\x1b[1m│ \x1b[36m{currentWeather.temp,-14:F2}\x1b[0m │ \x1b[36m{currentWeather.feelsLike,-16:F2}\x1b[0m │ \x1b[36m{UnixTimeStampToDateTime(currentWeather.sunrise),-16}\x1b[0m │ \x1b[36m{UnixTimeStampToDateTime(currentWeather.sunset),-16}\x1b[0m │\x1b[0m");
+            Console.WriteLine($"\x1b[1m│ \x1b[36m{currentWeather.Temp,-14:F2}\x1b[0m │ \x1b[36m{currentWeather.FeelsLike,-16:F2}\x1b[0m │ \x1b[36m{UnixTimeStampToDateTime(currentWeather.sunrise),-16}\x1b[0m │ \x1b[36m{UnixTimeStampToDateTime(currentWeather.sunset),-16}\x1b[0m │\x1b[0m");
 
             Console.WriteLine("\x1b[1m└──────────────┴──────────────┴──────────────┴──────────────┘\x1b[0m");
 
@@ -48,7 +48,7 @@ namespace Taosted.App
 
         public void DisplayIcon(){
 
-            if (weather.icon == "01d"){
+            if (weather.Icon == "01d"){
                 Console.WriteLine(@"   
 
                         ======                       
@@ -69,7 +69,7 @@ namespace Taosted.App
                                                      ");
             }
 
-            if(weather.icon == "02d")
+            if(weather.Icon == "02d")
             {
                 Console.WriteLine(@"
                                      
@@ -92,7 +92,7 @@ namespace Taosted.App
                 ");
             }
     
-            if(weather.icon== "03d"){
+            if(weather.Icon== "03d"){
                 Console.WriteLine(@"
                                                                
                      ......                          
@@ -110,7 +110,7 @@ namespace Taosted.App
                 ");
             }
 
-            if(weather.icon == "04d" || weather.description == "overcast clouds"){
+            if(weather.Icon == "04d" || weather.Description == "overcast clouds"){
                 Console.WriteLine(@"
                                                            
                             ####                     
@@ -130,7 +130,7 @@ namespace Taosted.App
                 ");
             }
 
-            if(weather.icon == "09d"){
+            if(weather.Icon == "09d"){
                 Console.WriteLine(@"
                               
                           XXXXXX                     
@@ -152,7 +152,7 @@ namespace Taosted.App
                 ");
             }
 
-            if(weather.icon == "10d"){
+            if(weather.Icon == "10d"){
                 Console.WriteLine(@"
                                                      
                              ++++++++                
@@ -174,7 +174,7 @@ namespace Taosted.App
                 ");
             }
 
-            if(weather.icon == "11d"){
+            if(weather.Icon == "11d"){
                 Console.WriteLine(@"
                                               
                          XXXXXXXXX                   
@@ -195,7 +195,7 @@ namespace Taosted.App
                 ");
             }
 
-            if(weather.icon == "13d"){
+            if(weather.Icon == "13d"){
                 Console.WriteLine(@"
                     
                       XX XXX XX                      
@@ -214,7 +214,7 @@ namespace Taosted.App
             
             }
 
-             if(weather.icon == "50d"){
+             if(weather.Icon == "50d"){
                 Console.WriteLine(@"
                                                 
                       XXXXXXXXXX                         
