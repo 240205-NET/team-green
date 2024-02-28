@@ -37,12 +37,12 @@ namespace Toasted.App
 					case "1":
 						Console.Clear();
 						Menu.currentView = "Register";
-						this.ContentWrapper(Register);
+						User registeredUser = await this.ContentWrapper(Register);
 						break;
 					case "2":
 						Console.Clear();
 						Menu.currentView = "Register";
-						this.ContentWrapper(Login);
+						User loggedInUser = await this.ContentWrapper(Login);
 						break;
 					case "3":
 						Console.Clear();
@@ -83,13 +83,19 @@ namespace Toasted.App
 			Menu.DisplayForecast(forecastApiResponse);
 		}
 
+		public User ContentWrapper<User>(Func<User> func)
+		{
+			User result = default(User);
+			ContentWrapper(() => { result = func(); });
+			return result;
+		}
 		public void ContentWrapper(Action content)
 		{
 			Menu.GetCurrentView();
 			content();
 		}
 		//register method with loops for each field and check for errors
-		public async void Register()
+		public async Task<User> Register()
 		{
 			string username = "";
 			string password = "";
@@ -211,16 +217,12 @@ namespace Toasted.App
 			// Get the current weather using the data in defaultLocation
 			WeatherApiResponse currentWeather = await Request.GetCurrentWeatherAsync(this.OpenWeatherApiKey, defaultLocation.lat, defaultLocation.lon);
 			bool check = await ToastedApiAsync.TryPostNewAccount(u, LocalUrl);
-			if (check)
+			if (!check)
 			{
-				//User has been registered go to Weather home page with user logged in
-				//return;
+				throw new Exception("Registration Failed");
 			}
-			else
-			{
-				//Should not happen but just in case server error isnt handled
-				Console.WriteLine("Registration Failed");
-			}
+			
+			return await TryPostGetUser(username, LocalUrl);
 
 			// This is purely for testing purposes (just to check that the objects are successfully created)
 			/*
@@ -241,9 +243,9 @@ namespace Toasted.App
 		}
 
 		//login method with loop for checking incorrect user pass combo
-		public async void Login()
+		public async Task<User> Login()
 		{
-
+			User u = null!;
 			string username = "";
 			string password = "";
 
@@ -256,6 +258,7 @@ namespace Toasted.App
 					password = inputFormatter("Password: ");
 					string encryptedPassword = PasswordEncryptor.Encrypt(password);
 					UserValidityChecks.IsLoginValid(username, encryptedPassword);
+					u = await TryPostGetUser(username, LocalUrl);
 					loggingIn = false;
 				}
 				catch (Exception e)
@@ -263,11 +266,18 @@ namespace Toasted.App
 					Console.WriteLine(e.Message);
 				}
 			}
+
+			return u;
 		}
 		private string inputFormatter(string s)
 		{
 			Console.WriteLine(s);
 			return Console.ReadLine();
+		}
+
+		public async void displayWeatherHomepage(User u)
+		{
+			
 		}
 	}
 }
