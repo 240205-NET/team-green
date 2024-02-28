@@ -69,11 +69,11 @@ namespace Toasted.App
 			// functions that execute the options
 		}
 
-		public async void GetCurrentWeather(User u)
+		public async void GetCurrentWeather()
 		{
-			Location defaultLocation = await Request.GetLocation(this.OpenWeatherApiKey, u.location.zip.ToString(), u.countryCode);
+			Location defaultLocation = await Request.GetLocation(this.OpenWeatherApiKey, "91401", "US");
 
-			//User u = new User("gumshoe", "Somepass123", "M", "S", 1, "e@mail.com", defaultLocation, "US", 'F');
+			User u = new User("gumshoe", "Somepass123", "M", "S", 1, "e@mail.com", defaultLocation, "US", 'F');
 
 			WeatherApiResponse currentWeather = await Request.GetCurrentWeatherAsync(this.OpenWeatherApiKey, defaultLocation.lat, defaultLocation.lon);
 
@@ -288,7 +288,12 @@ namespace Toasted.App
 
 		public async void DisplayWeatherHomepage(User u)
 		{
-			WeatherHomepage homepage = new WeatherHomepage(,,u);
+			
+			Location defaultLocation = await Request.GetLocation(this.OpenWeatherApiKey, u.location.zip.ToString(), u.countryCode);
+			WeatherApiResponse currentWeather = await Request.GetCurrentWeatherAsync(this.OpenWeatherApiKey, defaultLocation.lat, defaultLocation.lon);
+			Weather w = currentWeather.current.Weather;
+			CurrentWeather cw = currentWeather.current;
+			WeatherHomepage homepage = new WeatherHomepage(w,cw,u);
 		}
 	}
 }
