@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using System.Runtime.InteropServices;
 using Toasted.Logic;
 using System.Globalization;
 
@@ -8,29 +7,18 @@ namespace Toasted.App
 {
 	public static class Menu
 	{
-
-		[DllImport("kernel32.dll")]
-		private static extern bool GetConsoleMode(IntPtr hConsoleHandle, out uint lpMode);
-
-		[DllImport("kernel32.dll")]
-		private static extern bool SetConsoleMode(IntPtr hConsoleHandle, uint dwMode);
-
-		[DllImport("kernel32.dll", SetLastError = true)]
-		private static extern IntPtr GetStdHandle(int nStdHandle);
-
-		private const int STD_OUTPUT_HANDLE = -11;
-		private const uint ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x0004;
 		public static string currentView { get; set; } = "Main Menu";
-		// public static void SetCurrentView(string currentView = "Main Menu")
-		// {
-		// 	Menu.currentView = currentView;
-		// }
 
 		public static void GetCurrentView()
 		{
 			Console.WriteLine("+++++++++++++++++++++++++");
 			Console.WriteLine($" {Menu.currentView}");
 			Console.WriteLine("+++++++++++++++++++++++++\n");
+		}
+
+		public static void DisplayExitMessage()
+		{
+			Console.WriteLine("Successfully Exited Application.\n");
 		}
 
 		public static void DisplayMenuView()
@@ -58,21 +46,48 @@ namespace Toasted.App
 			");
 		}
 
-		public static void DisplayForecastItems(List<StringBuilder> forecastItemOutput)
+		public static void DisplayCurrentWeather(WeatherApiResponse weatherApiResponse, Location defaultLocation)
 		{
-			for (int i = 0; i < forecastItemOutput.Count; i++)
-			{
-				Console.WriteLine(forecastItemOutput[i]);
-			}
+			StringBuilder sb = new StringBuilder();
+			// Date and time (2024-02-27 19:00:00 PM)
+			string dateTime = ConvertUnixTimeToDateTime(weatherApiResponse.current.dt, weatherApiResponse.timezone);
+			string[] dateTimeArray = dateTime.Split(" "); // [0] = date, [1] = time, [2] = am or pm
+			string formattedDateTime = dateTimeArray[0] + " - " + dateTimeArray[1] + " " + dateTimeArray[2] + "\n";
+			sb.AppendLine(formattedDateTime);
+			// City + Country (Los Angeles, US)
+			string cityAndCountry = $"{weatherApiResponse.name}, {GetCurrentCountry(defaultLocation.country)}\n";
+			sb.AppendLine(cityAndCountry);
+			// ASCII icon
+			Icon icon = GetCurrentIcon(weatherApiResponse.current.weather.main);
+			sb.AppendLine(icon.ToString());
+			// Description (Moderate Rain, Heavy Rain, etc.)
+			sb.AppendLine(TitleCase(weatherApiResponse.current.weather.description));
+			// Temperature (12°C · 54°F)
+			double tempF = Math.Truncate(weatherApiResponse.current.temp), tempC = FahrenheitToCelsius(tempF);
+			sb.AppendLine(FormatTemperatureInColor(tempC, tempF));
+
+			Console.WriteLine(sb);
 		}
 
-		public static List<StringBuilder> GenerateForecastStringBuilderList(ForecastList forecastList)
+		public static void DisplayForecast(ForecastApiResponse forecastApiResponse)
+		{
+			List<StringBuilder> forecastStringBuilderList = GenerateForecastStringBuilderList(forecastApiResponse);
+			Console.WriteLine($"Showing 24-hour forecast for {forecastApiResponse.city}, {forecastApiResponse.country}");
+			for (int i = 0; i < forecastStringBuilderList.Count; i++)
+			{
+				Console.WriteLine(forecastStringBuilderList[i]);
+			};
+		}
+
+		public static List<StringBuilder> GenerateForecastStringBuilderList(ForecastApiResponse forecastApiResponse)
 		{
 			List<StringBuilder> sbList = new List<StringBuilder>();
-			foreach (ForecastItem i in forecastList.forecastItems.Take(4).ToList())
+			foreach (ForecastItem i in forecastApiResponse.forecastList.forecastItems.Take(4).ToList())
 			{
-				// Create new StringBuilder for current forecast item
 				StringBuilder sb = new StringBuilder();
+				sb.AppendLine("------------------------------------");
+				string dateAndTime = ConvertUnixTimeToDateTime(i.dt, forecastApiResponse.timezoneOffset);
+				sb.AppendLine(dateAndTime);
 				// Get the icon from the current forecast item
 				Icon icon = GetCurrentIcon(i.weather.main);
 				// Append each line of the icon to the StringBuilder
@@ -82,51 +97,20 @@ namespace Toasted.App
 				}
 				// Description (Moderate Rain, Heavy Rain, etc.)
 				sb.AppendLine(TitleCase(i.weather.description));
-				// Temperature (12°C · 54°F)
-				double celsius = FahrenheitToCelsius(i.main.temp);
 
-				sb.AppendLine(FormatTemperatureInColor(celsius, i.main.temp));
+				sb.AppendLine(dateAndTime);
+				// Temperature (12°C · 54°F)
+				double tempC = FahrenheitToCelsius(i.main.temp);
+
+				sb.AppendLine(FormatTemperatureInColor(tempC, i.main.temp));
 				sbList.Add(sb);
 			}
 			return sbList;
 		}
 
-		public static void DisplayForecast(ForecastApiResponse forecastApiResponse)
-		{
-			List<StringBuilder> forecastStringBuilderList = GenerateForecastStringBuilderList(forecastApiResponse.forecastList);
-			DisplayForecastItems(forecastStringBuilderList);
-		}
-
-		public static void DisplayCurrentWeather(WeatherApiResponse weatherApiResponse, Location defaultLocation)
-		{
-			StringBuilder sb = new StringBuilder();
-			// Shorten property references
-			string main = weatherApiResponse.current.weather.main; // Category - "Rain", "Snow", etc.
-			string description = weatherApiResponse.current.weather.description; // Further Description - "Light Rain", "Heavy Rain", etc.
-			double tempF = Math.Truncate(weatherApiResponse.current.temp); // in Fahrenheit
-			double feelsLike = weatherApiResponse.current.feelsLike; // in Fahrenheit
-			string countryCode = defaultLocation.country;
-
-			string countryName = GetCurrentCountry(countryCode);
-			Icon icon = GetCurrentIcon(main);
-			string dateTime = ConvertUnixTimeToDateTime(weatherApiResponse.current.dt, weatherApiResponse.timezone);
-			string[] dateTimeArray = dateTime.Split(" ");
-			string formattedDateTime = dateTimeArray[0] + " - " + dateTimeArray[1] + " " + dateTimeArray[2] + "\n";
-			sb.AppendLine(formattedDateTime);
-			// City + Country
-			string cityAndCountry = $"{weatherApiResponse.name}, {countryName}\n";
-			sb.AppendLine(cityAndCountry);
-			// ASCII icon
-			sb.AppendLine(icon.ToString());
-			// Description (Moderate Rain, Heavy Rain, etc.)
-			sb.AppendLine(TitleCase(description));
-			// Temperature (12°C · 54°F)
-			double tempC = FahrenheitToCelsius(tempF);
-
-			sb.AppendLine(FormatTemperatureInColor(tempC, tempF));
-			Console.WriteLine(sb);
-
-		}
+		// #################
+		// ### Utilities ###
+		// #################
 
 		public static string TitleCase(string str)
 		{
@@ -181,20 +165,12 @@ namespace Toasted.App
 
 		public static string ConvertUnixTimeToDateTime(long unixTime, int timezoneOffsetInSeconds)
 		{
-			DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(unixTime);
+			DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(unixTime); // The date and time with the UTC offset - looks like: 2021-01-01 18:00:00 +05:00
+			TimeSpan offset = TimeSpan.FromSeconds(timezoneOffsetInSeconds); // this is the actual offset relative to UTC - it would look like "-01:30:00" if you gave it -5400 or "01:00:00" if you gave it 3600.
+			DateTimeOffset dateTimeWithOffset = dateTimeOffset.ToOffset(offset); // applies the offset to the date and time
 
-			TimeSpan offset = TimeSpan.FromSeconds(timezoneOffsetInSeconds);
-			DateTimeOffset dateTimeWithOffset = dateTimeOffset.ToOffset(offset);
-
-			// Format the DateTimeOffset to a readable string
-			string formattedDateTime = dateTimeWithOffset.ToString("yyyy-MM-dd H:m:s tt", CultureInfo.InvariantCulture);
-
+			string formattedDateTime = dateTimeWithOffset.ToString("yyyy-MM-dd HH:mm:ss tt", CultureInfo.InvariantCulture);
 			return formattedDateTime;
-		}
-
-		public static void DisplayExitMessage()
-		{
-			Console.WriteLine("Successfully Exited Application.\n");
 		}
 	}
 }

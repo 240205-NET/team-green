@@ -69,7 +69,7 @@ namespace Toasted.App
 		{
 			Location defaultLocation = await Request.GetLocation(this.OpenWeatherApiKey, "91401", "US");
 
-			User u = new User("gumshoe", "Somepass123", "M", "S", 1, "e@mail.com", defaultLocation, "US");
+			User u = new User("gumshoe", "Somepass123", "M", "S", 1, "e@mail.com", defaultLocation, "US", 'F');
 
 			WeatherApiResponse currentWeather = await Request.GetCurrentWeatherAsync(this.OpenWeatherApiKey, defaultLocation.lat, defaultLocation.lon);
 

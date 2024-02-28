@@ -26,9 +26,13 @@ namespace Toasted.Logic
 
 				var forecastApiResponse = new ForecastApiResponse
 				{
+					city = root.GetProperty("city").GetProperty("name").ToString(),
+					country = root.GetProperty("city").GetProperty("country").ToString(),
+					timezoneOffset = Int32.Parse(root.GetProperty("city").GetProperty("timezone").ToString()),
 					forecastList = new ForecastList
 					{
-						forecastItems = new List<ForecastItem>()
+						forecastItems = new List<ForecastItem>(),
+
 					}
 				};
 
