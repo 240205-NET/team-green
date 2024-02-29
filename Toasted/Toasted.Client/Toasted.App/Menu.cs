@@ -227,5 +227,6 @@ namespace Toasted.App
 
 			return formattedDateTime;
 		}
+		
 	}
 }
