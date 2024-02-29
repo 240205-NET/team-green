@@ -13,15 +13,18 @@ Stand-ups:
 Lawrance: 
 - Created a user class with a constructor 
 - No problems
+
 Vishal:
 - Broke down test cases for user name and password
 - Problems: figuring out how encryption works 
 - Will solve the encryption problem
+  
 Matthew:
 - Made functions to query weather API
 - Various classes for WeatherAPI responses
 - Problem: OpenWeatherAPI apikey
 - Will code front-end
+  
 Meryem: 
 - Created tables 
 - Connected the database 
@@ -48,6 +51,7 @@ Matthew:
 - Added artwork
 - Problems: artworks are not horizontal but vertical
 - Have the forecast for hourly, daily
+  
 Meryem:
 - Created  WeatherHomepage class including displayCurrentWeather method for the weather homepage
 - Formatted lines and values with ASCII color codes
@@ -61,6 +65,7 @@ Lawrence:
 - Created API methods to handle the patch to change password, location, and temp reference, and created async functions on the client side.
 - Verified email, check if the email exists
 - Created tests for all async classes
+  
 Matthew:
 - Added hourly icons
 - Refactor menu.cs
@@ -68,10 +73,12 @@ Matthew:
 - Get 24hr forecast
 - Get 5-day forecast and display it
 - Couldn’t get the menu exit, it’s fixed later
+  
 Meryem:
 - Created display hourly forecast method for weatherHomepage
 - Formatted lines with ASCII color codes
 - Created table lines using ASCII box drawing characters
+  
 Visshal:
 - Initial menu works
 - Register and login is fixed
