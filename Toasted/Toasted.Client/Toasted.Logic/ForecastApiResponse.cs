@@ -45,24 +45,53 @@ namespace Toasted.Logic
 	{
 		public static List<ForecastItem> NarrowDownForecasts(ForecastApiResponse response)
 		{
-			// Adjust timezoneOffset from seconds to hours (if your API provides offset in seconds)
 			int timezoneOffsetHours = response.timezoneOffset / 3600;
-
-			// Group by date, considering the timezone offset
-			var groupedByDate = response.forecastList.forecastItems
-				.GroupBy(item => DateTimeOffset.FromUnixTimeSeconds(item.dt).AddHours(timezoneOffsetHours).Date)
+			var forecastsInLocalTime = response.forecastList.forecastItems
+				.Select(item => new
+				{
+					Forecast = item,
+					LocalDateTime = DateTimeOffset.FromUnixTimeSeconds(item.dt).AddHours(timezoneOffsetHours)
+				})
 				.ToList();
 
-			// Select one forecast per group/date
+			var groupedByLocalDate = forecastsInLocalTime
+				.GroupBy(item => item.LocalDateTime.Date)
+				.ToList();
+
 			var narrowedDownList = new List<ForecastItem>();
-			foreach (var group in groupedByDate)
+
+			// Process only the first five groups (days)
+			foreach (var group in groupedByLocalDate.Take(5))
 			{
-				// Here, we're simply taking the first forecast of each day.
-				// You can adjust the logic to select a different forecast per day if needed.
-				narrowedDownList.Add(group.First());
+				var now = DateTimeOffset.UtcNow.AddHours(timezoneOffsetHours);
+				var today = now.Date;
+				var groupDate = group.Key;
+
+				ForecastItem selectedForecast = null;
+
+				// For today, if it's after 1 PM, select the next available forecast.
+				// For other days or today before 1 PM, aim for around noon.
+				if (groupDate == today && now.Hour >= 13)
+				{
+					selectedForecast = group.FirstOrDefault(item => item.LocalDateTime.Hour > now.Hour)?.Forecast;
+				}
+				else
+				{
+					// Aim for the forecast closest to noon or the first available after noon
+					var targetHour = groupDate == today && now.Hour >= 1 ? 13 : 12; // Use 13 (1 PM) if we're past 1 AM today, otherwise aim for 12
+					selectedForecast = group.OrderBy(item => Math.Abs(item.LocalDateTime.Hour - targetHour))
+											.ThenBy(item => item.LocalDateTime.Hour >= targetHour)
+											.FirstOrDefault()?.Forecast;
+				}
+
+				if (selectedForecast != null)
+				{
+					narrowedDownList.Add(selectedForecast);
+				}
 			}
 
 			return narrowedDownList;
 		}
+
 	}
 }

@@ -112,7 +112,7 @@ namespace Toasted.App
 			}
 			return sbList;
 		}
-		public static List<StringBuilder> GenerateForecastStringBuilderList2(List<ForecastItem> forecastItems, int timezoneOffset)
+		public static List<StringBuilder> GenerateFiveDayForecastStringBuilderList(List<ForecastItem> forecastItems, int timezoneOffset)
 		{
 			List<StringBuilder> sbList = new List<StringBuilder>();
 			foreach (ForecastItem i in forecastItems)
@@ -135,12 +135,12 @@ namespace Toasted.App
 			}
 			return sbList;
 		}
-		public static void DisplayForecast2(ForecastApiResponse forecastApiResponse)
+		public static void DisplayFiveDayForecast(ForecastApiResponse forecastApiResponse)
 		{
 			// Narrow down to one forecast per day
-			var reducedForecastItems = NarrowDownForecasts(forecastApiResponse);
+			var reducedForecastItems = WeatherForecastProcessor.NarrowDownForecasts(forecastApiResponse);
 
-			List<StringBuilder> forecastStringBuilderList = GenerateForecastStringBuilderList2(reducedForecastItems, forecastApiResponse.timezoneOffset);
+			List<StringBuilder> forecastStringBuilderList = GenerateFiveDayForecastStringBuilderList(reducedForecastItems, forecastApiResponse.timezoneOffset);
 			Console.WriteLine($"Showing forecast for {forecastApiResponse.city}, {forecastApiResponse.country}");
 			foreach (var sb in forecastStringBuilderList)
 			{
@@ -148,19 +148,7 @@ namespace Toasted.App
 			}
 		}
 
-		private static List<ForecastItem> NarrowDownForecasts(ForecastApiResponse response)
-		{
-			// Adjust timezoneOffset from seconds to hours (if your API provides offset in seconds)
-			int timezoneOffsetHours = response.timezoneOffset / 3600;
 
-			var groupedByDate = response.forecastList.forecastItems
-				.GroupBy(item => DateTimeOffset.FromUnixTimeSeconds(item.dt).AddHours(timezoneOffsetHours).Date)
-				.Select(group => group.First()) // Select the first item of each group
-				.Take(5) // Take only the first 5 items for 5 days
-				.ToList();
-
-			return groupedByDate;
-		}
 		/*
 		public static void DisplayForecast(ForecastApiResponse forecastApiResponse)
 		{

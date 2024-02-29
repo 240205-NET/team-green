@@ -110,7 +110,7 @@ namespace Toasted.App
 		{
 			Location defaultLocation = await Request.GetLocation(this.OpenWeatherApiKey, "91401", "US");
 			ForecastApiResponse forecastApiResponse = await Request.GetForecastAsync(this.OpenWeatherApiKey, defaultLocation.lat, defaultLocation.lon);
-			Menu.DisplayForecast2(forecastApiResponse);
+			Menu.DisplayFiveDayForecast(forecastApiResponse);
 		}
 		public User ContentWrapper<User>(Func<User> func)
 		{
