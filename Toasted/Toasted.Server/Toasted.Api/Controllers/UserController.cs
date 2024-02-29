@@ -70,6 +70,16 @@ namespace Toasted.Api.Controllers
             }
         }
 
+        [HttpPost("/api/ExistingEmail")]
+        public async Task<bool> PostGetEmailExists([FromBody] string email)
+        {
+            //check if email exists
+            return await _repo.checkEmailExistsAsync(email);
+
+        }
+
+
+
         [HttpPost("/api/Account")]
         public async Task<bool> PostNewUser([FromBody] User user)
         {
@@ -108,6 +118,7 @@ namespace Toasted.Api.Controllers
             return result;
 
         }
+
 
 
 
