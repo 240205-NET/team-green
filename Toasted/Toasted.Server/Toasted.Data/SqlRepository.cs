@@ -206,8 +206,10 @@ namespace Toasted.Data
                 using SqlCommand cmd = new SqlCommand(sql, connection);
                 {
                     cmd.Parameters.AddWithValue("@email", email);
-                    int count = (int)await cmd.ExecuteScalarAsync();
-                    exists = count > 0;
+                    if (await cmd.ExecuteScalarAsync() != null)
+                    {
+                        exists = true;
+                    }
                 }
             }
             return exists;

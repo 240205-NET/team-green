@@ -33,11 +33,18 @@ namespace Toasted.Test
         public void EmailExists() //test EMAIL class method
         {
 
-            String testName = "lbiteranta@gmail.com";
+            String testName = "LBLUCK@GMAIL.com";
             bool result = ToastedApiAsync.TryPostCheckEmail(testName, testURL).Result;
             Assert.True(result);
         }
+        [Fact]
+        public void EmailExistsNOT() //test EMAIL class method
+        {
 
+            String testName = "LBLUCK34@GMAIL.com";
+            bool result = ToastedApiAsync.TryPostCheckEmail(testName, testURL).Result;
+            Assert.False(result);
+        }
 
 
         [Fact]
