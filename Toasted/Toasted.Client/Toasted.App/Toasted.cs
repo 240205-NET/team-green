@@ -297,7 +297,7 @@ namespace Toasted.App
 			ForecastApiResponse forecastApiResponse = await Request.GetForecastAsync(this.OpenWeatherApiKey, defaultLocation.lat, defaultLocation.lon);
 			homepage.DisplayCurrentWeather();
 			homepage.DisplayForecast(forecastApiResponse);
-			GetFiveDayForecast(defaultLocation);
+			await GetFiveDayForecast(defaultLocation);
 			
 		}
 	}
