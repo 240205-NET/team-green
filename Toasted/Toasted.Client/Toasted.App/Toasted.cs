@@ -41,7 +41,8 @@ namespace Toasted.App
 						Menu.currentView = "Register";
 						User registeredUser =  this.ContentWrapper(Register).Result;
 						//this.ContentWrapper(DisplayWeatherHomepage, registeredUser);
-
+						UserMenu um = new UserMenu(registeredUser);
+						um.DisplayUserMenu();
 						break;
 					case "2":
 						Console.Clear();
