@@ -27,9 +27,6 @@ namespace Toasted.App
 			Console.WriteLine("1: Register");
 			Console.WriteLine("2: Login");
 			Console.WriteLine("3: Exit");
-			Console.WriteLine("======= TESTING ======");
-			Console.WriteLine("4: Get Current Weather");
-			Console.WriteLine("5: Get Hourly Forecast");
 		}
 
 		public static void DisplayWelcomeMessage()

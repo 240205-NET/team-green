@@ -43,8 +43,37 @@ namespace Toasted.Logic
         }
 
 
+                
 
+            public static async Task<bool> TryPostCheckEmail(string email, string baseUrl) 
+            {
 
+                // Create HttpClient instance
+                using var client = new HttpClient();
+                client.BaseAddress = new Uri(baseUrl);
+
+                // Serialize the username to JSON
+                var content = new StringContent($"\"{email}\"");
+
+                // Set content type
+                content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+
+                // Make the POST request
+                var response = await client.PostAsync("api/ExistingEmail", content);
+
+                // Check if request was successful
+                if (response.IsSuccessStatusCode)
+                {
+                    // Read response content as boolean
+                    var result = await response.Content.ReadAsAsync<bool>();
+                    return result;
+                }
+                else
+                {
+                    // Throw exception for unsuccessful response
+                    throw new HttpRequestException($"Failed to check email. Status code: {response.StatusCode}");
+                }
+            }
 
 
 
