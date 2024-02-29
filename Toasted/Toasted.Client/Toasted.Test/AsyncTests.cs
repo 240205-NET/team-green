@@ -29,6 +29,15 @@ namespace Toasted.Test
             Assert.True(result);
         }
 
+        [Fact]
+        public void EmailExists() //test EMAIL class method
+        {
+
+            String testName = "lbiteranta@gmail.com";
+            bool result = ToastedApiAsync.TryPostCheckEmail(testName, testURL).Result;
+            Assert.True(result);
+        }
+
 
 
         [Fact]
@@ -126,5 +135,6 @@ namespace Toasted.Test
             bool result = await ToastedApiAsync.TryPatchTempUnit(username, cf, testURL);
             Assert.True(result);
         }
+
     }
 }

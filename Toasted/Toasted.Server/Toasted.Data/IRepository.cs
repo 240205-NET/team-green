@@ -14,5 +14,6 @@ namespace Toasted.Data
         public Task<bool> UpdateTempUnitAsync(string username, char tempUnit);
 
         public Task<bool> UpdateLocationAsync(string username, string locationJSON);
+        public  Task<bool> checkEmailExistsAsync(string email);
     }
 }

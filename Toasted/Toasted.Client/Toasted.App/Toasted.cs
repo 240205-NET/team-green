@@ -58,39 +58,11 @@ namespace Toasted.App
 						Menu.DisplayExitMessage();
 						exit = true;
 						break;
-					case "4":
-						Console.Clear();
-						Menu.currentView = "Current Weather";
-						this.ContentWrapper(GetCurrentWeather);
-						break;
-					case "5":
-						Console.Clear();
-						Menu.currentView = "Hourly Forecast";
-						this.ContentWrapper(GetForecast);
-						break;
 					default:
 						break;
 				}
 			}
 			// functions that execute the options
-		}
-
-		public async void GetCurrentWeather()
-		{
-			Location defaultLocation = await Request.GetLocation(this.OpenWeatherApiKey, "91401", "US");
-
-			User u = new User("gumshoe", "Somepass123", "M", "S", 1, "e@mail.com", defaultLocation, "US", 'F');
-
-			WeatherApiResponse currentWeather = await Request.GetCurrentWeatherAsync(this.OpenWeatherApiKey, defaultLocation.lat, defaultLocation.lon);
-
-			Menu.DisplayCurrentWeather(currentWeather, defaultLocation);
-		}
-
-		public async void GetForecast()
-		{
-			Location defaultLocation = await Request.GetLocation(this.OpenWeatherApiKey, "91401", "US");
-			ForecastApiResponse forecastApiResponse = await Request.GetForecastAsync(this.OpenWeatherApiKey, defaultLocation.lat, defaultLocation.lon);
-			Menu.DisplayForecast(forecastApiResponse);
 		}
 
 		public User ContentWrapper<User>(Func<User> func)
@@ -318,6 +290,7 @@ namespace Toasted.App
 			CurrentWeather cw = currentWeather.current;
 			WeatherHomepage homepage = new WeatherHomepage(w,cw,u);
 			homepage.DisplayCurrentWeather();
+			homepage.DisplayForecast(forecastApiResponse);
 		}
 	}
 }

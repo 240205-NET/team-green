@@ -139,7 +139,7 @@ namespace Toasted.Data
             using SqlConnection connection = new SqlConnection(this._connectionString);
             {
                 await connection.OpenAsync();
-                string sql = "Update[dbo].[User] " +
+                string sql = "Update [dbo].[User] " +
                              "SET password = @password " +
                               "WHERE Username = @username";
                 using SqlCommand cmd = new SqlCommand(sql, connection);
@@ -160,7 +160,7 @@ namespace Toasted.Data
             using SqlConnection connection = new SqlConnection(this._connectionString);
             {
                 await connection.OpenAsync();
-                string sql = "Update[dbo].[User] " +
+                string sql = "Update [dbo].[User] " +
                              "SET tempUnit = @tempUnit " +
                               "WHERE Username = @username";
                 using SqlCommand cmd = new SqlCommand(sql, connection);
@@ -180,7 +180,7 @@ namespace Toasted.Data
             using SqlConnection connection = new SqlConnection(this._connectionString);
             {
                 await connection.OpenAsync();
-                string sql = "Update[dbo].[User] " +
+                string sql = "Update [dbo].[User] " +
                              "SET location = @locationJSON " +
                               "WHERE Username = @username";
                 using SqlCommand cmd = new SqlCommand(sql, connection);
@@ -195,7 +195,23 @@ namespace Toasted.Data
         }
 
 
-
+        public async Task<bool> checkEmailExistsAsync(string email)
+        {
+            bool exists = false;
+            using SqlConnection connection= new SqlConnection(this._connectionString);
+            {
+                await connection.OpenAsync();
+                string sql = "Select * FROM [dbo].[User] " +
+                    "WHERE email = @email";
+                using SqlCommand cmd = new SqlCommand(sql, connection);
+                {
+                    cmd.Parameters.AddWithValue("@email", email);
+                    int count = (int)await cmd.ExecuteScalarAsync();
+                    exists = count > 0;
+                }
+            }
+            return exists;
+        }
 
 
 
