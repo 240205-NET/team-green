@@ -112,7 +112,55 @@ namespace Toasted.App
 			}
 			return sbList;
 		}
+		public static List<StringBuilder> GenerateForecastStringBuilderList2(List<ForecastItem> forecastItems, int timezoneOffset)
+		{
+			List<StringBuilder> sbList = new List<StringBuilder>();
+			foreach (ForecastItem i in forecastItems)
+			{
+				StringBuilder sb = new StringBuilder();
+				sb.AppendLine("---------------------------------------------\n"); // Divider between entries
+				string dateAndTime = ConvertUnixTimeToDateTime(i.dt, timezoneOffset);
+				sb.AppendLine(dateAndTime + "\n");
+				// Assuming GetCurrentIcon and other methods are defined elsewhere
+				Icon icon = GetCurrentIcon(i.weather.main);
+				foreach (string line in icon.text)
+				{
+					sb.AppendLine(line);
+				}
+				sb.AppendLine();
+				sb.AppendLine(TitleCase(i.weather.Description));
+				double tempC = FahrenheitToCelsius(i.main.temp);
+				sb.AppendLine(FormatTemperatureInColor(tempC, i.main.temp));
+				sbList.Add(sb);
+			}
+			return sbList;
+		}
+		public static void DisplayForecast2(ForecastApiResponse forecastApiResponse)
+		{
+			// Narrow down to one forecast per day
+			var reducedForecastItems = NarrowDownForecasts(forecastApiResponse);
 
+			List<StringBuilder> forecastStringBuilderList = GenerateForecastStringBuilderList2(reducedForecastItems, forecastApiResponse.timezoneOffset);
+			Console.WriteLine($"Showing forecast for {forecastApiResponse.city}, {forecastApiResponse.country}");
+			foreach (var sb in forecastStringBuilderList)
+			{
+				Console.WriteLine(sb);
+			}
+		}
+
+		private static List<ForecastItem> NarrowDownForecasts(ForecastApiResponse response)
+		{
+			// Adjust timezoneOffset from seconds to hours (if your API provides offset in seconds)
+			int timezoneOffsetHours = response.timezoneOffset / 3600;
+
+			var groupedByDate = response.forecastList.forecastItems
+				.GroupBy(item => DateTimeOffset.FromUnixTimeSeconds(item.dt).AddHours(timezoneOffsetHours).Date)
+				.Select(group => group.First()) // Select the first item of each group
+				.Take(5) // Take only the first 5 items for 5 days
+				.ToList();
+
+			return groupedByDate;
+		}
 		/*
 		public static void DisplayForecast(ForecastApiResponse forecastApiResponse)
 		{

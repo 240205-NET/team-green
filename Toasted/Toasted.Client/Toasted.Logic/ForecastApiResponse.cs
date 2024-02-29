@@ -40,4 +40,29 @@ namespace Toasted.Logic
 		public double temp { set; get; }
 		public double feelsLike { get; set; }
 	}
+
+	public static class WeatherForecastProcessor
+	{
+		public static List<ForecastItem> NarrowDownForecasts(ForecastApiResponse response)
+		{
+			// Adjust timezoneOffset from seconds to hours (if your API provides offset in seconds)
+			int timezoneOffsetHours = response.timezoneOffset / 3600;
+
+			// Group by date, considering the timezone offset
+			var groupedByDate = response.forecastList.forecastItems
+				.GroupBy(item => DateTimeOffset.FromUnixTimeSeconds(item.dt).AddHours(timezoneOffsetHours).Date)
+				.ToList();
+
+			// Select one forecast per group/date
+			var narrowedDownList = new List<ForecastItem>();
+			foreach (var group in groupedByDate)
+			{
+				// Here, we're simply taking the first forecast of each day.
+				// You can adjust the logic to select a different forecast per day if needed.
+				narrowedDownList.Add(group.First());
+			}
+
+			return narrowedDownList;
+		}
+	}
 }
