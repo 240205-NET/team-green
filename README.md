@@ -6,7 +6,8 @@ Toasted is a web application leveraging the .NET Framework with ASP.NET API and 
 
 Under the hood, Toasted employs ASCII art to visually represent weather conditions within the console interface. Leveraging the OpenWeather API, it retrieves essential weather parameters such as locale (city and country), weather conditions (rain, mist, fog, etc.), and temperature readings in both Celsius and Fahrenheit. Persistent storage of user-specific location preferences is managed through an Azure T-SQL database with ADO.NET, ensuring seamless retrieval and management of personalized weather data. A simple web interface allows simplified interaction through the browser.
 
-Stand-ups
+Stand-ups:
+
 5/22/2023
 Lawrance: 
 - Created a user class with a constructor 
