@@ -23,7 +23,7 @@ namespace Toasted.App
 
 		public static void DisplayMenuView()
 		{
-			Console.WriteLine("Select a number (1-5) from the options below:\n");
+			Console.WriteLine("Select a number (1-4) from the options below:\n");
 			Console.WriteLine("1: Register");
 			Console.WriteLine("2: Login");
 			Console.WriteLine("3: Exit");

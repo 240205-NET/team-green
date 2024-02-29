@@ -59,7 +59,7 @@ public class UserMenu
 
     public void DisplayUserOptions()
     {
-        Console.WriteLine("Select a number (1-6) from the options below:\n");
+        Console.WriteLine("Select a number (1-8) from the options below:\n");
         Console.WriteLine("1: Display Current Weather");
         Console.WriteLine("2: View User Details");
         Console.WriteLine("3: Change Current Location");
