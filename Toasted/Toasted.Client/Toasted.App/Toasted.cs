@@ -26,7 +26,7 @@ namespace Toasted.App
 		public async Task Run()
 		{
 			Menu.DisplayWelcomeMessage();
-			
+
 			// main program loop
 			bool exit = false;
 			while (!exit)
@@ -39,7 +39,7 @@ namespace Toasted.App
 					case "1":
 						Console.Clear();
 						Menu.currentView = "Register";
-						User registeredUser =  this.ContentWrapper(Register).Result;
+						User registeredUser = this.ContentWrapper(Register).Result;
 						//this.ContentWrapper(DisplayWeatherHomepage, registeredUser);
 						UserMenu um = new UserMenu(registeredUser);
 						um.DisplayUserMenu();
@@ -47,8 +47,8 @@ namespace Toasted.App
 					case "2":
 						Console.Clear();
 						Menu.currentView = "Login";
-						User loggedInUser =  this.ContentWrapper(Login).Result;
-					//	Console.WriteLine(loggedInUser.ToString());
+						User loggedInUser = this.ContentWrapper(Login).Result;
+						//	Console.WriteLine(loggedInUser.ToString());
 						//this.ContentWrapper(DisplayWeatherHomepage, loggedInUser);
 						UserMenu userMenu = new UserMenu(loggedInUser);
 						userMenu.DisplayUserMenu();
@@ -59,25 +59,33 @@ namespace Toasted.App
 						exit = true;
 						break;
 					default:
+					case "4":
+						Console.Clear();
+						this.ContentWrapper(GetFiveDayForecast);
 						break;
 				}
 			}
 			// functions that execute the options
 		}
-
+		public async void GetFiveDayForecast()
+		{
+			Location defaultLocation = await Request.GetLocation(this.OpenWeatherApiKey, "91401", "US");
+			ForecastApiResponse forecastApiResponse = await Request.GetForecastAsync(this.OpenWeatherApiKey, defaultLocation.lat, defaultLocation.lon);
+			Menu.DisplayFiveDayForecast(forecastApiResponse);
+		}
 		public User ContentWrapper<User>(Func<User> func)
 		{
 			User result = default(User);
 			ContentWrapper(() => { result = func(); });
 			return result;
 		}
-		
+
 		public void ContentWrapper(Action<User> content, User u)
 		{
 			Menu.GetCurrentView();
 			content(u);
 		}
-		
+
 		public void ContentWrapper(Action content)
 		{
 			Menu.GetCurrentView();
@@ -203,14 +211,14 @@ namespace Toasted.App
 			// Create a new Location and then create a new User and set their defaultLocation to the new Location.
 			Location defaultLocation = await Request.GetLocation(this.OpenWeatherApiKey, zipcode, countryCode);
 			User u = new User(username, encryptedPassword, firstName, lastName, 1, email, defaultLocation, countryCode, 'F');
-         //   Console.Write(u.ToString());
-            // Get the current weather using the data in defaultLocation
-           // WeatherApiResponse currentWeather = await Request.GetCurrentWeatherAsync(this.OpenWeatherApiKey, defaultLocation.lat, defaultLocation.lon);
-            bool check =  ToastedApiAsync.TryPostNewAccount(u, LocalUrl).Result;
+			//   Console.Write(u.ToString());
+			// Get the current weather using the data in defaultLocation
+			// WeatherApiResponse currentWeather = await Request.GetCurrentWeatherAsync(this.OpenWeatherApiKey, defaultLocation.lat, defaultLocation.lon);
+			bool check = ToastedApiAsync.TryPostNewAccount(u, LocalUrl).Result;
 
-         //   Console.Write("test " + u.ToString());
+			//   Console.Write("test " + u.ToString());
 
-            if (!check)
+			if (!check)
 			{
 				throw new Exception("Registration Failed");
 			}
@@ -285,10 +293,10 @@ namespace Toasted.App
 			{
 				throw new Exception("Location/Weather was not attainable from API");
 			}
-			
+
 			Weather w = currentWeather.current.Weather;
 			CurrentWeather cw = currentWeather.current;
-			WeatherHomepage homepage = new WeatherHomepage(w,cw,u);
+			WeatherHomepage homepage = new WeatherHomepage(w, cw, u);
 			homepage.DisplayCurrentWeather();
 			//homepage.DisplayForecast(forecastApiResponse);
 		}
