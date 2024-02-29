@@ -290,7 +290,7 @@ namespace Toasted.App
 			CurrentWeather cw = currentWeather.current;
 			WeatherHomepage homepage = new WeatherHomepage(w,cw,u);
 			homepage.DisplayCurrentWeather();
-			homepage.DisplayForecast(forecastApiResponse);
+			//homepage.DisplayForecast(forecastApiResponse);
 		}
 	}
 }
