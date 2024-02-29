@@ -9,6 +9,7 @@ Under the hood, Toasted employs ASCII art to visually represent weather conditio
 Stand-ups:
 
 5/22/2023
+
 Lawrance: 
 - Created a user class with a constructor 
 - No problems
@@ -28,6 +29,7 @@ Meryem:
 - Will create.DATA 
 
 2/27/2024
+
 Lawrance:
 - made location serialized object to pass the api
 - user class takes the location serialized
@@ -54,6 +56,7 @@ Meryem:
 - Created methods to convert unix time to DateTime format
 
 2/29/2024
+
 Lawrence:
 - Created API methods to handle the patch to change password, location, and temp reference, and created async functions on the client side.
 - Verified email, check if the email exists
