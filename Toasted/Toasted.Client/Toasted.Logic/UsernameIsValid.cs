@@ -51,6 +51,11 @@ namespace Toasted.Logic
 			{
 				throw new Exception("Not Valid Email Address.");
 			}
+			var emailCheck = TryPostCheckEmail(email, LocalUrl);
+			if (emailCheck.Result)
+			{
+				throw new Exception("Email already exists");
+			}
 			return true;
 		}
 
