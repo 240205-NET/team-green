@@ -9,8 +9,8 @@ namespace Toasted.App
 	public class Toasted
 	{
 		private IConfiguration _configuration;
-		private string? OpenWeatherApiKey;
-		private const string LocalUrl = "http://localhost:5083";
+		public string? OpenWeatherApiKey { get; }
+		public string LocalUrl { get; } = "http://localhost:5083";
 
 		public Toasted()
 		{
@@ -26,11 +26,12 @@ namespace Toasted.App
 		public async Task Run()
 		{
 			Menu.DisplayWelcomeMessage();
-
-			Menu.DisplayMenuView();
+			
 			// main program loop
-			while (true)
+			bool exit = false;
+			while (!exit)
 			{
+				Menu.DisplayMenuView();
 				string userInput = Console.ReadKey().KeyChar.ToString();
 				Console.WriteLine();
 				switch (userInput)
@@ -39,19 +40,23 @@ namespace Toasted.App
 						Console.Clear();
 						Menu.currentView = "Register";
 						User registeredUser =  this.ContentWrapper(Register).Result;
-						this.ContentWrapper(DisplayWeatherHomepage, registeredUser);
-
+						//this.ContentWrapper(DisplayWeatherHomepage, registeredUser);
+						UserMenu um = new UserMenu(registeredUser);
+						um.DisplayUserMenu();
 						break;
 					case "2":
 						Console.Clear();
 						Menu.currentView = "Login";
 						User loggedInUser =  this.ContentWrapper(Login).Result;
 					//	Console.WriteLine(loggedInUser.ToString());
-						this.ContentWrapper(DisplayWeatherHomepage, loggedInUser);
+						//this.ContentWrapper(DisplayWeatherHomepage, loggedInUser);
+						UserMenu userMenu = new UserMenu(loggedInUser);
+						userMenu.DisplayUserMenu();
 						break;
 					case "3":
 						Console.Clear();
-						Console.WriteLine("Exit");
+						Menu.DisplayExitMessage();
+						exit = true;
 						break;
 					default:
 						break;
@@ -258,22 +263,34 @@ namespace Toasted.App
 
 			return u;
 		}
-		private string inputFormatter(string s)
+		public static string inputFormatter(string s)
 		{
 			Console.WriteLine(s);
 			return Console.ReadLine();
 		}
 
-		public async void DisplayWeatherHomepage(User u)
+		public async Task DisplayWeatherHomepage(User u)
 		{
-			Location defaultLocation = await Request.GetLocation(this.OpenWeatherApiKey, u.location.zip.ToString(), u.countryCode);
-			WeatherApiResponse currentWeather = await Request.GetCurrentWeatherAsync(this.OpenWeatherApiKey, defaultLocation.lat, defaultLocation.lon);
-			ForecastApiResponse forecastApiResponse = await Request.GetForecastAsync(this.OpenWeatherApiKey, defaultLocation.lat, defaultLocation.lon);
+			Location defaultLocation;
+			WeatherApiResponse currentWeather;
+			try
+			{
+				defaultLocation = await Request.GetLocation(this.OpenWeatherApiKey,
+					u.location.zip < 10000 ? "0" + u.location.zip.ToString() : u.location.zip.ToString(),
+					u.countryCode);
+				currentWeather = await Request.GetCurrentWeatherAsync(this.OpenWeatherApiKey, defaultLocation.lat, defaultLocation.lon);
+
+			}
+			catch
+			{
+				throw new Exception("Location/Weather was not attainable from API");
+			}
+			
 			Weather w = currentWeather.current.Weather;
 			CurrentWeather cw = currentWeather.current;
 			WeatherHomepage homepage = new WeatherHomepage(w,cw,u);
 			homepage.DisplayCurrentWeather();
-			homepage.DisplayForecast(forecastApiResponse);
+			//homepage.DisplayForecast(forecastApiResponse);
 		}
 	}
 }
