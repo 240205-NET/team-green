@@ -1,4 +1,4 @@
-using Taosted.App;
+using Toasted.App;
 using Toasted.Logic;
 
 namespace Toasted.App;
@@ -45,6 +45,9 @@ public class UserMenu
                     ChangePassword().Wait();
                     break;
                 case "7":
+                    Search().Wait();
+                    break;
+                case "8":
                     exit = true;
                     break;
                 default:
@@ -63,7 +66,8 @@ public class UserMenu
         Console.WriteLine("4: Switch Temperature Preference");
         Console.WriteLine("5: Add Location");
         Console.WriteLine("6: Change Password");
-        Console.WriteLine("7: Log Out");
+        Console.WriteLine("7: Search");
+        Console.WriteLine("8: Log Out");
     }
 
     private void DisplayUserWelcome()
@@ -146,5 +150,17 @@ public class UserMenu
             }
         }
         return !changed;
+    }
+
+    private async Task Search()
+    {
+        string input = Toasted.inputFormatter("Enter Zip Code of Location: ");
+        Location location = await Request.GetLocation(t.OpenWeatherApiKey,input,"US");
+        WeatherApiResponse weatherResponse =
+            await Request.GetCurrentWeatherAsync(t.OpenWeatherApiKey, location.lat, location.lon);
+        Weather weather = weatherResponse.current.Weather;
+        CurrentWeather currentWeather = weatherResponse.current;
+        SearchWeather sw = new SearchWeather(weather, currentWeather, location);
+        t.DisplayWeatherHomepage(this.currentUser).Wait();
     }
 }

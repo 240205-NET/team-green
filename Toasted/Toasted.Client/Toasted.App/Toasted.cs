@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using System.ComponentModel;
-using Taosted.App;
+using Toasted.App;
 using Toasted.Logic;
 using static Toasted.Logic.ToastedApiAsync;
 

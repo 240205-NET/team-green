@@ -4,26 +4,26 @@ using System.Globalization;
 
 namespace Toasted.App
 {
-    public class WeatherHomepage {
-    
+    public class SearchWeather
+    {
+        private Location location;
         CurrentWeather currentWeather;
         Weather weather;
-        User user;
 
 
         // Constructor
-        public WeatherHomepage(Weather weather, CurrentWeather currentWeather, User user)
+        public SearchWeather(Weather weather, CurrentWeather currentWeather, Location location)
         {
             this.weather = weather;
             this.currentWeather = currentWeather;
-            this.user = user;
+            this.location = location;
         }
         
         public void DisplayCurrentWeather(){
 
 
             Console.WriteLine("\x1b[31m╔═══════════════════════════════════════════════════════════╗\x1b[0m");
-            Console.WriteLine($"                \x1b[31mCurrent Weather for {user.location.name}\x1b[0m           ");                
+            Console.WriteLine($"                \x1b[31mCurrent Weather for {location.name}\x1b[0m           ");                
             Console.WriteLine("\x1b[31m╚═══════════════════════════════════════════════════════════╝\x1b[0m\n");
 
             Console.WriteLine($"\x1b[38;5;223m{UnixTimeStampToDateTime(currentWeather.Dt)}\n\x1b[0m");
