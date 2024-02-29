@@ -27,6 +27,7 @@ namespace Toasted.App
 			Console.WriteLine("1: Register");
 			Console.WriteLine("2: Login");
 			Console.WriteLine("3: Exit");
+			Console.WriteLine("4: Display 5 Day Forecast");
 		}
 
 		public static void DisplayWelcomeMessage()
@@ -110,6 +111,42 @@ namespace Toasted.App
 			return sbList;
 		}
 
+		public static List<StringBuilder> GenerateFiveDayForecastStringBuilderList(List<ForecastItem> forecastItems, int timezoneOffset)
+		{
+			List<StringBuilder> sbList = new List<StringBuilder>();
+			foreach (ForecastItem i in forecastItems)
+			{
+				StringBuilder sb = new StringBuilder();
+				sb.AppendLine("---------------------------------------------\n"); // Divider between entries
+				string dateAndTime = ConvertUnixTimeToDateTime(i.dt, timezoneOffset);
+				sb.AppendLine(dateAndTime + "\n");
+				// Assuming GetCurrentIcon and other methods are defined elsewhere
+				Icon icon = GetCurrentIcon(i.weather.main);
+				foreach (string line in icon.text)
+				{
+					sb.AppendLine(line);
+				}
+				sb.AppendLine();
+				sb.AppendLine(TitleCase(i.weather.Description));
+				double tempC = FahrenheitToCelsius(i.main.temp);
+				sb.AppendLine(FormatTemperatureInColor(tempC, i.main.temp));
+				sbList.Add(sb);
+			}
+			return sbList;
+		}
+
+		public static void DisplayFiveDayForecast(ForecastApiResponse forecastApiResponse)
+		{
+			// Narrow down to one forecast per day
+			var reducedForecastItems = WeatherForecastProcessor.NarrowDownForecasts(forecastApiResponse);
+
+			List<StringBuilder> forecastStringBuilderList = GenerateFiveDayForecastStringBuilderList(reducedForecastItems, forecastApiResponse.timezoneOffset);
+			Console.WriteLine($"Showing forecast for {forecastApiResponse.city}, {forecastApiResponse.country}");
+			foreach (var sb in forecastStringBuilderList)
+			{
+				Console.WriteLine(sb);
+			}
+		}
 		/*
 		public static void DisplayForecast(ForecastApiResponse forecastApiResponse)
 		{
@@ -224,6 +261,6 @@ namespace Toasted.App
 
 			return formattedDateTime;
 		}
-		
+
 	}
 }
