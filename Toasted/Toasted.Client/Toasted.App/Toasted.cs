@@ -59,18 +59,15 @@ namespace Toasted.App
 						exit = true;
 						break;
 					default:
-					case "4":
-						Console.Clear();
-						this.ContentWrapper(GetFiveDayForecast);
+						Console.WriteLine("Option Does Not Exist");
 						break;
 				}
 			}
 			// functions that execute the options
 		}
-		public async void GetFiveDayForecast()
+		public async Task GetFiveDayForecast(Location l)
 		{
-			Location defaultLocation = await Request.GetLocation(this.OpenWeatherApiKey, "91401", "US");
-			ForecastApiResponse forecastApiResponse = await Request.GetForecastAsync(this.OpenWeatherApiKey, defaultLocation.lat, defaultLocation.lon);
+			ForecastApiResponse forecastApiResponse = await Request.GetForecastAsync(this.OpenWeatherApiKey, l.lat, l.lon);
 			Menu.DisplayFiveDayForecast(forecastApiResponse);
 		}
 		public User ContentWrapper<User>(Func<User> func)
@@ -297,8 +294,11 @@ namespace Toasted.App
 			Weather w = currentWeather.current.Weather;
 			CurrentWeather cw = currentWeather.current;
 			WeatherHomepage homepage = new WeatherHomepage(w, cw, u);
+			ForecastApiResponse forecastApiResponse = await Request.GetForecastAsync(this.OpenWeatherApiKey, defaultLocation.lat, defaultLocation.lon);
 			homepage.DisplayCurrentWeather();
-			//homepage.DisplayForecast(forecastApiResponse);
+			homepage.DisplayForecast(forecastApiResponse);
+			GetFiveDayForecast(defaultLocation);
+			
 		}
 	}
 }

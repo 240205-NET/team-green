@@ -158,9 +158,12 @@ public class UserMenu
         Location location = await Request.GetLocation(t.OpenWeatherApiKey,input,"US");
         WeatherApiResponse weatherResponse =
             await Request.GetCurrentWeatherAsync(t.OpenWeatherApiKey, location.lat, location.lon);
+        ForecastApiResponse forecastApiResponse = await Request.GetForecastAsync(t.OpenWeatherApiKey, location.lat, location.lon);
         Weather weather = weatherResponse.current.Weather;
         CurrentWeather currentWeather = weatherResponse.current;
         SearchWeather sw = new SearchWeather(weather, currentWeather, location);
-        t.DisplayWeatherHomepage(this.currentUser).Wait();
+        sw.DisplayCurrentWeather();
+        sw.DisplayForecast(forecastApiResponse);
+        await t.GetFiveDayForecast(location);
     }
 }
