@@ -23,7 +23,7 @@ jobs:
           include-prerelease: true
 
       - name: restore from dotnet    
-        working-directory: Toasted/Toasted.Server
+        working-directory: ../Toasted/Toasted.Server
         run: dotnet restore
         
       - name: Build with dotnet
