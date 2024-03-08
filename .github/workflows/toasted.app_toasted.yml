@@ -24,7 +24,7 @@ jobs:
 
       - name: restore from dotnet    
         working-directory: Toasted/Toasted.Server
-      - run: dotnet restore
+        run: dotnet restore
         
       - name: Build with dotnet
         working-directory: Toasted/Toasted.Server
