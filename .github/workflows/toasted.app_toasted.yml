@@ -22,6 +22,10 @@ jobs:
           dotnet-version: '7.0'
           include-prerelease: true
 
+      - name: restore from dotnet    
+        working-directory: Toasted/Toasted.Server
+      - run: dotnet restore
+        
       - name: Build with dotnet
         working-directory: Toasted/Toasted.Server
         run: dotnet build --configuration Release
