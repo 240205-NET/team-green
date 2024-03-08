@@ -23,12 +23,10 @@ jobs:
           include-prerelease: true
 
       - name: restore from dotnet    
-        working-directory: /Toasted/Toasted.Server
-        run: dotnet restore
+        run: dotnet restore /Toasted/Toasted.Server
         
       - name: Build with dotnet
-        working-directory: /Toasted/Toasted.Server
-        run: dotnet build --configuration Release
+        run: dotnet build --configuration Release /Toasted/Toasted.Server
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
